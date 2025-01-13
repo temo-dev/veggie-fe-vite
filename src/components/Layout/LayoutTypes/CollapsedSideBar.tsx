@@ -92,20 +92,7 @@ export default function CollapsedSideBar() {
           flexDirection: 'column',
           height: '100vh',
         }}>
-          <Card
-            style={{
-              overflowY: 'auto',
-              maxHeight: '100%',
-              width: '100%',
-              flex: 1,
-              boxShadow: `rgba(21, 128, 0, 0.15) 0px 48px 100px 0px;`
-            }}
-            radius={6}
-            withBorder
-            p={40}
-          >
           <Views/>
-          </Card>
         </div>
       </div>
     </>

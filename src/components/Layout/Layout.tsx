@@ -6,8 +6,6 @@ import {LayoutTypes} from "@/@types/layout";
 import {useAppSelector} from "@/store";
 
 const layouts:any = {
-  [LayoutTypes.SimpleSideBar]: lazy(() => import('./LayoutTypes/SimpleSideBar')),
-  [LayoutTypes.DeckedSideBar]: lazy(() => import('./LayoutTypes/DeckedSideBar')),
   [LayoutTypes.CollapsedSideBar]: lazy(() => import('./LayoutTypes/CollapsedSideBar')),
 }
 
