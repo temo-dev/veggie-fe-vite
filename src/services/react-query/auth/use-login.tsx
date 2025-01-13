@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
-import { API_ENDPOINTS } from "../utils/api-endpoints";
-import http from "../utils/http";
+import { API_ENDPOINTS } from "../../utils/api-endpoints";
+import http from "../../utils/http";
 import useAuth from '@/utils/hooks/useAuth';
 import { notifications } from "@mantine/notifications";
 
