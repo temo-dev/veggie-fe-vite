@@ -1,5 +1,5 @@
 export type SignInCredential = {
-  email: string
+  account: string
   password: string
 }
 

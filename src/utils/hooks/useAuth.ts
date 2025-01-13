@@ -34,7 +34,7 @@ function useAuth() {
     | undefined
   > => {
     try {
-      const resp = await AuthService.signIn(values.email, values.password)
+      const resp = await AuthService.signIn(values.account, values.password)
       dispatch(setUserId(resp.id))
       const {
         access_token,
