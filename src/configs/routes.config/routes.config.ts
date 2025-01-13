@@ -8,31 +8,43 @@ export const protectedRoutes = [
   {
     key: 'dashboard',
     path: '/dashboard',
-    component: lazy(() => import('@/pages/examples/Dashboard')),
+    component: lazy(() => import('@/pages/dashboard')),
     authority: []
   },
   {
-    key: 'users',
-    path: '/users',
-    component: lazy(() => import('@/pages/examples/Users')),
+    key: 'products',
+    path: '/products',
+    component: lazy(() => import('@/pages/product')),
     authority: []
   },
   {
-    key: 'pages',
-    path: '/dashboard/pages',
-    component: lazy(() => import('@/pages/examples/Pages')),
+    key: 'categories',
+    path: '/categories',
+    component: lazy(() => import('@/pages/category')),
     authority: []
   },
   {
-    key: 'files',
-    path: '/dashboard/files',
-    component: lazy(() => import('@/pages/examples/Files')),
+    key: 'currencies',
+    path: '/currencies',
+    component: lazy(() => import('@/pages/currency')),
     authority: []
   },
   {
-    key: 'manage',
-    path: '/users/manage',
-    component: lazy(() => import('@/pages/examples/Manage')),
+    key: 'suppliers',
+    path: '/suppliers',
+    component: lazy(() => import('@/pages/supplier')),
+    authority: []
+  },
+  {
+    key: 'purchase-prices',
+    path: '/purchase-prices',
+    component: lazy(() => import('@/pages/purchase-price')),
+    authority: []
+  },
+  {
+    key: 'brands',
+    path: '/brands',
+    component: lazy(() => import('@/pages/brand')),
     authority: []
   },
 ]

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Center, Stack} from '@mantine/core';
+import {Card, Center, Stack, Tooltip} from '@mantine/core';
 import {
   IconLogout,
 } from '@tabler/icons-react';
@@ -41,6 +41,7 @@ function CollapsedSideBarContent() {
 
   const links = navigationConfig.map((item) => (
     <AuthorityCheck userAuthority={userAuthority ? userAuthority : []} authority={item.authority}>
+      <Tooltip label={`${item.title}`} position="right" withArrow>
       <Link
         className={classes.link}
         data-active={item.path.split('/')[1] === active ? 'true' : undefined}
@@ -53,13 +54,15 @@ function CollapsedSideBarContent() {
       >
         <item.icon className={classes.linkIcon} stroke={1.5}/>
       </Link>
+      </Tooltip>
+      
     </AuthorityCheck>
   ));
 
   return (
     <nav className={classes.navbar}>
       <Center>
-        <img className={classes.logo} alt={'Mantine Logo'} src={'/logo/logo-text-on-dark-1.svg'}/>
+        <img className={classes.logo} alt={'Veggie Logo'} src={'/logo/logo-text-on-dark-1.svg'}/>
       </Center>
       <div className={classes.navbarMain}>
         <Stack justify="center" gap={10}>
