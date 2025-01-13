@@ -59,7 +59,7 @@ function CollapsedSideBarContent() {
   return (
     <nav className={classes.navbar}>
       <Center>
-        <img className={classes.logo} alt={'Mantine Logo'} src={'/logo/logo-light-full.svg'}/>
+        <img className={classes.logo} alt={'Mantine Logo'} src={'/logo/logo-text-on-dark-1.svg'}/>
       </Center>
       <div className={classes.navbarMain}>
         <Stack justify="center" gap={10}>
@@ -77,7 +77,7 @@ export default function CollapsedSideBar() {
       <div style={{
         display: 'flex',
         flex: ' 1 1 auto',
-        backgroundColor: 'rgb(241,240,240)',
+        backgroundColor: 'rgb(31, 143, 0)',
       }}>
         <CollapsedSideBarContent/>
         <div style={{
@@ -95,8 +95,9 @@ export default function CollapsedSideBar() {
               maxHeight: '100%',
               width: '100%',
               flex: 1,
+              boxShadow: `rgba(21, 128, 0, 0.15) 0px 48px 100px 0px;`
             }}
-            radius={15}
+            radius={6}
             withBorder
             p={40}
           >

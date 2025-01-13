@@ -13,7 +13,7 @@
 }
 
 .logo {
-    width: 3rem;
+    width: 4rem;
 }
 
 .linkWrapper {
@@ -32,18 +32,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+    color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-0));
 
     &:hover {
         background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+        color: var(--mantine-color-green);
         cursor: pointer;
     }
 
     &[data-active] {
         &,
         &:hover {
-            background-color: var(--mantine-color-blue-light);
-            color: var(--mantine-color-blue-light-color);
+            background-color: var(--mantine-color-white);
+            color: var(--mantine-color-green-7);
         }
     }
 }
