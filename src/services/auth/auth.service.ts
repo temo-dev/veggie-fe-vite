@@ -3,7 +3,6 @@ import {SignInResponse} from "@/@types/auth";
 
 export const AuthService = {
   async signIn(account: string, password: string): Promise<SignInResponse> {
-    console.log(account, password)
     const res = await ApiService.fetchData<{ account: string, password: string }, SignInResponse>({
       url: '/auth/login',
       method: 'POST',

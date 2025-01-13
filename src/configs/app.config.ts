@@ -8,11 +8,10 @@ export type AppConfig = {
   locale: string
   layoutType: LayoutTypes,
 }
-const apiUrl = import.meta.env.SERVER_URL;
 
 const appConfig: AppConfig = {
   layoutType: LayoutTypes.CollapsedSideBar,
-  apiPrefix: apiUrl,
+  apiPrefix: import.meta.env.VITE_PUBLIC_REST_API_ENDPOINT,
   authenticatedEntryPath: '/dashboard',
   unAuthenticatedEntryPath: '/sign-in',
   enableMock: false,

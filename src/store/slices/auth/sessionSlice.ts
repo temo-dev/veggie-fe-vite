@@ -11,7 +11,7 @@ export interface SessionState {
 const initialState: SessionState = {
   signedIn: false,
   token:null,
-  expireTime: 0,
+  expireTime: 100000,
   refreshToken: null
 }
 

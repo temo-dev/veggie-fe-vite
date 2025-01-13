@@ -8,8 +8,7 @@ import {
 import appConfig from '@/configs/app.config'
 import {REDIRECT_URL_KEY} from '@/constants/app.constant'
 import {useNavigate} from 'react-router-dom'
-import {SignInCredential, SignUpCredential} from '@/@types/auth'
-import {AuthService} from "@/services/auth/auth.service";
+import {SignUpCredential} from '@/@types/auth'
 import useQuery from './useQuery'
 
 type Status = 'success' | 'failed'
@@ -18,14 +17,13 @@ function useAuth() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const {
-    token,
-    signedIn
+    token, signedIn
   } = useAppSelector((state) => state.auth.session)
   const userId = useAppSelector(state => state.auth.userInfo.userId)
   const query = useQuery()
 
   const signIn = async (
-    values: SignInCredential
+    data: any
   ): Promise<
     | {
     status: Status
@@ -34,27 +32,19 @@ function useAuth() {
     | undefined
   > => {
     try {
-      const resp = await AuthService.signIn(values.account, values.password)
-      dispatch(setUserId(resp.id))
-      const {
-        access_token,
-        id,
-        email,
-        fullName,
-        phoneNumber
-      } = resp
+      dispatch(setUserId(data.data.user_id))
       dispatch(signInSuccess({
-        token: access_token,
+        token: data.token,
         refreshToken: '',
         expireTime: 0
       }))
       dispatch(
         setUser(
           {
-            fullName: fullName,
-            email: email,
-            role: resp.authority,
-            phoneNumber: phoneNumber
+            fullName: data.data.user_name,
+            email: data.data.email,
+            role: [],
+            phoneNumber: ''
           }
         )
       )

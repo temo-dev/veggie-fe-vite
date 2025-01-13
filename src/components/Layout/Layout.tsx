@@ -16,13 +16,13 @@ export function Layout() {
   const layoutType = useAppSelector((state) => state.theme.currentLayout)
 
   useLocale()
-
   const AppLayout = useMemo(() => {
     if (authenticated) {
      return  layouts[layoutType]
     }
     return lazy(() => import('./AuthLayout'))
   }, [authenticated])
+
 
   return (
     <Suspense

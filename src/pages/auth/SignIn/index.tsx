@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Paper,
   TextInput,
@@ -9,11 +9,18 @@ import {
 import classes from './index.module.css';
 import * as yup from 'yup';
 import {useForm, yupResolver} from "@mantine/form";
-import useAuth from "@/utils/hooks/useAuth";
+import { useLoginMutation } from '@/services/react-query/auth/use-login';
 
 export default function SignInPage() {
   const [loading, setLoading] = useState<boolean>(false)
-  const {signIn} = useAuth()
+  const {mutate: login, status} = useLoginMutation()
+
+  useEffect(()=>{
+    if(status === 'success' || status === 'error'){
+      setLoading(false)
+    }
+  },[status])
+
   const schema = yup.object().shape({
     account: yup
       .string()
@@ -31,16 +38,9 @@ export default function SignInPage() {
     validate: yupResolver(schema),
   });
 
-  async function handleSubmit(values: { account: string, password: string }) {
+  function handleSubmit(values: { account: string, password: string }) {
     setLoading(true)
-    try {
-      console.log('values-1',values)
-      const res = await signIn(values)
-    } catch (e) {
-      console.log(e)
-    } finally {
-      setLoading(false)
-    }
+    login({user_name: values.account, password: values.password})
   }
 
   return (
