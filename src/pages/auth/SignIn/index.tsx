@@ -55,7 +55,7 @@ export default function SignInPage() {
                       placeholder="admin" size="md"/>
             <PasswordInput {...form.getInputProps('password')} name={'password'} label="Password"
                           placeholder="admin" mt="md" size="md"/>
-            <Button loading={loading} type={'submit'} fullWidth mt="xl" size="md">
+            <Button loading={loading} type={'submit'} fullWidth mt="xl" size="md" disabled={loading}>
               Login
             </Button>
           </Paper>

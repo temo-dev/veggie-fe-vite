@@ -1,5 +1,5 @@
 import type {NavigationTree} from '@/@types/navigation';
-import {IconBrandVinted,IconSettingsDollar,IconDashboard, IconSalad,IconCategory,IconFlagDollar,IconBuildingFactory2} from '@tabler/icons-react';
+import {IconBrandVinted,IconSettingsDollar,IconDashboard, IconSalad,IconCategory,IconBuildingFactory2} from '@tabler/icons-react';
 
 const navigationConfig: NavigationTree[] = [
   {
@@ -39,20 +39,11 @@ const navigationConfig: NavigationTree[] = [
     subMenu: []
   },
   {
-    key: 'categories',
-    path: '/categories',
-    title: 'Category',
+    key: 'extensions',
+    path: '/extensions',
+    title: 'Extension',
     translateKey: '',
     icon: IconCategory,
-    authority: [],
-    subMenu: []
-  },
-  {
-    key: 'currencies',
-    path: '/currencies',
-    title: 'Currency',
-    translateKey: '',
-    icon: IconFlagDollar,
     authority: [],
     subMenu: []
   },
