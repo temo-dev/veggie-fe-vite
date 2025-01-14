@@ -3,20 +3,25 @@ import { Card } from '@mantine/core'
 import { EChartsOption } from 'echarts/types/dist/echarts';
 import React from 'react'
 
-const TotalCategoryPieChart = () => {
-  const data = [
-    { value: 200, name: 'Dry Foods' },
-    { value: 50, name: 'VEG Products' },
-    { value: 100, name: 'Snack Foods' },
-    { value: 100, name: 'EU Products'},
-    { value: 111, name: 'Czech Farms' }
-  ];
+
+interface DataChart {
+  value: number
+  name: string
+}
+
+interface PropsInterface {
+  data :DataChart[],
+  title :string
+}
+
+const TotalCategoryPieChart = (props :PropsInterface) => {
+  const {title,data} = props
   
   const total = data.reduce((sum, item) => sum + item.value, 0);
   
   const option:EChartsOption = {
     title: {
-      text: 'Tổng Mặt Hàng',
+      text: `${title.toUpperCase()}`,
       top: '5px',
       textStyle: {
         color: '#333',
@@ -30,7 +35,7 @@ const TotalCategoryPieChart = () => {
       left: 'center',
     },
     series: [
-      { name:'Mặt Hàng',
+      {
         type: 'pie',
         radius: ['30%', '80%'],
         center: ['50%', '48%'],
@@ -46,7 +51,7 @@ const TotalCategoryPieChart = () => {
       left: 'center',
       top: '44%',
       style: {
-        text: `Total: ${total}`,
+        text: `Tổng: ${total}\n sản phẩm`,
         align: 'center',
         fill: '#333', // text color
         fontSize: 16,
@@ -56,7 +61,7 @@ const TotalCategoryPieChart = () => {
   };
   return (
     <Card shadow="lg" padding="xs" radius="lg" withBorder className='bg-slate-50' >
-        <EChart options={option} />
+        <EChart options={option} data={data}/>
     </Card>
   )
 }

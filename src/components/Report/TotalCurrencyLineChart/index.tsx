@@ -129,7 +129,7 @@ const TotalCurrencyLineChart: React.FC = () => {
 
   return (
     <Card shadow="lg" padding="xs" radius="lg" withBorder className='bg-slate-50' >
-        <div ref={chartRef} style={{ width: '100%', height: '500px' }} />;
+        <div ref={chartRef} style={{ width: '100%', height: '500px' }} />
     </Card>
   )
 }
