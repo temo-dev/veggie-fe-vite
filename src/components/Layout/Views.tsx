@@ -10,6 +10,8 @@ import PublicRoute from "@/route/PublicRoute";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-all-currency';
 import useCurrency from '@/utils/hooks/useCurrency';
+import useTag from '@/utils/hooks/useTag';
+import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
 
 interface ViewsProps {
   pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -70,13 +72,16 @@ const AllRoutes = (props: AllRoutesProps) => {
 
 const Views = (props: ViewsProps) => {
   const {updateCurrencies} = useCurrency()
+  const {updateTags} = useTag()
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
+  const {data:tags, isSuccess:isfindAllTags} = useFindAllTag()
   //call initial api
   useEffect(() => {
-    if (isFindAllCurrencies){
+    if (isFindAllCurrencies || isfindAllTags){
       updateCurrencies(currencies)
+      updateTags(tags)
     }
-  },[isFindAllCurrencies])
+  },[isFindAllCurrencies,isfindAllTags])
 
   return (
     <Suspense fallback={

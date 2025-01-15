@@ -172,20 +172,7 @@ const dataSub = [
     dph: 21
   }
 ]
-const dataTag = [
-  {
-    description: "san pham host",
-    image_url: "",
-    tag_name: "host"
-  }
-]
-const dataCurrency = [
-  {
-    currency_code: "string",
-    currency_name: "string",
-    exchange_rate: 12
-  }
-]
+
 const dataPackage = [
   {
     attitude_product_package_code: "string",
@@ -231,6 +218,7 @@ const RenderModal = (props:any) => {
 const ExtensionsPage = () => {
   const { ref, width } = useElementSize();
   const {currencies} = useAppSelector((state) => state.currency.currency)
+  const {tags} = useAppSelector((state) => state.tag.tag)
     const openModal = (el:any) => {
       modals.open({
         title: (
@@ -273,7 +261,7 @@ const ExtensionsPage = () => {
         name:"nhãn sản phẩm",
         description:"nhãn sản phẩm",
         icon: <IconTagStarred style={iconStyle}/>,
-        table: <TableTag data={dataTag}/>
+        table: <TableTag data={tags}/>
       },
       {
         id:5,

@@ -1,3 +1,4 @@
+import { useDeleteTagById } from '@/services/react-query/tag/use-delete-tag';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
 import { IconAdjustments, IconEdit, IconTrash } from '@tabler/icons-react';
 import React from 'react'
@@ -8,7 +9,13 @@ interface PropsInterface{
 
 const TableTag = (prop:PropsInterface) => {
   const {data} = prop
-  const rows = data.map((element,key) => (
+  const {mutate:deleteTagById} = useDeleteTagById()
+  //logic
+  const handleDeleteTag = (id:string) => {
+    deleteTagById(id)
+  }
+  //component
+  const rows = data?.map((element,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>
@@ -21,7 +28,7 @@ const TableTag = (prop:PropsInterface) => {
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa">
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteTag(element.tag_id)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>

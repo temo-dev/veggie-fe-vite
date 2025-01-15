@@ -9,7 +9,7 @@ interface PropsInterface{
 
 const TableSubCategory = (prop:PropsInterface) => {
   const {data} = prop
-  const rows = data.map((element,key) => (
+  const rows = data?.map((element,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>

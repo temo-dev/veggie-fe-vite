@@ -1,6 +1,5 @@
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
-import { IconAdjustments, IconEdit, IconTrash } from '@tabler/icons-react';
-import React from 'react'
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 
 interface PropsInterface{
   data: any[]
@@ -8,7 +7,7 @@ interface PropsInterface{
 
 const TableCategory = (prop:PropsInterface) => {
   const {data} = prop
-  const rows = data.map((element,key) => (
+  const rows = data?.map((element,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>

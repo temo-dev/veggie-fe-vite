@@ -1,12 +1,12 @@
-import { Box, Button, Center, Input, NumberInput, Stack, TextInput } from '@mantine/core'
+import { Box, Button, NumberInput, Stack, TextInput } from '@mantine/core'
 import * as yup from 'yup';
 import { useForm,yupResolver } from '@mantine/form';
 import classes from './index.module.css'
-import { IconCoinBitcoin, IconPlus } from '@tabler/icons-react'
+import { IconPlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react';
 import { CreateCurrencyInput, useCreateNewCurrency } from '@/services/react-query/currency/use-create-currency';
 import { modals } from '@mantine/modals';
-import { setAllCurrencies, setIsUpdate, useAppDispatch } from '@/store';
+
 
 
 const FormCreateCurrency = () => {

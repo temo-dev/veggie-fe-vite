@@ -16,7 +16,7 @@ const TableCurrency = (prop:PropsInterface) => {
     deleteCurrency(id)
   }
   //component
-  const rows = data.map((element,key) => (
+  const rows = data?.map((element,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>{element.currency_name.toUpperCase()}</Table.Td>
