@@ -31,7 +31,7 @@ const TablePackage = (prop:PropsInterface) => {
 
   return (
     <Table.ScrollContainer minWidth={500} type='native' h={280}>
-          <Table striped withRowBorders={false}>
+          <Table striped withRowBorders={false} stickyHeader>
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Thứ Tự</Table.Th>
