@@ -39,8 +39,8 @@ function CollapsedSideBarContent() {
     setActive(currentPath);
   }, [location.pathname]);
 
-  const links = navigationConfig.map((item) => (
-    <AuthorityCheck userAuthority={userAuthority ? userAuthority : []} authority={item.authority}>
+  const links = navigationConfig.map((item,key) => (
+    <AuthorityCheck userAuthority={userAuthority ? userAuthority : []} authority={item.authority} key={key}>
       <Tooltip label={`${item.title}`} position="right" withArrow>
       <Link
         className={classes.link}

@@ -1,13 +1,15 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import appConfig from '@/configs/app.config'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAppSelector } from '@/store'
+import { setAllCurrencies, setIsUpdate, useAppDispatch, useAppSelector } from '@/store'
 import {protectedRoutes, publicRoutes} from "@/configs/routes.config";
 import ProtectedRoute from "@/route/ProtectedRoute";
 import AppRoute from "@/route/AppRoute";
 import AuthorityGuard from "@/route/AuthorityGuard";
 import PublicRoute from "@/route/PublicRoute";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
+import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-all-currency';
+import useCurrency from '@/utils/hooks/useCurrency';
 
 interface ViewsProps {
   pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -67,6 +69,15 @@ const AllRoutes = (props: AllRoutesProps) => {
 }
 
 const Views = (props: ViewsProps) => {
+  const {updateCurrencies} = useCurrency()
+  const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
+  //call initial api
+  useEffect(() => {
+    if (isFindAllCurrencies){
+      updateCurrencies(currencies)
+    }
+  },[isFindAllCurrencies])
+
   return (
     <Suspense fallback={
       <LoadingScreen/>

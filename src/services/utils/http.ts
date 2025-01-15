@@ -14,7 +14,7 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     const token = readLocalStorageValue({ key: 'yourTokenAuth' });
-    config.headers['Authorization'] = `Bearer ${token}`;
+    config.headers['Authorization'] = `${token}`;
     return config;
   },
   (error) => {

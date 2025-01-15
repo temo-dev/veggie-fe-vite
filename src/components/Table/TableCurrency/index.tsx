@@ -1,25 +1,33 @@
-import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
-import { IconAdjustments, IconEdit, IconTrash } from '@tabler/icons-react';
-import React from 'react'
+import { useDeleteCurrencyById } from '@/services/react-query/currency/use-delete-currency';
+import { CurrencyType } from '@/services/react-query/currency/use-find-all-currency';
+import { ActionIcon, Group, Table } from '@mantine/core';
+import {IconEdit, IconTrash } from '@tabler/icons-react';
 
 interface PropsInterface{
-  data: any[]
+  data: CurrencyType[]
 }
 
 const TableCurrency = (prop:PropsInterface) => {
   const {data} = prop
+  const {mutate:deleteCurrency} = useDeleteCurrencyById()
+
+  //logic
+  const handleDeleteCurrency = (id:string) => {
+    deleteCurrency(id)
+  }
+  //component
   const rows = data.map((element,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
-      <Table.Td>{element.currency_name}</Table.Td>
-      <Table.Td>{element.currency_code}</Table.Td>
-      <Table.Td>{element.exchange_rate}</Table.Td>
+      <Table.Td>{element.currency_name.toUpperCase()}</Table.Td>
+      <Table.Td>{element.currency_code.toUpperCase()}</Table.Td>
+      <Table.Td className='font-bold'>{element.exchange_rate}</Table.Td>
       <Table.Td>
         <Group>
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa">
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteCurrency(element.currency_id)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>

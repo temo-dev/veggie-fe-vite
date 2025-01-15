@@ -10,6 +10,7 @@ import {REDIRECT_URL_KEY} from '@/constants/app.constant'
 import {useNavigate} from 'react-router-dom'
 import {SignUpCredential} from '@/@types/auth'
 import useQuery from './useQuery'
+import { useLocalStorage } from '@mantine/hooks'
 
 type Status = 'success' | 'failed'
 
@@ -21,6 +22,9 @@ function useAuth() {
   } = useAppSelector((state) => state.auth.session)
   const userId = useAppSelector(state => state.auth.userInfo.userId)
   const query = useQuery()
+  const [_, setValue] = useLocalStorage({
+    key: 'yourTokenAuth',
+  });
 
   const signIn = async (
     data: any
@@ -32,6 +36,7 @@ function useAuth() {
     | undefined
   > => {
     try {
+      setValue(data.token)
       dispatch(setUserId(data.data.user_id))
       dispatch(signInSuccess({
         token: data.token,

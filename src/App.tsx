@@ -19,18 +19,18 @@ export default function App() {
   return (
     <>
       <ReactQueryDevtools initialIsOpen={false} />
-      <MantineProvider theme={theme}>
-        <Notifications position="bottom-right"/>
-        <ModalsProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <BrowserRouter>
-                <Layout />
-              </BrowserRouter>
-            </PersistGate>
-          </Provider>
-        </ModalsProvider>
-      </MantineProvider>
+      <Provider store={store}>
+        <MantineProvider theme={theme}>
+          <Notifications position="bottom-right"/>
+          <ModalsProvider>
+              <PersistGate loading={null} persistor={persistor}>
+                <BrowserRouter>
+                  <Layout />
+                </BrowserRouter>
+              </PersistGate>
+          </ModalsProvider>
+        </MantineProvider>
+      </Provider>
     </>
       
   );

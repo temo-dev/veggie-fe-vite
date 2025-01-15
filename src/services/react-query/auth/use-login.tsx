@@ -19,8 +19,8 @@ const login = async (input: LoginInput) => {
     return useMutation((input:LoginInput) => login(input), {
       onSuccess: (data) => {
         notifications.show({
-          title: 'Success',
-          message: 'Login successfully',
+          title: 'Đăng nhập thành Công',
+          message: `${data.message}`,
           color: 'green',
           autoClose: 5000,
         })
@@ -29,7 +29,7 @@ const login = async (input: LoginInput) => {
       },
       onError: (error) => {
         notifications.show({
-            title: 'Error',
+            title: 'Đăng nhập xảy ra lỗi',
             message: String(error),
             color: 'red',
             autoClose: 5000,
