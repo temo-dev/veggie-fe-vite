@@ -220,6 +220,7 @@ const ExtensionsPage = () => {
   const {currencies} = useAppSelector((state) => state.currency.currency)
   const {tags} = useAppSelector((state) => state.tag.tag)
   const {attPackages} = useAppSelector((state) => state.attpackage.attPackage)
+  const {categories} = useAppSelector((state) => state.category.category)
     const openModal = (el:any) => {
       modals.open({
         title: (
@@ -241,7 +242,7 @@ const ExtensionsPage = () => {
         name:"nhóm sản phẩm",
         description:"nhóm sản phẩm",
         icon: <IconCategoryPlus style={iconStyle}/>,
-        table: <TableCategory data={elements}/>
+        table: <TableCategory data={categories}/>
       },
       {
         id:2,

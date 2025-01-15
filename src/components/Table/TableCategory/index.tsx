@@ -1,3 +1,4 @@
+import { useDeleteCategoryById } from '@/services/react-query/category/use-delete-category';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 
@@ -6,23 +7,29 @@ interface PropsInterface{
 }
 
 const TableCategory = (prop:PropsInterface) => {
+  const {mutate:deleteCategory} = useDeleteCategoryById()
   const {data} = prop
-  const rows = data?.map((element,key) => (
+  //logic
+  const handleDeleteCategory = (id:string) => {
+    deleteCategory(id)
+  }
+  //component
+  const rows = data?.map((el,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>
-        <Avatar src={element.image_url ? element.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green"/>
+        <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green"/>
       </Table.Td>
-      <Table.Td>{element.category_name_vn}</Table.Td>
-      <Table.Td>{element.category_name_de}</Table.Td>
-      <Table.Td>{element.category_name_th}</Table.Td>
-      <Table.Td>{element.category_name_eng}</Table.Td>
+      <Table.Td>{el.category_name_vn}</Table.Td>
+      <Table.Td>{el.category_name_de}</Table.Td>
+      <Table.Td>{el.category_name_th}</Table.Td>
+      <Table.Td>{el.category_name_eng}</Table.Td>
       <Table.Td>
         <Group>
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa">
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteCategory(el.category_id)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>

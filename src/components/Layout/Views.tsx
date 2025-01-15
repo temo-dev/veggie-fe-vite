@@ -15,6 +15,8 @@ import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
 import usePackage from '@/utils/hooks/useAttPackages';
 import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
 import useAttPackage from '@/utils/hooks/useAttPackages';
+import { useFindAllCategories } from '@/services/react-query/category/use-find-all-category';
+import useCategory from '@/utils/hooks/useCategory';
 
 interface ViewsProps {
   pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -74,20 +76,25 @@ const AllRoutes = (props: AllRoutesProps) => {
 }
 
 const Views = (props: ViewsProps) => {
+  //hooks
   const {updateCurrencies} = useCurrency()
   const {updateTags} = useTag()
   const {updateAttPackages} = useAttPackage()
+  const {updateCategories}= useCategory()
+  //call api
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
   const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
   const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
-  //call initial api
+  const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
+  //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories){
       updateCurrencies(currencies)
       updateTags(tags)
       updateAttPackages(packages)
+      updateCategories(cateroies)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories])
 
   return (
     <Suspense fallback={
