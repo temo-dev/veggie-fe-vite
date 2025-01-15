@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SLICE_BASE_NAME } from "./constants";
-import { CurrencyType } from "@/services/react-query/currency/use-find-all-currency";
 import { TagType } from "@/services/react-query/tag/use-find-all-tag";
 
 

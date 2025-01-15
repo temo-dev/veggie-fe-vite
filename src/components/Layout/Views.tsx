@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import appConfig from '@/configs/app.config'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { setAllCurrencies, setIsUpdate, useAppDispatch, useAppSelector } from '@/store'
+import { useAppSelector } from '@/store'
 import {protectedRoutes, publicRoutes} from "@/configs/routes.config";
 import ProtectedRoute from "@/route/ProtectedRoute";
 import AppRoute from "@/route/AppRoute";
@@ -12,6 +12,9 @@ import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-a
 import useCurrency from '@/utils/hooks/useCurrency';
 import useTag from '@/utils/hooks/useTag';
 import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
+import usePackage from '@/utils/hooks/useAttPackages';
+import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
+import useAttPackage from '@/utils/hooks/useAttPackages';
 
 interface ViewsProps {
   pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -73,15 +76,18 @@ const AllRoutes = (props: AllRoutesProps) => {
 const Views = (props: ViewsProps) => {
   const {updateCurrencies} = useCurrency()
   const {updateTags} = useTag()
+  const {updateAttPackages} = useAttPackage()
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
-  const {data:tags, isSuccess:isfindAllTags} = useFindAllTag()
+  const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
+  const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
   //call initial api
   useEffect(() => {
-    if (isFindAllCurrencies || isfindAllTags){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages){
       updateCurrencies(currencies)
       updateTags(tags)
+      updateAttPackages(packages)
     }
-  },[isFindAllCurrencies,isfindAllTags])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages])
 
   return (
     <Suspense fallback={

@@ -5,6 +5,7 @@ import locale, {LocaleState} from './slices/locale/localeSlice'
 import currency,{ CurrencyAllState } from './slices/currency'
 import theme, { ThemeState } from './slices/theme/themeSlice'
 import tag, { TagAllState } from './slices/tag'
+import attpackage,{ PackageAllState } from './slices/att-package'
 
 export type RootState = {
   auth: AuthState
@@ -13,6 +14,7 @@ export type RootState = {
   theme: ThemeState
   currency: CurrencyAllState
   tag :TagAllState
+  attpackage: PackageAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -26,7 +28,8 @@ const staticReducers = {
   locale,
   theme,
   currency,
-  tag
+  tag,
+  attpackage
 }
 
 const rootReducer =

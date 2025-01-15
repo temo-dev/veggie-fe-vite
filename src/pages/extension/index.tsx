@@ -1,6 +1,6 @@
 import { Tabs, Grid, Button, rem,Container, Title, Avatar, Group } from '@mantine/core'
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart'
-import { IconCategory2, IconCategoryPlus, IconCoinBitcoin, IconPackage, IconPlus, IconStar, IconTagStarred } from '@tabler/icons-react'
+import { IconCategory2, IconCategoryPlus, IconCoinBitcoin, IconPackage, IconPlus, IconTagStarred } from '@tabler/icons-react'
 import TableCategory from '@/components/Table/TableCategory'
 import TableSubCategory from '@/components/Table/TableSubCategory'
 import TableTag from '@/components/Table/TableTag'
@@ -219,6 +219,7 @@ const ExtensionsPage = () => {
   const { ref, width } = useElementSize();
   const {currencies} = useAppSelector((state) => state.currency.currency)
   const {tags} = useAppSelector((state) => state.tag.tag)
+  const {attPackages} = useAppSelector((state) => state.attpackage.attPackage)
     const openModal = (el:any) => {
       modals.open({
         title: (
@@ -268,7 +269,7 @@ const ExtensionsPage = () => {
         name:"package sản phẩm",
         description:"package sản phẩm",
         icon: <IconPackage style={iconStyle}/>,
-        table: <TablePackage data={dataPackage}/>
+        table: <TablePackage data={attPackages}/>
       },
     ]
 
