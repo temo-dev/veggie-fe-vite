@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 import appConfig from '@/configs/app.config'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAppSelector } from '@/store'
@@ -8,15 +8,6 @@ import AppRoute from "@/route/AppRoute";
 import AuthorityGuard from "@/route/AuthorityGuard";
 import PublicRoute from "@/route/PublicRoute";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
-import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-all-currency';
-import useCurrency from '@/utils/hooks/useCurrency';
-import useTag from '@/utils/hooks/useTag';
-import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
-import usePackage from '@/utils/hooks/useAttPackages';
-import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
-import useAttPackage from '@/utils/hooks/useAttPackages';
-import { useFindAllCategories } from '@/services/react-query/category/use-find-all-category';
-import useCategory from '@/utils/hooks/useCategory';
 
 interface ViewsProps {
   pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -76,26 +67,6 @@ const AllRoutes = (props: AllRoutesProps) => {
 }
 
 const Views = (props: ViewsProps) => {
-  //hooks
-  const {updateCurrencies} = useCurrency()
-  const {updateTags} = useTag()
-  const {updateAttPackages} = useAttPackage()
-  const {updateCategories}= useCategory()
-  //call api
-  const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
-  const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
-  const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
-  const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
-  //update store
-  useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories){
-      updateCurrencies(currencies)
-      updateTags(tags)
-      updateAttPackages(packages)
-      updateCategories(cateroies)
-    }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories])
-
   return (
     <Suspense fallback={
       <LoadingScreen/>

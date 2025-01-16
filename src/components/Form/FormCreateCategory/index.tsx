@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextInput } from '@mantine/core'
+import { Box, Button, Stack, TextInput,Text } from '@mantine/core'
 import * as yup from 'yup';
 import { useForm,yupResolver } from '@mantine/form';
 import classes from './index.module.css'
@@ -6,6 +6,7 @@ import { IconPlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
 import { CreateCategoryInput, useCreateNewCategory } from '@/services/react-query/category/use-create-category';
+import { DropZone } from '@/components/DropZone';
 
 
 const FormCreateCategory = () => {
@@ -49,6 +50,7 @@ const FormCreateCategory = () => {
           <TextInput label="*Tên Tiếng Anh" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_eng')} name={'category_name_eng'}/>
           <TextInput label="*Tên Tiếng Đức" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_de')} name={'category_name_de'}/>
           <TextInput label="Tên Tiếng Thái" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_th')} name={'category_name_th'}/>
+          <DropZone/>
         </Stack>
         <Button loading={loading} disabled={loading} type="submit" fullWidth className='mt-2' leftSection={<IconPlus style={{ width: '90%', height: '90%' }} stroke={2}/>}>
             Tạo Nhóm Sản Phẩm Mới

@@ -11,6 +11,14 @@ import useAuth from "@/utils/hooks/useAuth";
 import CollapsedSideBarUserPopOver from "@/components/UserPopOver/CollapsedSideBarUserPopOver";
 import AuthorityCheck from '@/route/AuthorityCheck';
 import {useAppSelector} from "@/store";
+import useCurrency from '@/utils/hooks/useCurrency';
+import useTag from '@/utils/hooks/useTag';
+import useAttPackage from '@/utils/hooks/useAttPackages';
+import useCategory from '@/utils/hooks/useCategory';
+import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-all-currency';
+import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
+import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
+import { useFindAllCategories } from '@/services/react-query/category/use-find-all-category';
 
 function CollapsedSideBarBottomContent() {
   const {signOut} = useAuth()
@@ -75,6 +83,25 @@ function CollapsedSideBarContent() {
 }
 
 export default function CollapsedSideBar() {
+  //hooks
+  const {updateCurrencies} = useCurrency()
+  const {updateTags} = useTag()
+  const {updateAttPackages} = useAttPackage()
+  const {updateCategories}= useCategory()
+  //call api
+  const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
+  const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
+  const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
+  const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
+  //update store
+  useEffect(() => {
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories){
+      updateCurrencies(currencies)
+      updateTags(tags)
+      updateAttPackages(packages)
+      updateCategories(cateroies)
+    }
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories])
   return (
     <>
       <div style={{
