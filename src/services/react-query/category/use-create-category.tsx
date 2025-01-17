@@ -9,10 +9,11 @@ export interface CreateCategoryInput {
   category_name_eng?: string,
   category_name_th?: string,
   category_name_vn?: string,
+  image_url?: string
 }
 
 const createNewCategory = async (input: CreateCategoryInput) => {
-    const res = await http.post(API_ENDPOINTS.CATEGORY, input);
+    const res = await http.post(API_ENDPOINTS.CATEGORY,input);
     return res.data;
 }
 

@@ -18,7 +18,7 @@ export default function App() {
    */
   return (
     <>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <Provider store={store}>
         <MantineProvider theme={theme}>
           <Notifications position="bottom-right"/>
