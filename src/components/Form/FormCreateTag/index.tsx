@@ -44,24 +44,24 @@ const FormCreateTag = () => {
   const handleSubmit = async (value:CreateTagInput) => {
     setLoading(true)
     try {
-          if(fileInput){
-          await uploadFile.mutateAsync(fileInput)
-          .then((res) => {
-            let url = res.url.split("?")[0]
-                createNewTag({...value, image_url:url})
-          })
-        }else{
-          createNewTag(value)
-        }
-        } catch (error) {
-          notifications.show({
-              title: 'Tạo Tag sản phẩm xảy ra lỗi',
-              message: String(error),
-              color: 'red',
-              autoClose: 5000,
-          })
-          setLoading(false)
-        }
+      if(fileInput){
+        await uploadFile.mutateAsync(fileInput)
+        .then((res) => {
+          let url = res.url.split("?")[0]
+              createNewTag({...value, image_url:url})
+        })
+      }else{
+        createNewTag(value)
+      }
+    } catch (error) {
+        notifications.show({
+            title: 'Tạo Tag sản phẩm xảy ra lỗi',
+            message: String(error),
+            color: 'red',
+            autoClose: 5000,
+        })
+        setLoading(false)
+    }
   }
   const dropFile = (file:File) => {
     setFileInput(file)
