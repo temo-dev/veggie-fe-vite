@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
 import { CreateCategoryInput, useCreateNewCategory } from '@/services/react-query/category/use-create-category';
 import { DropZoneImage } from '@/components/DropZone';
-import { useGetLinkFileToS3 } from '@/services/s3-aws';
+import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { notifications } from '@mantine/notifications';
 
 
@@ -21,6 +21,7 @@ const FormCreateCategory = () => {
     if(status === 'success' || status === 'error'){
       setLoading(false)
       modals.closeAll()
+      setFileInput(null)
     }
   },[status])
   //form

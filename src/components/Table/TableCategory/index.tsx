@@ -1,17 +1,32 @@
 import { useDeleteCategoryById } from '@/services/react-query/category/use-delete-category';
+import { CategoryType } from '@/services/react-query/category/use-find-all-category';
+import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 
 interface PropsInterface{
-  data: any[]
+  data: CategoryType[]
 }
 
 const TableCategory = (prop:PropsInterface) => {
-  const {mutate:deleteCategory} = useDeleteCategoryById()
   const {data} = prop
+  const {mutate:deleteCategory, status} = useDeleteCategoryById()
+  const {mutate: deleteFileS3} = useDeleteFileOnS3()
+    const [nameFileS3deleted, setNameFileS3deleted] = useState<string | null>(null)
+
+  useEffect(() => {
+      if (status === 'success' && nameFileS3deleted) {
+        deleteFileS3(nameFileS3deleted)
+      }else if(status === 'error'){
+        setNameFileS3deleted(null)
+      }
+    }, [status])
   //logic
-  const handleDeleteCategory = (id:string) => {
-    deleteCategory(id)
+  const handleDeleteCategory = (el:CategoryType) => {
+    let nameImage = el.image_url.split('amazonaws.com/')[1]
+    setNameFileS3deleted(nameImage)
+    deleteCategory(el.category_id)
   }
   //component
   const rows = data?.map((el,key) => (
@@ -29,7 +44,7 @@ const TableCategory = (prop:PropsInterface) => {
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteCategory(el.category_id)}>
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteCategory(el)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>

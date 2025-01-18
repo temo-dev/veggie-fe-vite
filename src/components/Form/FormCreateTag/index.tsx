@@ -6,7 +6,7 @@ import { IconPlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
 import { CreateTagInput, useCreateNewTag } from '@/services/react-query/tag/use-create-tag';
-import { useGetLinkFileToS3 } from '@/services/s3-aws';
+import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { DropZoneImage } from '@/components/DropZone';
 import { notifications } from '@mantine/notifications';
 
@@ -21,6 +21,7 @@ const FormCreateTag = () => {
     if(status === 'success' || status === 'error'){
       setLoading(false)
       modals.closeAll()
+      setFileInput(null)
     }
   },[status])
   
@@ -41,7 +42,6 @@ const FormCreateTag = () => {
       validate: yupResolver(schema),
     });
   const handleSubmit = async (value:CreateTagInput) => {
-    createNewTag(value)
     setLoading(true)
     try {
           if(fileInput){
