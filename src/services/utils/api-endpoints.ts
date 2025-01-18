@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
     TAG:"/v1/tags/",
     PACKAGE:"/v1/attitude-product-package/",
     CATEGORY:"/v1/categories/",
+    SUB_CATEGORY:"/v1/sub-categories/",
     S3_UPLOAD:'/v1/s3/key',
     S3:'/v1/s3/',
   };

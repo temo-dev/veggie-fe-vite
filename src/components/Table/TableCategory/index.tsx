@@ -13,7 +13,7 @@ const TableCategory = (prop:PropsInterface) => {
   const {data} = prop
   const {mutate:deleteCategory, status} = useDeleteCategoryById()
   const {mutate: deleteFileS3} = useDeleteFileOnS3()
-    const [nameFileS3deleted, setNameFileS3deleted] = useState<string | null>(null)
+  const [nameFileS3deleted, setNameFileS3deleted] = useState<string | null>(null)
 
   useEffect(() => {
       if (status === 'success' && nameFileS3deleted) {

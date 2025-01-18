@@ -16,172 +16,6 @@ import FormCreatePackage from '@/components/Form/FormCreatePackage'
 import { useAppSelector } from '@/store'
 
 //mock data
-const elements = [
-  {  
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    category_name_vn: "veggie-1",
-    category_name_eng: "veggie-1",
-    category_name_de: "veggie-1",
-    category_name_th: "veggie-1",
-    image_url: ""
-  },
-  {  
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    category_name_vn: "veggie-2",
-    category_name_eng: "veggie-2",
-    category_name_de: "veggie-2",
-    category_name_th: "veggie-2",
-    image_url: ""
-  },
-  {  
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    category_name_vn: "veggie-3",
-    category_name_eng: "veggie-3",
-    category_name_de: "veggie-3",
-    category_name_th: "veggie-3",
-    image_url: ""
-  },
-  {  
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    category_name_vn: "veggie-4",
-    category_name_eng: "veggie-4",
-    category_name_de: "veggie-4",
-    category_name_th: "veggie-4",
-    image_url: ""
-  },
-];
-const dataSub = [
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  },
-  {
-    sub_category_id: "a76f4076-4853-4864-bb9c-8f68163609ee",
-    sub_category_name_vn: "dry food",
-    sub_category_name_eng: "dry food",
-    sub_category_name_de: "dry food",
-    sub_category_name_th: "dry food",
-    category_id: "ef075b9e-1c99-49c6-84b0-daba146de080",
-    image_url: "",
-    dph: 21
-  }
-]
-
-const dataPackage = [
-  {
-    attitude_product_package_code: "string",
-    package_cubic: 0,
-    package_height: 0,
-    package_length: "string",
-    package_width: 0,
-  }
-]
 const data1 = [
   { value: 200, name: 'Dry Foods' },
   { value: 50, name: 'VEG Products' },
@@ -196,7 +30,6 @@ const data2 = [
   { value: 40, name: 'New'},
   { value: 11, name: 'Sale Off' }
 ];
-
 const RenderModal = (props:any) => {
   const {el} = props
   switch (el.id) {
@@ -221,6 +54,7 @@ const ExtensionsPage = () => {
   const {tags} = useAppSelector((state) => state.tag.tag)
   const {attPackages} = useAppSelector((state) => state.attpackage.attPackage)
   const {categories} = useAppSelector((state) => state.category.category)
+  const {subCategories}= useAppSelector((state) => state.subCategory.subCategory)
     const openModal = (el:any) => {
       modals.open({
         title: (
@@ -249,7 +83,7 @@ const ExtensionsPage = () => {
         name:"danh mục",
         description:"danh mục sản phẩm",
         icon: <IconCategory2 style={iconStyle}/>,
-        table: <TableSubCategory data={dataSub}/>
+        table: <TableSubCategory data={subCategories}/>
       },
       {
         id:3,

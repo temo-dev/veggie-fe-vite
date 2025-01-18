@@ -19,6 +19,8 @@ import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-a
 import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
 import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
 import { useFindAllCategories } from '@/services/react-query/category/use-find-all-category';
+import { useFindAllSubCategories } from '@/services/react-query/subCategory/use-find-subCategory';
+import useSubCategory from '@/utils/hooks/useSubCategory';
 
 function CollapsedSideBarBottomContent() {
   const {signOut} = useAuth()
@@ -88,20 +90,23 @@ export default function CollapsedSideBar() {
   const {updateTags} = useTag()
   const {updateAttPackages} = useAttPackage()
   const {updateCategories}= useCategory()
+  const {updateSubCategories} = useSubCategory()
   //call api
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
   const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
   const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
   const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
+  const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
   //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories){
       updateCurrencies(currencies)
       updateTags(tags)
       updateAttPackages(packages)
       updateCategories(cateroies)
+      updateSubCategories(sucCategories)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories])
   return (
     <>
       <div style={{

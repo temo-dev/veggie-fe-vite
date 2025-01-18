@@ -7,6 +7,7 @@ import theme, { ThemeState } from './slices/theme/themeSlice'
 import tag, { TagAllState } from './slices/tag'
 import attpackage,{ PackageAllState } from './slices/att-package'
 import category,{ CategoryAllState } from './slices/category'
+import subCategory,{ SubCategoryAllState } from './slices/subCategory'
 
 export type RootState = {
   auth: AuthState
@@ -17,6 +18,7 @@ export type RootState = {
   tag :TagAllState
   attpackage: PackageAllState
   category: CategoryAllState
+  subCategory: SubCategoryAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -32,7 +34,8 @@ const staticReducers = {
   currency,
   tag,
   attpackage,
-  category
+  category,
+  subCategory
 }
 
 const rootReducer =
