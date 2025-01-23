@@ -38,7 +38,7 @@ const TableSubCategory = (prop:PropsInterface) => {
       <Table.Td>{el.sub_category_name_de}</Table.Td>
       <Table.Td>{el.sub_category_name_th}</Table.Td>
       <Table.Td>{el.sub_category_name_eng}</Table.Td>
-      <Table.Td>{el.category_id}</Table.Td>
+      <Table.Td>{el.category_name_vn}</Table.Td>
       <Table.Td>{`${el.dph}%`}</Table.Td>
       <Table.Td>
         <Group>

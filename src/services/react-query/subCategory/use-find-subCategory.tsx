@@ -9,6 +9,7 @@ export interface SubCategoryType {
     sub_category_name_de: string,
     sub_category_name_th: string,
     category_id: string,
+    category_name_vn: string,
     dph: number,
     image_url: string
 }
