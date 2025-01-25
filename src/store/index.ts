@@ -9,6 +9,7 @@ export * from './slices/att-package'
 export * from './slices/category'
 export * from './slices/subCategory'
 export * from './slices/locale/localeSlice'
+export * from './slices/brand/brandSlice'
 export * from './rootReducer'
 export * from './hook'
 export default store

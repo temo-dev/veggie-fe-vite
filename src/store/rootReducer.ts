@@ -8,6 +8,7 @@ import tag, { TagAllState } from './slices/tag'
 import attpackage,{ PackageAllState } from './slices/att-package'
 import category,{ CategoryAllState } from './slices/category'
 import subCategory,{ SubCategoryAllState } from './slices/subCategory'
+import brand,{ BrandAllState } from './slices/brand'
 
 export type RootState = {
   auth: AuthState
@@ -19,6 +20,7 @@ export type RootState = {
   attpackage: PackageAllState
   category: CategoryAllState
   subCategory: SubCategoryAllState
+  brand: BrandAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -35,7 +37,8 @@ const staticReducers = {
   tag,
   attpackage,
   category,
-  subCategory
+  subCategory,
+  brand,
 }
 
 const rootReducer =

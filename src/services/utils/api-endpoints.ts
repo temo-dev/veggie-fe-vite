@@ -7,4 +7,5 @@ export const API_ENDPOINTS = {
     SUB_CATEGORY:"/v1/sub-categories/",
     S3_UPLOAD:'/v1/s3/key',
     S3:'/v1/s3/',
+    BRAND:'/v1/brands/',
   };

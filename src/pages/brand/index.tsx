@@ -1,5 +1,5 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input } from '@mantine/core'
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Divider } from '@mantine/core'
 import { IconBrandVinted, IconPlus, IconSearch } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
@@ -7,6 +7,7 @@ import { useElementSize } from '@mantine/hooks';
 import TableBrand from '@/components/Table/TableBrand';
 import { modals } from '@mantine/modals';
 import FormCreateBrand from '@/components/Form/FormCreateBrand';
+import { useAppSelector } from '@/store';
 
 //mock data
 const data1 = [
@@ -17,71 +18,9 @@ const data1 = [
   { value: 111, name: 'Czech Farms' }
 ];
 
-const data2 = [
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-]
-
 const BrandPage = () => {
   const { ref, width } = useElementSize();
+  const {brands} = useAppSelector((state)=>state.brand.brand)
    const openModal = (el:any) => {
         modals.open({
           title: (
@@ -120,9 +59,11 @@ const BrandPage = () => {
             <Title order={3} style={{textAlign:"center"}}>
               Danh Sách Thương Hiệu
             </Title>
-            <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm sản phẩm' className="shadow w-1/4"/>
+            <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm kiếm thương hiệu' className="shadow w-1/4"/>
           </Group>
-          <TableBrand data={data2}/>
+          <div className='shadow bg-gray-100'>
+            <TableBrand data={brands}/>
+          </div>
         </Card>
       </Container>
     </Stack>

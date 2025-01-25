@@ -5,14 +5,13 @@ import classes from './index.module.css'
 import { IconPlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
-import { CreateCategoryInput, useCreateNewCategory } from '@/services/react-query/category/use-create-category';
 import { DropZoneImage } from '@/components/DropZone';
 import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { notifications } from '@mantine/notifications';
-
+import { CreateBrandInput, useCreateNewBrand } from '@/services/react-query/brand/use-create-brand';
 
 const FormCreateBrand = () => {
-  const {mutate:createNewCategory, status} = useCreateNewCategory()
+  const {mutate:createNewBrand, status} = useCreateNewBrand()
   const [loading, setLoading] = useState<boolean>(false)
   const [fileInput, setFileInput] = useState<File | null>(null)
   const uploadFile = useGetLinkFileToS3();
@@ -31,19 +30,23 @@ const FormCreateBrand = () => {
         .required('Hãy điền tên thương hiệu'),
     });
   const form = useForm({
+      initialValues:{
+        brand_name:'',
+        description:'',
+      },
       validate: yupResolver(schema),
     });
-  const handleSubmit = async (value:CreateCategoryInput) => {
+  const handleSubmit = async (value:CreateBrandInput) => {
     setLoading(true)
     try {
       if(fileInput){
       await uploadFile.mutateAsync(fileInput)
       .then((res) => {
         let url = res.url.split("?")[0]
-        createNewCategory({...value, image_url:url})
+        createNewBrand({...value, image_url:url})
       })
     }else{
-      createNewCategory(value)
+      createNewBrand(value)
     }
     } catch (error) {
       notifications.show({

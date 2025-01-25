@@ -1,16 +1,34 @@
+import { useDeleteBrandById } from '@/services/react-query/brand/use-delete-brand';
+import { BrandType } from '@/services/react-query/brand/use-find-all-brand';
+import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core'
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
 
 interface PropsInterface{
-  data: any[]
+  data: BrandType[]
 }
 
 const TableBrand = (prop:PropsInterface) => {
   const {data} = prop
   const navigate = useNavigate();
+  const {mutate:deleteBrandById, status} = useDeleteBrandById()
+    const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
+    const {mutate: deleteFileS3} = useDeleteFileOnS3()
+  useEffect(() => {
+    if (status === 'success' && nameFileS3deleted) {
+      deleteFileS3(nameFileS3deleted)
+    }else if(status === 'error'){
+      setNameFileS3deleted(null)
+    }
+  }, [status])
+  const handleDeleteBrand = (el:BrandType) => {
+    let nameImage = el.image_url.split('amazonaws.com/')[1]
+    setNameFileS3deleted(nameImage)
+    deleteBrandById(el.brand_id)
+  }
   //component
   const rows = data?.map((el,key) => (
     <Table.Tr key={key}>
@@ -18,14 +36,16 @@ const TableBrand = (prop:PropsInterface) => {
       <Table.Td>
         <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green"/>
       </Table.Td>
-      <Table.Td>{
+      <Table.Td>
+      {
         <Link to={"/brands/brand-detail"} onClick={(event) => {
               event.preventDefault();
               navigate("/brands/brand-detail");
             }}>
               {el.brand_name}
-            </Link>
-        }</Table.Td>
+        </Link>
+      }
+      </Table.Td>
       <Table.Td>{el.description}</Table.Td>
       <Table.Td>{"null"}</Table.Td>
       <Table.Td>{"null"}</Table.Td>
@@ -34,7 +54,7 @@ const TableBrand = (prop:PropsInterface) => {
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa">
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteBrand(el)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>
@@ -43,9 +63,9 @@ const TableBrand = (prop:PropsInterface) => {
   ));
   return (
     <Table.ScrollContainer minWidth={500} type='native' h={400}>
-      <Table striped highlightOnHover withTableBorder withColumnBorders stickyHeader>
+      <Table striped withTableBorder withColumnBorders stickyHeader>
         <Table.Thead>
-          <Table.Tr>
+          <Table.Tr className='bg-green-600 h-10 text-white'>
             <Table.Th>Thứ Tự</Table.Th>
             <Table.Th>Hình Ảnh</Table.Th>
             <Table.Th>Tên Thương Hiệu</Table.Th>
