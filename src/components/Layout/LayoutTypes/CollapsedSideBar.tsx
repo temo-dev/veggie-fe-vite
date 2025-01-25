@@ -65,7 +65,6 @@ function CollapsedSideBarContent() {
         <item.icon className={classes.linkIcon} stroke={1.5}/>
       </Link>
       </Tooltip>
-      
     </AuthorityCheck>
   ));
 
@@ -119,7 +118,7 @@ export default function CollapsedSideBar() {
           padding: '2rem',
           backgroundColor: '#ffffff',
           flex: 1,
-          overflow: 'hidden',
+          overflow: 'scroll',
           display: 'flex',
           flexDirection: 'column',
           height: '100vh',
