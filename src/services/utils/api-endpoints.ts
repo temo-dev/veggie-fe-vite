@@ -9,4 +9,5 @@ export const API_ENDPOINTS = {
     S3:'/v1/s3/',
     BRAND:'/v1/brands/',
     SUPPLIER:'/v1/supplier/',
+    PRODUCT:'/v1/products/',
   };

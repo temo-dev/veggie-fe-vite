@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import React from 'react';
 

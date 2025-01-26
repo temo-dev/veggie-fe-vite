@@ -88,34 +88,6 @@ function CollapsedSideBarContent() {
 }
 
 export default function CollapsedSideBar() {
-  //hooks
-  const {updateCurrencies} = useCurrency()
-  const {updateTags} = useTag()
-  const {updateAttPackages} = useAttPackage()
-  const {updateCategories}= useCategory()
-  const {updateSubCategories} = useSubCategory()
-  const {updateBrands} = useBrand()
-  const {updateSuppliers} = useSupplier()
-  //call api
-  const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
-  const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
-  const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
-  const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
-  const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
-  const {data:brands, isSuccess:isFindAllBrands} = useFindAllBrands()
-  const {data:suppliers,isSuccess:isFindAllSuppliers} = useFindAllSuppliers()
-  //update store
-  useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
-      updateCurrencies(currencies)
-      updateTags(tags)
-      updateAttPackages(packages)
-      updateCategories(cateroies)
-      updateSubCategories(sucCategories)
-      updateBrands(brands)
-      updateSuppliers(suppliers)
-    }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
   return (
     <>
       <div style={{

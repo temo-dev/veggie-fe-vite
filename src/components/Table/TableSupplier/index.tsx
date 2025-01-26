@@ -1,5 +1,4 @@
-import { useDeleteBrandById } from '@/services/react-query/brand/use-delete-brand';
-import { BrandType } from '@/services/react-query/brand/use-find-all-brand';
+
 import { useDeleteSupplierById } from '@/services/react-query/supplier/use-delete-supplier';
 import { SupplierType } from '@/services/react-query/supplier/use-find-all-supplier';
 import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
@@ -19,6 +18,7 @@ const TableSupplier = (prop: PropsInterface) => {
   const { mutate: deleteSupplierById, status } = useDeleteSupplierById();
   const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null);
   const { mutate: deleteFileS3 } = useDeleteFileOnS3();
+  //useEffect
   useEffect(() => {
     if (status === 'success' && nameFileS3deleted) {
       deleteFileS3(nameFileS3deleted);
@@ -26,6 +26,7 @@ const TableSupplier = (prop: PropsInterface) => {
       setNameFileS3deleted(null);
     }
   }, [status]);
+  //handle
   const handleDeleteBrand = (el: SupplierType) => {
     let nameImage = el.image_url.split('amazonaws.com/')[1];
     setNameFileS3deleted(nameImage);

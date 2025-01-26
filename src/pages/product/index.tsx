@@ -1,14 +1,12 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, GridCol, InputWrapper, Input, Tabs } from '@mantine/core'
-import { IconBrandVinted, IconCategoryPlus, IconPlus, IconSearch } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Tabs } from '@mantine/core'
+import { IconBrandVinted, IconCategoryPlus, IconPlus } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
-import TableBrand from '@/components/Table/TableBrand';
 import { modals } from '@mantine/modals';
-import FormCreateBrand from '@/components/Form/FormCreateBrand';
-import TableSupplier from '@/components/Table/TableSupplier';
 import TableProduct from '@/components/Table/TableProduct';
+import FormCreateProduct from '@/components/Form/FormCreateProduct';
 
 //mock data
 const data1 = [
@@ -30,7 +28,7 @@ const ProductPage = () => {
       table: <TableProduct data={[]} minWidth={width}/>
     },
   ]
-   const openModal = (el:any) => {
+  const openModal = (el:any) => {
         modals.open({
           title: (
             <Group>
@@ -40,17 +38,18 @@ const ProductPage = () => {
               <Title order={5} >{`TẠO ${el.name.toUpperCase()}`}</Title>
             </Group>
           ),
-          children: <FormCreateBrand/>,
+          children: <FormCreateProduct/>,
+          size:"auto",
         });
       }
   return (
     <div ref={ref}>
       <Stack>
       <Group>
-        <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
+        <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Sản Phẩm",icon:<IconBrandVinted size={20}/>})}>
           Thêm Sản Phẩm
         </Button>
-        <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
+        <Button disabled variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
           Import Exel
         </Button>
       </Group>

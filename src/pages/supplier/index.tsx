@@ -47,10 +47,10 @@ const SupplierPage = () => {
     <div ref={ref}>
       <Stack>
       <Group>
-        <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Nhà Cung Cấp",icon:<IconBuildingFactory2 size={20}/>})}>
+        <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Nhà Cung Cấp",icon:<IconBuildingFactory2 size={20}/>})}>
           Thêm Nhà Cung Cấp
         </Button>
-        <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
+        <Button disabled variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
           Import Exel
         </Button>
       </Group>

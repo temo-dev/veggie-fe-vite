@@ -17,7 +17,7 @@ const FormCreateSubCategory = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [fileInput, setFileInput] = useState<File | null>(null)
   const {categories} = useAppSelector(state => state.category.category)
-  let dataSelectCaterogies = categories?.map((el) => {
+  const dataSelectCaterogies = categories?.map((el) => {
     return {
       value: el.category_id,
       label: el.category_name_vn

@@ -10,6 +10,7 @@ import category,{ CategoryAllState } from './slices/category'
 import subCategory,{ SubCategoryAllState } from './slices/subCategory'
 import brand,{ BrandAllState } from './slices/brand'
 import supplier,{ SupplierAllState } from './slices/supplier'
+import product,{ ProductAllState } from './slices/product'
 
 export type RootState = {
   auth: AuthState
@@ -23,6 +24,7 @@ export type RootState = {
   subCategory: SubCategoryAllState
   brand: BrandAllState
   supplier: SupplierAllState
+  product: ProductAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -41,7 +43,8 @@ const staticReducers = {
   category,
   subCategory,
   brand,
-  supplier
+  supplier,
+  product
 }
 
 const rootReducer =

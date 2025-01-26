@@ -91,7 +91,7 @@ const BrandDetailPage = () => {
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
         <Group>
-          <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />}>
+          <Button variant="default" radius="md" leftSection={<IconPlus size={20} />}>
             Thêm Sản Phẩm
           </Button>
         </Group>
