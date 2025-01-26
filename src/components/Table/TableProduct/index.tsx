@@ -5,11 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 interface PropsInterface{
-  data: any[]
+  data: any[],
+  minWidth: number
 }
 
 const TableProduct = (prop:PropsInterface) => {
-  const {data} = prop
+  const {data,minWidth} = prop
   const navigate = useNavigate();
   //component
   const rows = data?.map((el,key) => (
@@ -19,9 +20,9 @@ const TableProduct = (prop:PropsInterface) => {
         <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green"/>
       </Table.Td>
       <Table.Td>{
-            <Link to={"/brands/brand-detail"} onClick={(event) => {
+            <Link to={"/products/product-detail"} onClick={(event) => {
                 event.preventDefault();
-                navigate("/brands/brand-detail");
+                navigate("/products/product-detail");
                 }}>
                 {el.product_name}
             </Link>
@@ -42,9 +43,9 @@ const TableProduct = (prop:PropsInterface) => {
     </Table.Tr>
   ));
   return (
-    <Table.ScrollContainer minWidth={500} type='native' h={400}>
+    <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
       <Table striped highlightOnHover withTableBorder withColumnBorders stickyHeader>
-        <Table.Thead>
+        <Table.Thead className="bg-green-600 h-10 text-white">
           <Table.Tr>
             <Table.Th>Thứ Tự</Table.Th>
             <Table.Th>Hình Ảnh</Table.Th>

@@ -1,12 +1,14 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, GridCol, InputWrapper, Input } from '@mantine/core'
-import { IconBrandVinted, IconPlus, IconSearch } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, GridCol, InputWrapper, Input, Tabs } from '@mantine/core'
+import { IconBrandVinted, IconCategoryPlus, IconPlus, IconSearch } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
 import TableBrand from '@/components/Table/TableBrand';
 import { modals } from '@mantine/modals';
 import FormCreateBrand from '@/components/Form/FormCreateBrand';
+import TableSupplier from '@/components/Table/TableSupplier';
+import TableProduct from '@/components/Table/TableProduct';
 
 //mock data
 const data1 = [
@@ -17,71 +19,17 @@ const data1 = [
   { value: 111, name: 'Czech Farms' }
 ];
 
-const data2 = [
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-]
-
 const ProductPage = () => {
   const { ref, width } = useElementSize();
+  const dataTab = [
+    {
+      id:1,
+      name:"Sản Phẩm",
+      description:"Danh sách sản phẩm",
+      icon: <IconCategoryPlus size={20}/>,
+      table: <TableProduct data={[]} minWidth={width}/>
+    },
+  ]
    const openModal = (el:any) => {
         modals.open({
           title: (
@@ -115,16 +63,27 @@ const ProductPage = () => {
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>
-        <Card shadow="xs" padding="md" radius="md">
-          <Group justify="space-between" mb="md">
-            <Title order={3} style={{textAlign:"center"}}>
-              Danh Sách Sản Phẩm
-            </Title>
-            <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm sản phẩm' className="shadow w-1/4"/>
-          </Group>
-          {/* <TableBrand data={data2}/> */}
-        </Card>
-      </Container>
+              <Card shadow="xs"radius="md">
+                <Tabs defaultValue={`${dataTab[0].name}`}>
+                  <Tabs.List>
+                    {
+                      dataTab.map((tab)=>(
+                        <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
+                        {tab.name.toUpperCase()}
+                      </Tabs.Tab>
+                      ))
+                    }
+                  </Tabs.List>
+                    {
+                      dataTab.map((tab)=>(
+                        <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                          {tab.table}
+                        </Tabs.Panel>
+                      ))
+                    }
+                  </Tabs>
+              </Card>
+            </Container>
     </Stack>
     </div>
   )

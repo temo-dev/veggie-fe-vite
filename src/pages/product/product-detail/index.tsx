@@ -47,19 +47,18 @@ const data1 = [
   { value: 111, name: 'Czech Farms' },
 ];
 
-const dataTab = [
-  {
-    id: 1,
-    name: 'Danh Sách Sản Phẩm',
-    description: 'Danh sách sản phẩm',
-    icon: <IconSalad />,
-    table: <TableProduct data={products} />,
-  },
-];
-
-const BrandDetailPage = () => {
+const ProductDetailPage = () => {
   const { ref, width } = useElementSize();
   const navigate = useNavigate();
+  const dataTab = [
+    {
+      id: 1,
+      name: 'Danh Sách Sản Phẩm',
+      description: 'Danh sách sản phẩm',
+      icon: <IconSalad />,
+      table: <TableProduct data={[]} minWidth={width} />,
+    },
+  ];
   const items2 = [
     { title: 'Sản Phẩm', href: '/brands' },
     { title: 'Sản Phẩm Chi Tiết', href: '/brand-detail' },
@@ -116,7 +115,7 @@ const BrandDetailPage = () => {
                   className={classes.avatar}
                 />
                 <Text ta="center" fz="lg" fw={500} mt="sm">
-                  Tên Thương Hiệu
+                  Tên Sản Phẩm
                 </Text>
               </div>
               <Group mt="md" justify="center" gap={30}>
@@ -159,4 +158,4 @@ const BrandDetailPage = () => {
   );
 };
 
-export default BrandDetailPage;
+export default ProductDetailPage;

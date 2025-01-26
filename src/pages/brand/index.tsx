@@ -37,8 +37,8 @@ const BrandPage = () => {
   const dataTab = [
     {
       id:1,
-      name:"Nhãn Hàng",
-      description:"Thông tin chung nhãn hàng",
+      name:"Thương Hiệu",
+      description:"Thông tin chung của thương hiệu",
       icon: <IconCategoryPlus size={20}/>,
       table: <TableBrand data={brands}/>
     },
