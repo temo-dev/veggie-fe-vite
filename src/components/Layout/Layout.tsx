@@ -63,7 +63,6 @@ export function Layout() {
     return lazy(() => import('./AuthLayout'))
   }, [authenticated])
 
-
   return (
     <Suspense
       fallback={
