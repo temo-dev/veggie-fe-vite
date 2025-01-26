@@ -10,6 +10,7 @@ export * from './slices/category'
 export * from './slices/subCategory'
 export * from './slices/locale/localeSlice'
 export * from './slices/brand/brandSlice'
+export * from './slices/supplier/supplierSlice'
 export * from './rootReducer'
 export * from './hook'
 export default store

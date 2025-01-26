@@ -23,6 +23,8 @@ import { useFindAllSubCategories } from '@/services/react-query/subCategory/use-
 import useSubCategory from '@/utils/hooks/useSubCategory';
 import useBrand from '@/utils/hooks/useBrand';
 import { useFindAllBrands } from '@/services/react-query/brand/use-find-all-brand';
+import { useFindAllSuppliers } from '@/services/react-query/supplier/use-find-all-supplier';
+import useSupplier from '@/utils/hooks/useSupplier';
 
 function CollapsedSideBarBottomContent() {
   const {signOut} = useAuth()
@@ -93,6 +95,7 @@ export default function CollapsedSideBar() {
   const {updateCategories}= useCategory()
   const {updateSubCategories} = useSubCategory()
   const {updateBrands} = useBrand()
+  const {updateSuppliers} = useSupplier()
   //call api
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
   const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
@@ -100,17 +103,19 @@ export default function CollapsedSideBar() {
   const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
   const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
   const {data:brands, isSuccess:isFindAllBrands} = useFindAllBrands()
+  const {data:suppliers,isSuccess:isFindAllSuppliers} = useFindAllSuppliers()
   //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
       updateCurrencies(currencies)
       updateTags(tags)
       updateAttPackages(packages)
       updateCategories(cateroies)
       updateSubCategories(sucCategories)
       updateBrands(brands)
+      updateSuppliers(suppliers)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
   return (
     <>
       <div style={{

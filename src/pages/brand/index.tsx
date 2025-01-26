@@ -1,6 +1,6 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Divider } from '@mantine/core'
-import { IconBrandVinted, IconPlus, IconSearch } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Divider, Tabs } from '@mantine/core'
+import { IconBrandVinted, IconCategoryPlus, IconPlus, IconSearch } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
@@ -21,7 +21,7 @@ const data1 = [
 const BrandPage = () => {
   const { ref, width } = useElementSize();
   const {brands} = useAppSelector((state)=>state.brand.brand)
-   const openModal = (el:any) => {
+  const openModal = (el:any) => {
         modals.open({
           title: (
             <Group>
@@ -33,7 +33,16 @@ const BrandPage = () => {
           ),
           children: <FormCreateBrand/>,
         });
-      }
+  }
+  const dataTab = [
+    {
+      id:1,
+      name:"Nhãn Hàng",
+      description:"Thông tin chung nhãn hàng",
+      icon: <IconCategoryPlus size={20}/>,
+      table: <TableBrand data={brands}/>
+    },
+  ]
   return (
     <div ref={ref}>
       <Stack>
@@ -54,17 +63,26 @@ const BrandPage = () => {
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>
-        <Card shadow="xs" padding="md" radius="md">
-          <Group justify="space-between" mb="md">
-            <Title order={3} style={{textAlign:"center"}}>
-              Danh Sách Thương Hiệu
-            </Title>
-            <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm kiếm thương hiệu' className="shadow w-1/4"/>
-          </Group>
-          <div className='shadow bg-gray-100'>
-            <TableBrand data={brands}/>
-          </div>
-        </Card>
+        <Card shadow="xs"radius="md">
+          <Tabs defaultValue={`${dataTab[0].name}`}>
+            <Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
+                  {tab.name.toUpperCase()}
+                </Tabs.Tab>
+                ))
+              }
+            </Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                    {tab.table}
+                  </Tabs.Panel>
+                ))
+              }
+            </Tabs>
+      </Card>
       </Container>
     </Stack>
     </div>

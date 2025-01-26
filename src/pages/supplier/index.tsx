@@ -1,12 +1,13 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input } from '@mantine/core'
-import { IconBrandVinted, IconBuildingFactory2, IconPlus, IconSearch } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Tabs } from '@mantine/core'
+import { IconBrandVinted, IconBuildingFactory2, IconCategoryPlus, IconPlus, IconSearch } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
-import TableBrand from '@/components/Table/TableBrand';
 import { modals } from '@mantine/modals';
-import FormCreateBrand from '@/components/Form/FormCreateBrand';
+import FormCreateSupplier from '@/components/Form/FormCreateSupplier';
+import TableSupplier from '@/components/Table/TableSupplier';
+import { useAppSelector } from '@/store';
 
 //mock data
 const data1 = [
@@ -17,72 +18,19 @@ const data1 = [
   { value: 111, name: 'Czech Farms' }
 ];
 
-const data2 = [
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-1",
-    description:"demo-1",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-2",
-    description:"demo-2",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-3",
-    description:"demo-3",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-4",
-    description:"demo-4",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-5",
-    description:"demo-5",
-    image_url:"/logo/favicon-32x32.png"
-  },
-  {
-    brand_name:"demo-6",
-    description:"demo-6",
-    image_url:"/logo/favicon-32x32.png"
-  },
-]
-
 const SupplierPage = () => {
   const { ref, width } = useElementSize();
-   const openModal = (el:any) => {
+  const {suppliers} = useAppSelector((state) => state.supplier.supplier)
+  const dataTab = [
+    {
+      id:1,
+      name:"Nhà Cung Cấp",
+      description:"Nhà Cung Cấp",
+      icon: <IconCategoryPlus size={20}/>,
+      table: <TableSupplier data={suppliers} minWidth={width}/>
+    },
+  ]
+  const openModal = (el:any) => {
         modals.open({
           title: (
             <Group>
@@ -92,9 +40,9 @@ const SupplierPage = () => {
               <Title order={5} >{`TẠO ${el.name.toUpperCase()}`}</Title>
             </Group>
           ),
-          children: <FormCreateBrand/>,
+          children: <FormCreateSupplier/>,
         });
-      }
+  }
   return (
     <div ref={ref}>
       <Stack>
@@ -115,14 +63,25 @@ const SupplierPage = () => {
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>
-        <Card shadow="xs" padding="md" radius="md">
-          <Group justify="space-between" mb="md">
-            <Title order={3} style={{textAlign:"center"}}>
-              Danh Sách Nhà Cung Cấp
-            </Title>
-            <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm sản phẩm' className="shadow w-1/4"/>
-          </Group>
-          <TableBrand data={data2}/>
+        <Card shadow="xs"radius="md">
+          <Tabs defaultValue={`${dataTab[0].name}`}>
+            <Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
+                  {tab.name.toUpperCase()}
+                </Tabs.Tab>
+                ))
+              }
+            </Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                    {tab.table}
+                  </Tabs.Panel>
+                ))
+              }
+            </Tabs>
         </Card>
       </Container>
     </Stack>

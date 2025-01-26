@@ -128,7 +128,7 @@ const ExtensionsPage = () => {
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>
-        <Tabs defaultValue={`${dataTab[1].name}`} className='mt-4'>
+        <Tabs defaultValue={`${dataTab[0].name}`} className='mt-4'>
           <Tabs.List>
             {
               dataTab.map((tab)=>(

@@ -9,6 +9,7 @@ import attpackage,{ PackageAllState } from './slices/att-package'
 import category,{ CategoryAllState } from './slices/category'
 import subCategory,{ SubCategoryAllState } from './slices/subCategory'
 import brand,{ BrandAllState } from './slices/brand'
+import supplier,{ SupplierAllState } from './slices/supplier'
 
 export type RootState = {
   auth: AuthState
@@ -21,6 +22,7 @@ export type RootState = {
   category: CategoryAllState
   subCategory: SubCategoryAllState
   brand: BrandAllState
+  supplier: SupplierAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -39,6 +41,7 @@ const staticReducers = {
   category,
   subCategory,
   brand,
+  supplier
 }
 
 const rootReducer =

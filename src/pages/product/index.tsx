@@ -122,7 +122,7 @@ const ProductPage = () => {
             </Title>
             <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm sản phẩm' className="shadow w-1/4"/>
           </Group>
-          <TableBrand data={data2}/>
+          {/* <TableBrand data={data2}/> */}
         </Card>
       </Container>
     </Stack>
