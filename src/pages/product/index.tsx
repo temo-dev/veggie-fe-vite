@@ -7,6 +7,7 @@ import { useElementSize } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import TableProduct from '@/components/Table/TableProduct';
 import FormCreateProduct from '@/components/Form/FormCreateProduct';
+import { useAppSelector } from '@/store';
 
 //mock data
 const data1 = [
@@ -19,13 +20,14 @@ const data1 = [
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
+  const {products} = useAppSelector((state)=>state.product.product)
   const dataTab = [
     {
       id:1,
       name:"Sản Phẩm",
       description:"Danh sách sản phẩm",
       icon: <IconCategoryPlus size={20}/>,
-      table: <TableProduct data={[]} minWidth={width}/>
+      table: <TableProduct data={products} minWidth={width}/>
     },
   ]
   const openModal = (el:any) => {

@@ -1,17 +1,37 @@
+import { useDeleteProductById } from '@/services/react-query/product/use-delete-product';
+import { ProductType } from '@/services/react-query/product/use-find-all-product';
+import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core'
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
 
 interface PropsInterface{
-  data: any[],
+  data: ProductType[],
   minWidth: number
 }
 
 const TableProduct = (prop:PropsInterface) => {
   const {data,minWidth} = prop
   const navigate = useNavigate();
+  const {mutate:deleteProductById, status} = useDeleteProductById()
+    const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
+    const {mutate: deleteFileS3} = useDeleteFileOnS3()
+    useEffect(() => {
+      if (status === 'success' && nameFileS3deleted) {
+        deleteFileS3(nameFileS3deleted)
+      }else if(status === 'error'){
+        setNameFileS3deleted(null)
+      }
+    }, [status])
+    
+    //logic
+    const handleDeleteTag = (el:ProductType) => {
+      let nameImage = el.image_url.split('amazonaws.com/')[1]
+      setNameFileS3deleted(nameImage)
+      deleteProductById(el.product_id)
+    }
   //component
   const rows = data?.map((el,key) => (
     <Table.Tr key={key}>
@@ -24,18 +44,22 @@ const TableProduct = (prop:PropsInterface) => {
                 event.preventDefault();
                 navigate("/products/product-detail");
                 }}>
-                {el.product_name}
+                {el.product_code}
             </Link>
         }</Table.Td>
-      <Table.Td>{el.description}</Table.Td>
+      <Table.Td>{el.product_name_vn}</Table.Td>
+      <Table.Td>{el.product_name_eng}</Table.Td>
+      <Table.Td>{el.product_name_de}</Table.Td>
+      <Table.Td>{el.product_name_th}</Table.Td>
+      <Table.Td>{el.brand_id}</Table.Td>
       <Table.Td>{"null"}</Table.Td>
-      <Table.Td>{"null"}</Table.Td>
+      <Table.Td>{el.total_quantity}</Table.Td>
       <Table.Td>
         <Group>
           <ActionIcon variant="filled" aria-label="chỉnh sửa">
             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="filled" color="red" aria-label="xóa">
+          <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteTag(el)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
         </Group>
@@ -49,8 +73,12 @@ const TableProduct = (prop:PropsInterface) => {
           <Table.Tr>
             <Table.Th>Thứ Tự</Table.Th>
             <Table.Th>Hình Ảnh</Table.Th>
+            <Table.Th>Code Sản Phẩm</Table.Th>
+            <Table.Th>Tên Việt Nam</Table.Th>
+            <Table.Th>Tên Tiếng Anh</Table.Th>
+            <Table.Th>Tên Đức</Table.Th>
+            <Table.Th>Tên Thái Lan</Table.Th>
             <Table.Th>Tên Thương Hiệu</Table.Th>
-            <Table.Th>Chú Thích</Table.Th>
             <Table.Th>Nhà cung cấp nhiều nhất</Table.Th>
             <Table.Th>Tổng sản phẩm</Table.Th>
             <Table.Th>Hành Động</Table.Th>

@@ -28,7 +28,6 @@ export interface CreateProductInput {
     product_name_eng: string;
     product_name_th: string;
     product_name_vn: string;
-    published_at: Date;
     reorder_level: number;
     season: string;
     shelf_life: number;

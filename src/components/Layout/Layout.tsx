@@ -18,6 +18,8 @@ import { useFindAllCategories } from "@/services/react-query/category/use-find-a
 import { useFindAllSubCategories } from "@/services/react-query/subCategory/use-find-subCategory";
 import { useFindAllSuppliers } from "@/services/react-query/supplier/use-find-all-supplier";
 import { useFindAllTag } from "@/services/react-query/tag/use-find-all-tag";
+import { useFindAllProduct } from "@/services/react-query/product/use-find-all-product";
+import useProduct from "@/utils/hooks/useProduct";
 
 const layouts:any = {
   [LayoutTypes.CollapsedSideBar]: lazy(() => import('./LayoutTypes/CollapsedSideBar')),
@@ -34,6 +36,7 @@ export function Layout() {
   const {updateSubCategories} = useSubCategory()
   const {updateBrands} = useBrand()
   const {updateSuppliers} = useSupplier()
+  const {updateProducts} = useProduct()
   //call api
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
   const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
@@ -42,9 +45,10 @@ export function Layout() {
   const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
   const {data:brands, isSuccess:isFindAllBrands} = useFindAllBrands()
   const {data:suppliers,isSuccess:isFindAllSuppliers} = useFindAllSuppliers()
+  const {data:products,isSuccess:isFindAllProducts} = useFindAllProduct();
   //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers && isFindAllProducts){
       updateCurrencies(currencies)
       updateTags(tags)
       updateAttPackages(packages)
@@ -52,8 +56,9 @@ export function Layout() {
       updateSubCategories(sucCategories)
       updateBrands(brands)
       updateSuppliers(suppliers)
+      updateProducts(products)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers,isFindAllProducts])
 
   useLocale()
   const AppLayout = useMemo(() => {

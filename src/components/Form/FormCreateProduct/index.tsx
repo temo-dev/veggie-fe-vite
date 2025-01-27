@@ -113,16 +113,29 @@ const FormCreateProduct = () => {
         .string()
         .required('Hãy chọn đơn bị đo'),
       cubic: yup
-          .number()
-          .transform((_, originalValue) => {
-            // Chuyển đổi chuỗi thành số
-            return originalValue ? parseInt(originalValue) : null;
+        .number()
+        .transform((_, originalValue) => {
+          // Chuyển đổi chuỗi thành số
+          return originalValue ? parseInt(originalValue) : null;
           }),
-      published_at: yup
-          .date()
-          .transform((_, originalValue) => {
-            return new Date(originalValue);
-          })
+      shelf_life: yup
+        .number()
+        .transform((_, originalValue) => {
+          // Chuyển đổi chuỗi thành số
+          return originalValue ? parseInt(originalValue) : null;
+      }),
+      net_weight: yup
+        .number()
+        .transform((_, originalValue) => {
+          // Chuyển đổi chuỗi thành số
+          return originalValue ? parseInt(originalValue) : null;
+      }),
+      gross_weight: yup
+        .number()
+        .transform((_, originalValue) => {
+          // Chuyển đổi chuỗi thành số
+          return originalValue ? parseInt(originalValue) : null;
+      })
   });
   const form = useForm({
       initialValues: {
@@ -143,13 +156,12 @@ const FormCreateProduct = () => {
         net_weight: 0,
         gross_weight: 0,
         note: '',
-        pre_order: false,
+        pre_order: true,
         product_code: '',
         product_name_de: '',
         product_name_eng: '',
         product_name_th: '',
         product_name_vn: '',
-        published_at: new Date(),
         reorder_level: 0,
         season: '',
         shelf_life: 0,
@@ -194,16 +206,15 @@ const FormCreateProduct = () => {
             <Stack>
               <Divider/>
               <Title order={5}>Thông Tin Chung</Title>
-              <TextInput label="*Mã Sản Phẩm" placeholder="veggie" classNames={classes} {...form.getInputProps('product_code')} name={'product_code'}/>
-              <TextInput label="*Tên Tiếng Việt" placeholder="veggie" classNames={classes} {...form.getInputProps('product_name_vn')} name={'product_name_vn'}/>
-              <TextInput label="*Tên Tiếng Thái" placeholder="veggie" classNames={classes} {...form.getInputProps('product_name_th')} name={'product_name_th'}/>
-              <TextInput label="*Tên Tiếng Anh" placeholder="veggie" classNames={classes} {...form.getInputProps('product_name_eng')} name={'product_name_eng'}/>
-              <TextInput label="*Tên Tiếng Đức" placeholder="veggie" classNames={classes} {...form.getInputProps('product_name_de')} name={'product_name_de'}/>
+              <TextInput label="*Mã Sản Phẩm" classNames={classes} {...form.getInputProps('product_code')} name={'product_code'}/>
+              <TextInput label="*Tên Tiếng Việt" classNames={classes} {...form.getInputProps('product_name_vn')} name={'product_name_vn'}/>
+              <TextInput label="*Tên Tiếng Thái" classNames={classes} {...form.getInputProps('product_name_th')} name={'product_name_th'}/>
+              <TextInput label="*Tên Tiếng Anh" classNames={classes} {...form.getInputProps('product_name_eng')} name={'product_name_eng'}/>
+              <TextInput label="*Tên Tiếng Đức" classNames={classes} {...form.getInputProps('product_name_de')} name={'product_name_de'}/>
               <Select
                 label={<div className='mx-3'>
                   *Nhóm thương hiệu
                 </div>}
-                placeholder="Chọn thương hiệu"
                 data={dataSelectBrands}
                 {...form.getInputProps('brand_id')} name={'brand_id'}
               />
@@ -211,7 +222,6 @@ const FormCreateProduct = () => {
                 label={<div className='mx-3'>
                   *Chọn danh mục
                 </div>}
-                placeholder="*Chọn danh mục"
                 data={dataSelectSubCategories}
                 {...form.getInputProps('sub_category_id')} name={'sub_category_id'}
               />
@@ -219,7 +229,6 @@ const FormCreateProduct = () => {
                 label={<div className='mx-3'>
                   *Chọn mùa cho sản phẩm
                 </div>}
-                placeholder="*Chọn mùa cho sản phẩm"
                 data={dataSelectSeason}
                 {...form.getInputProps('season')} name={'season'}
               />
@@ -229,37 +238,32 @@ const FormCreateProduct = () => {
             <Stack>
               <Divider/>
               <Title order={5}>Chỉ Số Sản Phẩm</Title>
-              <NumberInput label="Trọng Lượng" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('net_weight')} name={'net_weight'}/>
-              <NumberInput label="Trọng Lượng Cả Bao Bì" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('gross_weight')} name={'gross_weight'}/>
+              <NumberInput label="*Trọng Lượng" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('net_weight')} name={'net_weight'}/>
+              <NumberInput label="*Trọng Lượng Cả Bao Bì" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('gross_weight')} name={'gross_weight'}/>
               <Select
                 label={<div className='mx-3'>
                   *Chọn đơn vị đo
                 </div>}
-                placeholder="*Chọn đơn vị đo"
                 data={dataSelectLen}
                 {...form.getInputProps('len')} name={'len'}
               />
-              <NumberInput label="*Cubic" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('cubic')} name={'cubic'}/>
-              <NumberInput label="Chiều Dài" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('length')} name={'length'}/>
-              <NumberInput label="Chiều Cao" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('height')} name={'height'}/>
-              <NumberInput label="Chiều Rộng" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('width')} name={'width'}/>
+              <NumberInput label="*Cubic" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('cubic')} name={'cubic'}/>
+              <NumberInput label="Chiều Dài" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('length')} name={'length'}/>
+              <NumberInput label="Chiều Cao" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('height')} name={'height'}/>
+              <NumberInput label="Chiều Rộng" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('width')} name={'width'}/>
             </Stack>
           </Grid.Col>
           <Grid.Col span={6}>
             <Stack>
               <Divider/>
               <Title order={5}>Thông Tin Mở Rộng</Title>
-              <TextInput label="Ghi Chú Sản Phẩm" placeholder="veggie" classNames={classes} {...form.getInputProps('note')} name={'note'}/>
-              <TextInput label="Mô Tả Sản Phẩm" placeholder="veggie" classNames={classes} {...form.getInputProps('description')} name={'description'}/>
-              <NumberInput label="Dph" placeholder="21" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('dph')} name={'dph'}/>
-              <NumberInput label="Số Lượng Tối Đa Được Đặt" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('maximum_order_quantity')} name={'maximum_order_quantity'}/>
-              <NumberInput label="Số Lượng Tối Thiểu Được Đặt" placeholder="100" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('minimum_order_quantity')} name={'minimum_order_quantity'}/>
-              <NumberInput label="Mức đặt tối thiểu" placeholder="50" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('reorder_level')} name={'reorder_level'}/>
-              <DateInput
-                label="Ngày Triển Khai"
-                placeholder="00/00/0000"
-                {...form.getInputProps('published_at')} name={'published_at'}
-              />
+              <TextInput label="Ghi Chú Sản Phẩm" classNames={classes} {...form.getInputProps('note')} name={'note'}/>
+              <TextInput label="Mô Tả Sản Phẩm" classNames={classes} {...form.getInputProps('description')} name={'description'}/>
+              <NumberInput label="Dph" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('dph')} name={'dph'}/>
+              <NumberInput label="Số Lượng Tối Đa Được Đặt" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('maximum_order_quantity')} name={'maximum_order_quantity'}/>
+              <NumberInput label="Số Lượng Tối Thiểu Được Đặt" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('minimum_order_quantity')} name={'minimum_order_quantity'}/>
+              <NumberInput label="Mức đặt tối thiểu" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('reorder_level')} name={'reorder_level'}/>
+              <NumberInput label="Số lượng hiện có" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('total_quantity')} name={'total_quantity'}/>
             </Stack>
           </Grid.Col>
           <Grid.Col span={6}>
@@ -270,12 +274,11 @@ const FormCreateProduct = () => {
                 label={<div className='mx-3'>
                   Loại Thùng
                 </div>}
-                placeholder="Chọn loại thùng cho sản phẩm"
                 data={dataSelectAttPackages}
                 {...form.getInputProps('attitude_product_package_id')} name={'attitude_product_package_id'}
               />
-              <NumberInput label="Nhiệt Độ Bảo Quản" placeholder="20" classNames={classes} {...form.getInputProps('temperature_requirement')} name={'temperature_requirement'}/>
-              <NumberInput label="Vòng đời sản phẩm" placeholder="60" classNames={classes} {...form.getInputProps('shelf_life')} name={'shelf_life'}/>
+              <NumberInput label="Nhiệt Độ Bảo Quản" classNames={classes} {...form.getInputProps('temperature_requirement')} name={'temperature_requirement'}/>
+              <NumberInput label="*Vòng đời sản phẩm" classNames={classes} {...form.getInputProps('shelf_life')} name={'shelf_life'}/>
               <Switch
                 label="Sản Phẩm Dễ Vỡ"
                 {...form.getInputProps('is_fragility')} name={'is_fragility'}
@@ -286,6 +289,7 @@ const FormCreateProduct = () => {
               />
               <Switch
                 label="Hàng Đặt Trước"
+                defaultChecked={true}
                 {...form.getInputProps('pre_order')} name={'pre_order'}
               />
             </Stack>
