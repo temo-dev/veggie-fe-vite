@@ -40,7 +40,7 @@ const BrandPage = () => {
       name:"Thương Hiệu",
       description:"Thông tin chung của thương hiệu",
       icon: <IconCategoryPlus size={20}/>,
-      table: <TableBrand data={brands}/>
+      table: <TableBrand data={brands} minWidth={width}/>
     },
   ]
   return (

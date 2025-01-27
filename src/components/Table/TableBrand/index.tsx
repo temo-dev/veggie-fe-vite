@@ -9,10 +9,11 @@ import { Link, useNavigate } from 'react-router-dom';
 
 interface PropsInterface{
   data: BrandType[]
+  minWidth: number
 }
 
 const TableBrand = (prop:PropsInterface) => {
-  const {data} = prop
+  const {data,minWidth} = prop
   const navigate = useNavigate();
   const {mutate:deleteBrandById, status} = useDeleteBrandById()
     const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
@@ -62,7 +63,7 @@ const TableBrand = (prop:PropsInterface) => {
     </Table.Tr>
   ));
   return (
-    <Table.ScrollContainer minWidth={500} type='native' h={400}>
+    <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
       <Table striped withTableBorder withColumnBorders stickyHeader>
         <Table.Thead>
           <Table.Tr className='bg-green-600 h-10 text-white'>

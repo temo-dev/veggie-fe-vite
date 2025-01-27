@@ -7,31 +7,17 @@ import {
   Text,
   Grid,
   Stack,
-  Anchor,
   Breadcrumbs,
   Container,
   Tabs,
 } from '@mantine/core';
-import { IconCategoryPlus, IconPlus, IconSalad } from '@tabler/icons-react';
+import { IconPlus, IconSalad } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
-import TableProduct from '@/components/Table/TableProduct';
-
-const products = [
-  { product_name: 'demo-1', description: 'demo-1', image_url: '/logo/favicon-32x32.png' },
-  {
-    product_name: 'demo-2',
-    description: 'demo-2',
-    image_url: '/logo/favicon-32x32.png',
-  },
-  {
-    product_name: 'demo-3',
-    description: 'demo-3',
-    image_url: '/logo/favicon-32x32.png',
-  },
-];
+import TableBrand from '@/components/Table/TableBrand';
+import { useAppSelector } from '@/store';
 
 const stats = [
   { value: '2', label: 'Nhà Cung Cấp' },
@@ -49,13 +35,14 @@ const data1 = [
 
 const BrandDetailPage = () => {
   const { ref, width } = useElementSize();
+  const {brands} = useAppSelector((state) => state.brand.brand);
   const dataTab = [
     {
       id: 1,
       name: 'Danh Sách Sản Phẩm',
       description: 'Danh sách sản phẩm',
       icon: <IconSalad />,
-      table: <TableProduct data={products} minWidth={width}/>,
+      table: <TableBrand data={brands} minWidth={width}/>,
     },
   ];
   const navigate = useNavigate();
