@@ -1,6 +1,6 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Tabs } from '@mantine/core'
-import { IconBrandVinted, IconBuildingFactory2, IconCategoryPlus, IconPlus, IconSearch } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Tabs, Menu, FileButton, UnstyledButton, Divider } from '@mantine/core'
+import { IconBrandVinted, IconBuildingFactory2, IconCategoryPlus, IconDownload, IconPlus, IconSearch, IconUpload } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
@@ -8,6 +8,7 @@ import { modals } from '@mantine/modals';
 import FormCreateSupplier from '@/components/Form/FormCreateSupplier';
 import TableSupplier from '@/components/Table/TableSupplier';
 import { useAppSelector } from '@/store';
+import { useState } from 'react';
 
 //mock data
 const data1 = [
@@ -21,6 +22,7 @@ const data1 = [
 const SupplierPage = () => {
   const { ref, width } = useElementSize();
   const {suppliers} = useAppSelector((state) => state.supplier.supplier)
+  const [file, setFile] = useState<File | null>(null);
   const dataTab = [
     {
       id:1,
@@ -50,9 +52,26 @@ const SupplierPage = () => {
         <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Nhà Cung Cấp",icon:<IconBuildingFactory2 size={20}/>})}>
           Thêm Nhà Cung Cấp
         </Button>
-        <Button disabled variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"brand",icon:<IconBrandVinted size={20}/>})}>
-          Import Exel
-        </Button>
+        <Menu shadow="md" width={200} withArrow offset={0}>
+          <Menu.Target>
+            <Button leftSection={<IconUpload size={14} />}>Import Exel</Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item leftSection={<IconUpload size={14} />}>
+              <FileButton onChange={setFile} accept=".xlsx, .xls" multiple={false}>
+                {(props) => 
+                  <UnstyledButton {...props}>
+                    <Text size="sm">Import bằng Exel</Text>
+                  </UnstyledButton>
+                }
+              </FileButton>
+            </Menu.Item>
+            <Divider/>
+            <Menu.Item leftSection={<IconDownload size={14} />}>
+              Tải Exel Mẫu
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Group>
       <Grid>
         <Grid.Col span={6}>

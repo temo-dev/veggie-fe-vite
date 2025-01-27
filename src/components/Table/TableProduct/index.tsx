@@ -68,7 +68,7 @@ const TableProduct = (prop:PropsInterface) => {
   ));
   return (
     <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
-      <Table striped highlightOnHover withTableBorder withColumnBorders stickyHeader>
+      <Table striped withTableBorder withColumnBorders stickyHeader>
         <Table.Thead className="bg-green-600 h-10 text-white">
           <Table.Tr>
             <Table.Th>Thứ Tự</Table.Th>
