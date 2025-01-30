@@ -1,14 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SLICE_BASE_NAME } from "./constants";
 import { SupplierType } from "@/services/react-query/supplier/use-find-all-supplier";
+import { set } from "lodash";
 
 
 export interface SupplierState {
     suppliers: SupplierType[],
+    currentSupplier: SupplierType | null
 }
 
 const initialState:SupplierState = {
-    suppliers:[]
+    suppliers:[],
+    currentSupplier:null
 }
 
 const supplierSlice = createSlice({
@@ -19,8 +22,12 @@ const supplierSlice = createSlice({
             const {data} = action.payload
             state.suppliers = data
         },
+        setCurrentSupplier(state, action){
+            const {data} = action.payload
+            state.currentSupplier = data
+        }
     }
 })
 
-export const { setAllSuppliers } = supplierSlice.actions
+export const { setAllSuppliers,setCurrentSupplier } = supplierSlice.actions
 export default supplierSlice.reducer

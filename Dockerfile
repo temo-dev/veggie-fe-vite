@@ -1,32 +1,24 @@
-# Stage 1: Build the application
-FROM node:18-alpine AS builder
+# Stage 1: Build the Next.js application
+FROM node:20-alpine AS builder
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /admin
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package.json ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
+
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy the rest of the application code
 COPY . .
-# Build the Vite application
+
+# Build the Next.js application
 RUN npm run build
 
-# Stage 2: Serve the application using a lightweight web server
-FROM nginx:alpine
+# Expose the port the app runs on
 
-# Copy the built application from the builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy a custom Nginx configuration file (optional)
-# If you have custom configurations for single-page applications
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose the port that Nginx will run on
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 5173
+# Start
+CMD ["npx", "vite", "preview", "--port", "5173","--host"]

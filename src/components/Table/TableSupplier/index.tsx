@@ -2,6 +2,7 @@
 import { useDeleteSupplierById } from '@/services/react-query/supplier/use-delete-supplier';
 import { SupplierType } from '@/services/react-query/supplier/use-find-all-supplier';
 import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
+import useSupplier from '@/utils/hooks/useSupplier';
 import { ActionIcon, Avatar, Group, Table } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import React, { useEffect } from 'react';
@@ -18,6 +19,7 @@ const TableSupplier = (prop: PropsInterface) => {
   const { mutate: deleteSupplierById, status } = useDeleteSupplierById();
   const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null);
   const { mutate: deleteFileS3 } = useDeleteFileOnS3();
+  const {updateCurrentSupplier} = useSupplier()
   //useEffect
   useEffect(() => {
     if (status === 'success' && nameFileS3deleted) {
@@ -52,6 +54,7 @@ const TableSupplier = (prop: PropsInterface) => {
             onClick={(event) => {
               event.preventDefault();
               navigate('/suppliers/supplier-detail');
+              updateCurrentSupplier({data:el})
             }}
           >
             {el.supplier_name}

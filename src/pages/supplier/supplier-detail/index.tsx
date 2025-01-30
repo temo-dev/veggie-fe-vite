@@ -12,30 +12,17 @@ import {
   Container,
   Tabs,
 } from '@mantine/core';
-import { IconCategoryPlus, IconPlus, IconSalad } from '@tabler/icons-react';
+import { IconPlus, IconSalad } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
-
-const products = [
-  { product_name: 'demo-1', description: 'demo-1', image_url: '/logo/favicon-32x32.png' },
-  {
-    product_name: 'demo-2',
-    description: 'demo-2',
-    image_url: '/logo/favicon-32x32.png',
-  },
-  {
-    product_name: 'demo-3',
-    description: 'demo-3',
-    image_url: '/logo/favicon-32x32.png',
-  },
-];
+import { useAppSelector } from '@/store';
 
 const stats = [
-  { value: '2', label: 'Nhà Cung Cấp' },
-  { value: '3', label: 'Khách Hàng' },
+  { value: '2', label: 'Thương Hiệu' },
+  { value: '3', label: 'Sản Phẩm' },
 ];
 
 //mock data
@@ -49,12 +36,21 @@ const data1 = [
 
 const SupplierDetailPage = () => {
   const { ref, width } = useElementSize();
+  const {currentSupplier} = useAppSelector((state) => state.supplier.supplier);
+  console.log(currentSupplier)
   const navigate = useNavigate();
   const dataTab = [
     {
       id: 1,
-      name: 'Danh Sách Sản Phẩm',
-      description: 'Danh sách sản phẩm',
+      name: 'Sản Phẩm',
+      description: 'sản phẩm',
+      icon: <IconSalad />,
+      table: <TableProduct data={[]} minWidth={width} />,
+    },
+    {
+      id: 2,
+      name: 'Thương Hiệu',
+      description: 'Thương Hiệu',
       icon: <IconSalad />,
       table: <TableProduct data={[]} minWidth={width} />,
     },
@@ -107,7 +103,7 @@ const SupplierDetailPage = () => {
             <Group>
               <div>
                 <Avatar
-                  src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png"
+                  src={currentSupplier?.image_url}
                   size={120}
                   radius={120}
                   mx="auto"
@@ -115,7 +111,7 @@ const SupplierDetailPage = () => {
                   className={classes.avatar}
                 />
                 <Text ta="center" fz="lg" fw={500} mt="sm">
-                  Tên Sản Phẩm
+                  {currentSupplier?.supplier_name.toUpperCase()}
                 </Text>
               </div>
               <Group mt="md" justify="center" gap={30}>
@@ -133,26 +129,27 @@ const SupplierDetailPage = () => {
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>
-          <Tabs defaultValue={`${dataTab[0].name}`} className="mt-4">
+        <Card shadow="xs"radius="md">
+          <Tabs defaultValue={`${dataTab[0].name}`}>
             <Tabs.List>
-              {dataTab.map((tab) => (
-                <Tabs.Tab
-                  value={tab.name}
-                  key={tab.id}
-                  leftSection={tab.icon}
-                  className="font-bold"
-                >
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
                   {tab.name.toUpperCase()}
                 </Tabs.Tab>
-              ))}
+                ))
+              }
             </Tabs.List>
-            {dataTab.map((tab) => (
-              <Tabs.Panel value={tab.name} key={tab.id} className="min-h-80">
-                {tab.table}
-              </Tabs.Panel>
-            ))}
-          </Tabs>
-        </Container>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                    {tab.table}
+                  </Tabs.Panel>
+                ))
+              }
+            </Tabs>
+        </Card>
+      </Container>
       </Stack>
     </div>
   );

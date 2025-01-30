@@ -8,7 +8,10 @@ import { modals } from '@mantine/modals';
 import FormCreateSupplier from '@/components/Form/FormCreateSupplier';
 import TableSupplier from '@/components/Table/TableSupplier';
 import { useAppSelector } from '@/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
+import { ImportExcelType, useImportExcel } from '@/services/react-query/import-excel/use-import-exel';
+import { notifications } from '@mantine/notifications';
 
 //mock data
 const data1 = [
@@ -22,7 +25,9 @@ const data1 = [
 const SupplierPage = () => {
   const { ref, width } = useElementSize();
   const {suppliers} = useAppSelector((state) => state.supplier.supplier)
-  const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState<boolean>(false)
+  const uploadFile = useGetLinkFileToS3()
+  const {mutate: importExcel, status } =useImportExcel()
   const dataTab = [
     {
       id:1,
@@ -32,6 +37,39 @@ const SupplierPage = () => {
       table: <TableSupplier data={suppliers} minWidth={width}/>
     },
   ]
+
+  
+  
+    useEffect(()=>{
+      if(status === 'success' || status === 'error'){
+        setLoading(false)
+      }
+    },[status])
+  
+    const handleImport = async (file: File | null) => {
+      let value: ImportExcelType ={
+        to_table:"supplier",
+        excel_url:""
+      }
+      setLoading(true)
+      try {
+        if(file){
+          await uploadFile.mutateAsync(file)
+          .then((res) => {
+            let url = res.url.split("?")[0]
+            importExcel({...value, excel_url:url})
+          })
+        }
+      } catch (error) {
+        notifications.show({
+            title: 'Import Excel xảy ra lỗi',
+            message: String(error),
+            color: 'red',
+            autoClose: 5000,
+        })
+        setLoading(false)
+      }
+    }
   const openModal = (el:any) => {
         modals.open({
           title: (
@@ -52,26 +90,13 @@ const SupplierPage = () => {
         <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Nhà Cung Cấp",icon:<IconBuildingFactory2 size={20}/>})}>
           Thêm Nhà Cung Cấp
         </Button>
-        <Menu shadow="md" width={200} withArrow offset={0}>
-          <Menu.Target>
-            <Button leftSection={<IconUpload size={14} />}>Import Exel</Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item leftSection={<IconUpload size={14} />}>
-              <FileButton onChange={setFile} accept=".xlsx, .xls" multiple={false}>
-                {(props) => 
-                  <UnstyledButton {...props}>
-                    <Text size="sm">Import bằng Exel</Text>
-                  </UnstyledButton>
-                }
-              </FileButton>
-            </Menu.Item>
-            <Divider/>
-            <Menu.Item leftSection={<IconDownload size={14} />}>
-              Tải Exel Mẫu
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+        <FileButton onChange={handleImport} accept=".xlsx, .xls" multiple={false}>
+          {(props) => (
+            <Button {...props} leftSection={<IconUpload size={20} />} variant='default' loading={loading}>
+              Import Excel
+            </Button>
+          )}
+        </FileButton>
       </Group>
       <Grid>
         <Grid.Col span={6}>
