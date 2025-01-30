@@ -28,18 +28,29 @@ const FormCreateCategory = () => {
   const schema = yup.object().shape({
       category_name_de: yup
         .string()
-        .required('Hãy điền tên tiếng Đức của sản phẩm'),
+        .required('Hãy điền tên tiếng Đức'),
       category_name_eng: yup
         .string()
-        .required('Hãy điền tên tiếng Anh của sản phẩm'),
+        .required('Hãy điền tên tiếng Anh'),
       category_name_th: yup
         .string()
-        .required('Hãy điền tên tiếng Thái của sản phẩm'),
+        .required('Hãy điền tên tiếng Thái'),
       category_name_vn: yup
         .string()
-        .required('Hãy điền tên tiếng Việt Nam của sản phẩm'),
+        .required('Hãy điền tên tiếng Việt Nam'),
+      category_name_cz: yup
+        .string()
+        .required('Hãy điền tên tiếng Séc'),
     });
   const form = useForm({
+      initialValues:{
+        category_name_de: '',
+        category_name_eng: '',
+        category_name_th: '',
+        category_name_vn: '',
+        category_name_cz: '',
+        image_url: ''
+      },
       validate: yupResolver(schema),
     });
   const handleSubmit = async (value:CreateCategoryInput) => {
@@ -71,10 +82,11 @@ const FormCreateCategory = () => {
     <Box>
       <form onSubmit={form.onSubmit((value) => handleSubmit(value))}>
         <Stack>
-          <TextInput label="*Tên Tiếng Việt Nam" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_vn')} name={'category_name_vn'}/>
-          <TextInput label="*Tên Tiếng Anh" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_eng')} name={'category_name_eng'}/>
-          <TextInput label="*Tên Tiếng Đức" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_de')} name={'category_name_de'}/>
-          <TextInput label="Tên Tiếng Thái" placeholder="bio" classNames={classes} {...form.getInputProps('category_name_th')} name={'category_name_th'}/>
+          <TextInput label="*Tên Tiếng Việt Nam" classNames={classes} {...form.getInputProps('category_name_vn')} name={'category_name_vn'}/>
+          <TextInput label="*Tên Tiếng Anh" classNames={classes} {...form.getInputProps('category_name_eng')} name={'category_name_eng'}/>
+          <TextInput label="*Tên Tiếng Đức" classNames={classes} {...form.getInputProps('category_name_de')} name={'category_name_de'}/>
+          <TextInput label="*Tên Tiếng Thái" classNames={classes} {...form.getInputProps('category_name_th')} name={'category_name_th'}/>
+          <TextInput label="*Tên Tiếng Séc" classNames={classes} {...form.getInputProps('category_name_cz')} name={'category_name_cz'}/>
           <DropZoneImage handlerDrop={dropFile}/>
         </Stack>
         <Button loading={loading} disabled={loading} type="submit" fullWidth className='mt-2' leftSection={<IconPlus style={{ width: '90%', height: '90%' }} stroke={2}/>}>

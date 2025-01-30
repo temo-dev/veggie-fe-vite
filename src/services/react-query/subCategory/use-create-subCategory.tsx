@@ -9,6 +9,7 @@ export interface CreateSubCategoryInput {
   sub_category_name_eng: string,
   sub_category_name_th: string,
   sub_category_name_vn: string,
+  sub_category_name_cz: string,
   dph: number,
   category_id: string,
   image_url?: string

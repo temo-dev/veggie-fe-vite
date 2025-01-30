@@ -9,6 +9,7 @@ export interface CreateCategoryInput {
   category_name_eng?: string,
   category_name_th?: string,
   category_name_vn?: string,
+  category_name_cz?: string,
   image_url?: string
 }
 

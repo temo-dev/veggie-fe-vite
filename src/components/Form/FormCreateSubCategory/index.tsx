@@ -46,6 +46,9 @@ const FormCreateSubCategory = () => {
       sub_category_name_vn: yup
         .string()
         .required('Hãy điền tên tiếng Việt Nam của danh mục'),
+      sub_category_name_cz: yup
+        .string()
+        .required('Hãy điền tên tiếng Séc của danh mục'),
       category_id: yup
         .string()
         .required('Hãy chọn nhóm sản phẩm'),
@@ -62,6 +65,7 @@ const FormCreateSubCategory = () => {
         sub_category_name_eng: '',
         sub_category_name_th: '',
         sub_category_name_vn: '',
+        sub_category_name_cz: '',
         category_id: '',
         dph: 21
       },
@@ -96,10 +100,11 @@ const FormCreateSubCategory = () => {
     <Box>
       <form onSubmit={form.onSubmit((value) => handleSubmit(value))}>
         <Stack>
-          <TextInput label="*Tên Tiếng Việt Nam" placeholder="veggie" classNames={classes} {...form.getInputProps('sub_category_name_vn')} name={'sub_category_name_vn'}/>
-          <TextInput label="*Tên Tiếng Anh" placeholder="veggie" classNames={classes} {...form.getInputProps('sub_category_name_eng')} name={'sub_category_name_eng'}/>
-          <TextInput label="*Tên Tiếng Đức" placeholder="veggie" classNames={classes} {...form.getInputProps('sub_category_name_de')} name={'sub_category_name_de'}/>
-          <TextInput label="*Tên Tiếng Thái" placeholder="veggie" classNames={classes} {...form.getInputProps('sub_category_name_th')} name={'sub_category_name_th'}/>
+          <TextInput label="*Tên Tiếng Việt Nam"  classNames={classes} {...form.getInputProps('sub_category_name_vn')} name={'sub_category_name_vn'}/>
+          <TextInput label="*Tên Tiếng Anh"  classNames={classes} {...form.getInputProps('sub_category_name_eng')} name={'sub_category_name_eng'}/>
+          <TextInput label="*Tên Tiếng Đức"  classNames={classes} {...form.getInputProps('sub_category_name_de')} name={'sub_category_name_de'}/>
+          <TextInput label="*Tên Tiếng Thái"  classNames={classes} {...form.getInputProps('sub_category_name_th')} name={'sub_category_name_th'}/>
+          <TextInput label="*Tên Tiếng Séc"  classNames={classes} {...form.getInputProps('sub_category_name_cz')} name={'sub_category_name_cz'}/>
           <NumberInput label="Dph" placeholder="21" classNames={classes} {...form.getInputProps('dph')} name={'dph'}/>
           <Select
             label={<div className='mx-3'>

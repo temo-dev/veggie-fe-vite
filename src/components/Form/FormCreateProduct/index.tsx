@@ -100,6 +100,9 @@ const FormCreateProduct = () => {
       product_name_de: yup
         .string()
         .required('Hãy điền tên tiếng đức'),
+      product_name_cz: yup
+        .string()
+        .required('Hãy điền tên tiếng séc'),
       brand_id: yup
         .string()
         .required('Hãy chọn thương hiệu cho sản phẩm'),
@@ -162,6 +165,7 @@ const FormCreateProduct = () => {
         product_name_eng: '',
         product_name_th: '',
         product_name_vn: '',
+        product_name_cz: '',
         reorder_level: 0,
         season: '',
         shelf_life: 0,
@@ -211,6 +215,7 @@ const FormCreateProduct = () => {
               <TextInput label="*Tên Tiếng Thái" classNames={classes} {...form.getInputProps('product_name_th')} name={'product_name_th'}/>
               <TextInput label="*Tên Tiếng Anh" classNames={classes} {...form.getInputProps('product_name_eng')} name={'product_name_eng'}/>
               <TextInput label="*Tên Tiếng Đức" classNames={classes} {...form.getInputProps('product_name_de')} name={'product_name_de'}/>
+              <TextInput label="*Tên Tiếng Séc" classNames={classes} {...form.getInputProps('product_name_cz')} name={'product_name_cz'}/>
               <Select
                 label={<div className='mx-3'>
                   *Nhóm thương hiệu
