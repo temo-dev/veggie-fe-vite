@@ -16,9 +16,7 @@ interface PropsInterface {
 
 const TotalCategoryPieChart = (props :PropsInterface) => {
   const {title,data} = props
-  
   const total = data.reduce((sum, item) => sum + item.value, 0);
-  
   const option:EChartsOption = {
     title: {
       text: `${title.toUpperCase()}`,

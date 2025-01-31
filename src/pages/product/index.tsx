@@ -14,24 +14,22 @@ import { ImportExcelType, useImportExcel } from '@/services/react-query/import-e
 import { notifications } from '@mantine/notifications';
 import { useFindAllProduct } from '@/services/react-query/product/use-find-all-product';
 
-//mock data
-const data1 = [
-  { value: 200, name: 'Dry Foods' },
-  { value: 50, name: 'VEG Products' },
-  { value: 100, name: 'Snack Foods' },
-  { value: 100, name: 'EU Products'},
-  { value: 111, name: 'Czech Farms' }
-];
-
 const ProductPage = () => {
   const { ref, width } = useElementSize();
   const {products} = useAppSelector((state)=>state.product.product)
+  const {subCategories} = useAppSelector((state)=>state.subCategory.subCategory)
   const [loading, setLoading] = useState<boolean>(false)
   const [activePage, setPage] = useState<number>(1);
   const uploadFile = useGetLinkFileToS3()
   const {mutate: importExcel, status } =useImportExcel()
   const {status: statusProduct} = useFindAllProduct(10,activePage)
   //mock data
+  const dataSubCategories = subCategories.map((subCategory)=>{
+    return {
+      value: subCategory.product_count,
+      name: subCategory.sub_category_name_vn.toUpperCase()
+    }
+  })
   const dataTab = [
     {
       id:1,
@@ -100,51 +98,51 @@ const ProductPage = () => {
   return (
     <div ref={ref}>
       <Stack>
-      <Group>
-        <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Sản Phẩm",icon:<IconBrandVinted size={20}/>})}>
-          Thêm Sản Phẩm
-        </Button>
-        <FileButton onChange={handleImport} accept=".xlsx, .xls" multiple={false}>
-          {(props) => (
-            <Button {...props} leftSection={<IconUpload size={20} />} variant='default' loading={loading}>
-              Import Excel
-            </Button>
-          )}
-        </FileButton>
-      </Group>
-      <Grid>
-        <Grid.Col span={6}>
-          <TotalCategoryPieChart title="Thống kê danh mục hàng"data={data1}/>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <LineProductChart/>
-        </Grid.Col>
-      </Grid>
-      <Container fluid size="responsive" w={width}>
-        <Card shadow="xs"radius="md">
-          <Tabs defaultValue={`${dataTab[0].name}`}>
-            <Tabs.List>
-              {
-                dataTab.map((tab)=>(
-                  <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
-                  {tab.name.toUpperCase()}
-                </Tabs.Tab>
-                ))
-              }
-            </Tabs.List>
-              {
-                dataTab.map((tab)=>(
-                  <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
-                    {tab.table}
-                  </Tabs.Panel>
-                ))
-              }
-            </Tabs>
-            <Divider/>
-            <Pagination total={3} value={activePage} onChange={handlePagination} mt="md" size="xs" disabled={loading}/>
-        </Card>
-      </Container>
-    </Stack>
+        <Group>
+          <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Sản Phẩm",icon:<IconBrandVinted size={20}/>})}>
+            Thêm Sản Phẩm
+          </Button>
+          <FileButton onChange={handleImport} accept=".xlsx, .xls" multiple={false}>
+            {(props) => (
+              <Button {...props} leftSection={<IconUpload size={20} />} variant='default' loading={loading}>
+                Import Excel
+              </Button>
+            )}
+          </FileButton>
+        </Group>
+        <Grid>
+          <Grid.Col span={6}>
+            <TotalCategoryPieChart title="Danh mục hàng hóa" data={dataSubCategories}/>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <LineProductChart title='Giá Hàng Hóa Nhập'/>
+          </Grid.Col>
+        </Grid>
+        <Container fluid size="responsive" w={width}>
+          <Card shadow="xs"radius="md">
+            <Tabs defaultValue={`${dataTab[0].name}`}>
+              <Tabs.List>
+                {
+                  dataTab.map((tab)=>(
+                    <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
+                    {tab.name.toUpperCase()}
+                  </Tabs.Tab>
+                  ))
+                }
+              </Tabs.List>
+                {
+                  dataTab.map((tab)=>(
+                    <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                      {tab.table}
+                    </Tabs.Panel>
+                  ))
+                }
+              </Tabs>
+              <Divider/>
+              <Pagination total={3} value={activePage} onChange={handlePagination} mt="md" size="xs" disabled={loading}/>
+          </Card>
+        </Container>
+      </Stack>
     </div>
   )
 }

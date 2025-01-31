@@ -12,6 +12,7 @@ export interface SubCategoryType {
     category_name_vn: string,
     dph: number,
     image_url: string
+    product_count: number
 }
 
 const getAllSubCategories = async () => {

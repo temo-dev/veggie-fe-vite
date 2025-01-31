@@ -98,10 +98,10 @@ const BrandPage = () => {
       </Group>
       <Grid>
         <Grid.Col span={6}>
-          <TotalCategoryPieChart title="Thống kê danh mục hàng"data={data1}/>
+          <TotalCategoryPieChart title="Danh Mục Hàng Hóa"data={data1}/>
         </Grid.Col>
         <Grid.Col span={6}>
-          <LineProductChart/>
+          <LineProductChart title='Số Lượng Hàng Hóa'/>
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>

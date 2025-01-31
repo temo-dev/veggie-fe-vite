@@ -121,10 +121,10 @@ const ExtensionsPage = () => {
       </div>
       <Grid>
         <Grid.Col span={6} order={{ base: 12, sm: 12, lg: 4 }}>
-          <TotalCategoryPieChart title='danh mục sản phẩm' data={data1}/>
+          <TotalCategoryPieChart title='Nhóm Sản Phẩm' data={data1}/>
         </Grid.Col>
         <Grid.Col span={6} order={{ base: 12, sm: 12, lg: 8 }}>
-          <TotalCategoryPieChart title='Nhãn Sản Phẩm' data={data2}/>
+          <TotalCategoryPieChart title='Danh Mục Sản Phẩm' data={data2}/>
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>

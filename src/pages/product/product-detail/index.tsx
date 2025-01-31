@@ -11,32 +11,15 @@ import {
   Breadcrumbs,
   Container,
   Tabs,
+  Divider,
 } from '@mantine/core';
-import { IconCategoryPlus, IconPlus, IconSalad } from '@tabler/icons-react';
+import { IconPlus, IconSalad } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
-
-const products = [
-  { product_name: 'demo-1', description: 'demo-1', image_url: '/logo/favicon-32x32.png' },
-  {
-    product_name: 'demo-2',
-    description: 'demo-2',
-    image_url: '/logo/favicon-32x32.png',
-  },
-  {
-    product_name: 'demo-3',
-    description: 'demo-3',
-    image_url: '/logo/favicon-32x32.png',
-  },
-];
-
-const stats = [
-  { value: '2', label: 'Nhà Cung Cấp' },
-  { value: '3', label: 'Khách Hàng' },
-];
+import { useAppSelector } from '@/store';
 
 //mock data
 const data1 = [
@@ -50,6 +33,12 @@ const data1 = [
 const ProductDetailPage = () => {
   const { ref, width } = useElementSize();
   const navigate = useNavigate();
+  const {currentProduct} = useAppSelector((state) => state.product.product);
+  //mock data
+  const stats = [
+    { value: '2', label: 'Nhà Cung Cấp' },
+    { value: '3', label: 'Khách Hàng' },
+  ];
   const dataTab = [
     {
       id: 1,
@@ -59,9 +48,10 @@ const ProductDetailPage = () => {
       table: <TableProduct data={[]} minWidth={width} />,
     },
   ];
+  //children components
   const items2 = [
-    { title: 'Sản Phẩm', href: '/brands' },
-    { title: 'Sản Phẩm Chi Tiết', href: '/brand-detail' },
+    { title: 'Sản Phẩm', href: '/products' },
+    { title: 'Sản Phẩm Chi Tiết', href: '/product-detail' },
   ].map((item, index) => (
     <Link
       to={item.href}
@@ -74,48 +64,49 @@ const ProductDetailPage = () => {
       {item.title}
     </Link>
   ));
-
   const items = stats.map((stat) => (
     <div key={stat.label}>
-      <Text ta="center" fz="lg" fw={500}>
+      <Text ta="center" fz="lg" fw={700}>
         {stat.value}
       </Text>
-      <Text ta="center" fz="sm" c="dimmed" lh={1}>
+      <Text ta="center" fz="sm" c="dimmed" lh={1} fw={700}>
         {stat.label}
       </Text>
     </div>
   ));
 
+  //render
   return (
     <div ref={ref}>
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
         <Group>
-          <Button size="md" variant="light" radius="md" leftSection={<IconPlus size={20} />}>
-            Thêm Sản Phẩm
+          <Button variant="default" leftSection={<IconPlus size={20} />}>
+            Thêm Giá Nhập
           </Button>
         </Group>
         <Card withBorder padding="md" radius="md" className={classes.card}>
           <Card.Section
             h={220}
             style={{
-              backgroundImage:
-                'url(https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80)',
+              background:
+                'url("/public/logo/logo-1.svg") no-repeat center center',
+              backgroundColor: '#f5f5f5',
             }}
           />
           <Group justify="space-between" mt="md">
             <Group>
               <div>
                 <Avatar
-                  src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png"
+                  src={currentProduct?.image_url}
                   size={120}
                   radius={120}
                   mx="auto"
                   mt={-90}
                   className={classes.avatar}
                 />
-                <Text ta="center" fz="lg" fw={500} mt="sm">
-                  Tên Sản Phẩm
+                <Text ta="center" fz="lg" fw={700} mt="sm">
+                  {currentProduct?.product_code}
                 </Text>
               </div>
               <Group mt="md" justify="center" gap={30}>
@@ -126,10 +117,10 @@ const ProductDetailPage = () => {
         </Card>
         <Grid>
           <Grid.Col span={6}>
-            <TotalCategoryPieChart title="Thống kê danh mục hàng" data={data1} />
+            <TotalCategoryPieChart title="Nhà Cung Cấp" data={data1} />
           </Grid.Col>
           <Grid.Col span={6}>
-            <LineProductChart />
+            <LineProductChart title='Theo dõi giá nhập'/>
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>

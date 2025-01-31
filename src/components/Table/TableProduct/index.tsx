@@ -7,6 +7,7 @@ import { IconEdit, IconTrash } from '@tabler/icons-react';
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {Image} from '@mantine/core'
+import useProduct from '@/utils/hooks/useProduct';
 
 
 interface PropsInterface{
@@ -18,45 +19,46 @@ const TableProduct = (prop:PropsInterface) => {
   const {data,minWidth} = prop
   const navigate = useNavigate();
   const {mutate:deleteProductById, status} = useDeleteProductById()
-    const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
-    const {mutate: deleteFileS3} = useDeleteFileOnS3()
-    useEffect(() => {
-      if (status === 'success' && nameFileS3deleted) {
-        deleteFileS3(nameFileS3deleted)
-      }else if(status === 'error'){
-        setNameFileS3deleted(null)
-      }
-    }, [status])
-    
-    //logic
-    const handleDeleteTag = (el:ProductType) => {
-      let nameImage = el.image_url.split('amazonaws.com/')[1]
-      setNameFileS3deleted(nameImage)
-      deleteProductById(el.product_id)
+  const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
+  const {mutate: deleteFileS3} = useDeleteFileOnS3()
+  const {updateCurrentProduct} = useProduct()
+  //effect
+  useEffect(() => {
+    if (status === 'success' && nameFileS3deleted) {
+      deleteFileS3(nameFileS3deleted)
+    }else if(status === 'error'){
+      setNameFileS3deleted(null)
     }
-    const handleShowImage = (el: ProductType) => {
-      modals.open({
-        title: <Title order={6}>{el.product_code.toUpperCase()}</Title>,
-        children: <Image
-        radius="md"
-        src={el.image_url ? el.image_url : "/public/logo/favicon-32x32.png"}
-      />,
-        size:"auto",
-      });
-    }
+  }, [status])
+  //logic
+  const handleDeleteTag = (el:ProductType) => {
+    let nameImage = el.image_url.split('amazonaws.com/')[1]
+    setNameFileS3deleted(nameImage)
+    deleteProductById(el.product_id)
+  }
+  const handleShowImage = (el: ProductType) => {
+    modals.open({
+      title: <Title order={6}>{el.product_code.toUpperCase()}</Title>,
+      children: <Image
+      radius="md"
+      src={el.image_url ? el.image_url : "/public/logo/favicon-32x32.png"}
+    />,
+      size:"auto",
+    });
+  }
   //component
   const rows = data?.map((el,key) => (
     <Table.Tr key={key}>
-      <Table.Td>{key+1}</Table.Td>
       <Table.Td>
         <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green" onClick={()=>handleShowImage(el)}/>
       </Table.Td>
       <Table.Td>{
             <Link to={"/products/product-detail"} onClick={(event) => {
-                event.preventDefault();
-                navigate("/products/product-detail");
-                }}>
-                {el.product_code}
+              event.preventDefault();
+              navigate("/products/product-detail");
+              updateCurrentProduct(el)
+            }}>
+              {el.product_code}
             </Link>
         }</Table.Td>
       <Table.Td>{el.product_name_vn}</Table.Td>
@@ -68,9 +70,6 @@ const TableProduct = (prop:PropsInterface) => {
       <Table.Td>{el.total_quantity}</Table.Td>
       <Table.Td>
         <Group>
-          <ActionIcon variant="filled" aria-label="chỉnh sửa">
-            <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-          </ActionIcon>
           <ActionIcon variant="filled" color="red" aria-label="xóa" onClick={()=>handleDeleteTag(el)}>
             <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>
@@ -83,7 +82,6 @@ const TableProduct = (prop:PropsInterface) => {
       <Table striped withTableBorder withColumnBorders stickyHeader>
         <Table.Thead className="bg-green-600 h-10 text-white">
           <Table.Tr>
-            <Table.Th>Thứ Tự</Table.Th>
             <Table.Th>Hình Ảnh</Table.Th>
             <Table.Th>Code Sản Phẩm</Table.Th>
             <Table.Th>Tên Việt Nam</Table.Th>

@@ -5,10 +5,12 @@ import { ProductType } from "@/services/react-query/product/use-find-all-product
 
 export interface ProductState {
     products: ProductType[],
+    currentProduct: ProductType | null
 }
 
 const initialState:ProductState = {
-    products:[]
+    products:[],
+    currentProduct: null
 }
 
 const productSlice = createSlice({
@@ -19,8 +21,11 @@ const productSlice = createSlice({
             const {data} = action.payload
             state.products = data
         },
+        setCurrentProduct(state, action){
+            state.currentProduct = action.payload
+        }
     }
 })
 
-export const { setAllProducts } = productSlice.actions
+export const { setAllProducts, setCurrentProduct } = productSlice.actions
 export default productSlice.reducer
