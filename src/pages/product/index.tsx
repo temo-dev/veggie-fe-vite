@@ -1,5 +1,5 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Tabs, Menu, FileButton, UnstyledButton, Divider } from '@mantine/core'
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Tabs, Menu, FileButton, UnstyledButton, Divider, Pagination } from '@mantine/core'
 import { IconBrandVinted, IconCategoryPlus, IconDownload, IconPlus, IconUpload } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { ImportExcelType, useImportExcel } from '@/services/react-query/import-excel/use-import-exel';
 import { notifications } from '@mantine/notifications';
+import { useFindAllProduct } from '@/services/react-query/product/use-find-all-product';
 
 //mock data
 const data1 = [
@@ -26,8 +27,11 @@ const ProductPage = () => {
   const { ref, width } = useElementSize();
   const {products} = useAppSelector((state)=>state.product.product)
   const [loading, setLoading] = useState<boolean>(false)
+  const [activePage, setPage] = useState<number>(1);
   const uploadFile = useGetLinkFileToS3()
   const {mutate: importExcel, status } =useImportExcel()
+  const {status: statusProduct} = useFindAllProduct(10,activePage)
+  //mock data
   const dataTab = [
     {
       id:1,
@@ -37,36 +41,42 @@ const ProductPage = () => {
       table: <TableProduct data={products} minWidth={width}/>
     },
   ]
+  //effect
   useEffect(()=>{
-      if(status === 'success' || status === 'error'){
+      if(
+          status === 'success' 
+          || status === 'error' 
+          || statusProduct === 'success' || 
+          statusProduct === 'error'
+        ){
         setLoading(false)
       }
     },[status])
-  
-    const handleImport = async (file: File | null) => {
-      let value: ImportExcelType ={
-        to_table:"product",
-        excel_url:""
-      }
-      setLoading(true)
-      try {
-        if(file){
-          await uploadFile.mutateAsync(file)
-          .then((res) => {
-            let url = res.url.split("?")[0]
-            importExcel({...value, excel_url:url})
-          })
-        }
-      } catch (error) {
-        notifications.show({
-            title: 'Import Excel hiệu xảy ra lỗi',
-            message: String(error),
-            color: 'red',
-            autoClose: 5000,
-        })
-        setLoading(false)
-      }
+  //logic
+  const handleImport = async (file: File | null) => {
+    let value: ImportExcelType ={
+      to_table:"product",
+      excel_url:""
     }
+    setLoading(true)
+    try {
+      if(file){
+        await uploadFile.mutateAsync(file)
+        .then((res) => {
+          let url = res.url.split("?")[0]
+          importExcel({...value, excel_url:url})
+        })
+      }
+    } catch (error) {
+      notifications.show({
+          title: 'Import Excel hiệu xảy ra lỗi',
+          message: String(error),
+          color: 'red',
+          autoClose: 5000,
+      })
+      setLoading(false)
+    }
+  }
   const openModal = (el:any) => {
     modals.open({
       title: (
@@ -81,6 +91,12 @@ const ProductPage = () => {
       size:"auto",
     });
   }
+  const handlePagination = (page: number) => {
+    if (!loading) {
+      setPage(page)
+    }
+  }
+  //render
   return (
     <div ref={ref}>
       <Stack>
@@ -105,27 +121,29 @@ const ProductPage = () => {
         </Grid.Col>
       </Grid>
       <Container fluid size="responsive" w={width}>
-              <Card shadow="xs"radius="md">
-                <Tabs defaultValue={`${dataTab[0].name}`}>
-                  <Tabs.List>
-                    {
-                      dataTab.map((tab)=>(
-                        <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
-                        {tab.name.toUpperCase()}
-                      </Tabs.Tab>
-                      ))
-                    }
-                  </Tabs.List>
-                    {
-                      dataTab.map((tab)=>(
-                        <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
-                          {tab.table}
-                        </Tabs.Panel>
-                      ))
-                    }
-                  </Tabs>
-              </Card>
-            </Container>
+        <Card shadow="xs"radius="md">
+          <Tabs defaultValue={`${dataTab[0].name}`}>
+            <Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Tab value={tab.name} key={tab.id} leftSection={tab.icon} className='font-bold'>
+                  {tab.name.toUpperCase()}
+                </Tabs.Tab>
+                ))
+              }
+            </Tabs.List>
+              {
+                dataTab.map((tab)=>(
+                  <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
+                    {tab.table}
+                  </Tabs.Panel>
+                ))
+              }
+            </Tabs>
+            <Divider/>
+            <Pagination total={3} value={activePage} onChange={handlePagination} mt="md" size="xs" disabled={loading}/>
+        </Card>
+      </Container>
     </Stack>
     </div>
   )

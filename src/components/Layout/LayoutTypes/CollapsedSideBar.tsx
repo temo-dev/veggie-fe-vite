@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Card, Center, Stack, Tooltip} from '@mantine/core';
+import {useEffect, useState} from 'react';
+import {Center, Stack, Tooltip} from '@mantine/core';
 import {
   IconLogout,
 } from '@tabler/icons-react';
@@ -11,20 +11,6 @@ import useAuth from "@/utils/hooks/useAuth";
 import CollapsedSideBarUserPopOver from "@/components/UserPopOver/CollapsedSideBarUserPopOver";
 import AuthorityCheck from '@/route/AuthorityCheck';
 import {useAppSelector} from "@/store";
-import useCurrency from '@/utils/hooks/useCurrency';
-import useTag from '@/utils/hooks/useTag';
-import useAttPackage from '@/utils/hooks/useAttPackages';
-import useCategory from '@/utils/hooks/useCategory';
-import { useFindAllCurrencies } from '@/services/react-query/currency/use-find-all-currency';
-import { useFindAllTag } from '@/services/react-query/tag/use-find-all-tag';
-import { useFindAllPackages } from '@/services/react-query/attPackage/use-find-all-package';
-import { useFindAllCategories } from '@/services/react-query/category/use-find-all-category';
-import { useFindAllSubCategories } from '@/services/react-query/subCategory/use-find-subCategory';
-import useSubCategory from '@/utils/hooks/useSubCategory';
-import useBrand from '@/utils/hooks/useBrand';
-import { useFindAllBrands } from '@/services/react-query/brand/use-find-all-brand';
-import { useFindAllSuppliers } from '@/services/react-query/supplier/use-find-all-supplier';
-import useSupplier from '@/utils/hooks/useSupplier';
 
 function CollapsedSideBarBottomContent() {
   const {signOut} = useAuth()

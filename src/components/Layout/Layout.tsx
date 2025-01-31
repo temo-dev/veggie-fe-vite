@@ -45,10 +45,9 @@ export function Layout() {
   const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
   const {data:brands, isSuccess:isFindAllBrands} = useFindAllBrands()
   const {data:suppliers,isSuccess:isFindAllSuppliers} = useFindAllSuppliers()
-  const {data:products,isSuccess:isFindAllProducts} = useFindAllProduct();
   //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers && isFindAllProducts){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
       updateCurrencies(currencies)
       updateTags(tags)
       updateAttPackages(packages)
@@ -56,9 +55,8 @@ export function Layout() {
       updateSubCategories(sucCategories)
       updateBrands(brands)
       updateSuppliers(suppliers)
-      updateProducts(products)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers,isFindAllProducts])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
 
   useLocale()
   const AppLayout = useMemo(() => {

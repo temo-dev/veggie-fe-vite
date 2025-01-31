@@ -1,14 +1,16 @@
 import { useDeleteProductById } from '@/services/react-query/product/use-delete-product';
 import { ProductType } from '@/services/react-query/product/use-find-all-product';
 import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
-import { ActionIcon, Avatar, Group, Table } from '@mantine/core'
+import { ActionIcon, Avatar, Group, Table, Title } from '@mantine/core'
+import { modals } from '@mantine/modals';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import {Image} from '@mantine/core'
 
 
 interface PropsInterface{
-  data: ProductType[],
+  data: ProductType[] | [],
   minWidth: number
 }
 
@@ -32,12 +34,22 @@ const TableProduct = (prop:PropsInterface) => {
       setNameFileS3deleted(nameImage)
       deleteProductById(el.product_id)
     }
+    const handleShowImage = (el: ProductType) => {
+      modals.open({
+        title: <Title order={6}>{el.product_code.toUpperCase()}</Title>,
+        children: <Image
+        radius="md"
+        src={el.image_url ? el.image_url : "/public/logo/favicon-32x32.png"}
+      />,
+        size:"auto",
+      });
+    }
   //component
   const rows = data?.map((el,key) => (
     <Table.Tr key={key}>
       <Table.Td>{key+1}</Table.Td>
       <Table.Td>
-        <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green"/>
+        <Avatar src={el.image_url ? el.image_url : "/logo/favicon-32x32.png"} alt="category" radius="sm" color="green" onClick={()=>handleShowImage(el)}/>
       </Table.Td>
       <Table.Td>{
             <Link to={"/products/product-detail"} onClick={(event) => {

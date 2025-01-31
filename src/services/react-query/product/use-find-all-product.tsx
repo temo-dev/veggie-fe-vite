@@ -1,6 +1,8 @@
 import { API_ENDPOINTS } from "@/services/utils/api-endpoints";
 import http from "@/services/utils/http";
-import {useQuery} from "react-query";
+import useProduct from "@/utils/hooks/useProduct";
+import { notifications } from "@mantine/notifications";
+import {useQuery,QueryFunctionContext} from "react-query";
 
 export interface ProductType {
     product_id: string,
@@ -38,11 +40,26 @@ export interface ProductType {
     brand_id: string,
 }
 
-const getAllProducts = async () => {
-    const res = await http.get(API_ENDPOINTS.PRODUCT);
+const getAllProducts = async ({ queryKey }: QueryFunctionContext<[string, number, number]>): Promise<ProductType> => {
+    const [_,limit,page] = queryKey;
+    const res = await http.get(`${API_ENDPOINTS.PRODUCT}?limit=${limit}&page=${page}`);
     return res.data;
 }
 
-export const useFindAllProduct = () => {
-    return useQuery([API_ENDPOINTS.PRODUCT],getAllProducts)
+export const useFindAllProduct = (limit: number, page: number) => {
+    const {updateProducts} = useProduct()
+    return useQuery([API_ENDPOINTS.PRODUCT, limit, page], getAllProducts,{
+        keepPreviousData: true,
+        onSuccess: (data) => {
+            updateProducts(data)
+        },
+        onError: (error) => {
+            notifications.show({
+                title: 'Lấy sản phẩm xảy ra lỗi',
+                message: String(error),
+                color: 'red',
+                autoClose: 5000,
+            })
+        }
+    })
 }
