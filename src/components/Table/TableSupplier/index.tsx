@@ -37,7 +37,6 @@ const TableSupplier = (prop: PropsInterface) => {
   //component
   const rows = data?.map((el, key) => (
     <Table.Tr key={key}>
-      <Table.Td>{key + 1}</Table.Td>
       <Table.Td>{el.supplier_code}</Table.Td>
       <Table.Td>
         <Avatar
@@ -63,7 +62,7 @@ const TableSupplier = (prop: PropsInterface) => {
       </Table.Td>
       <Table.Td>{el.outstanding_balance}</Table.Td>
       <Table.Td>{el.currency_id}</Table.Td>
-      <Table.Td>{el.duration_pakage}</Table.Td>
+      <Table.Td>{`${el.duration_package} ngày`}</Table.Td>
       <Table.Td>{el.email_purchase}</Table.Td>
       <Table.Td>{el.contact_info}</Table.Td>
       <Table.Td>{el.note}</Table.Td>
@@ -71,9 +70,6 @@ const TableSupplier = (prop: PropsInterface) => {
       <Table.Td>{el.status}</Table.Td>
       <Table.Td>
         <Group>
-          <ActionIcon variant="filled" aria-label="chỉnh sửa">
-            <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-          </ActionIcon>
           <ActionIcon
             variant="filled"
             color="red"
@@ -91,7 +87,6 @@ const TableSupplier = (prop: PropsInterface) => {
       <Table striped withTableBorder withColumnBorders stickyHeader>
         <Table.Thead>
           <Table.Tr className="bg-green-600 h-10 text-white">
-            <Table.Th>Thứ Tự</Table.Th>
             <Table.Th>Mã Nhà Cung Cấp</Table.Th>
             <Table.Th>Hình Ảnh</Table.Th>
             <Table.Th>Tên Nhà Cung Cấp</Table.Th>

@@ -13,7 +13,7 @@ export interface SupplierType {
     note: string,
     outstanding_balance: number,
     status:'active' | 'inactive',
-    duration_pakage: number,
+    duration_package: number,
     contact_info: string,
     rate: number,
     image_url: string

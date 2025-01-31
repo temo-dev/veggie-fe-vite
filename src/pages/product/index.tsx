@@ -89,11 +89,6 @@ const ProductPage = () => {
       size:"auto",
     });
   }
-  const handlePagination = (page: number) => {
-    if (!loading) {
-      setPage(page)
-    }
-  }
   //render
   return (
     <div ref={ref}>
@@ -139,7 +134,7 @@ const ProductPage = () => {
                 }
               </Tabs>
               <Divider/>
-              <Pagination total={3} value={activePage} onChange={handlePagination} mt="md" size="xs" disabled={loading}/>
+              <Pagination total={3} value={activePage} onChange={setPage} mt="md" size="xs" disabled={loading}/>
           </Card>
         </Container>
       </Stack>

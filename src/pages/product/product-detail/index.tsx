@@ -90,7 +90,7 @@ const ProductDetailPage = () => {
             h={220}
             style={{
               background:
-                'url("/public/logo/logo-1.svg") no-repeat center center',
+                'url("/logo/logo-1.svg") no-repeat center center',
               backgroundColor: '#f5f5f5',
             }}
           />

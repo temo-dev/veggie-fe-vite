@@ -1,5 +1,5 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Tabs, Menu, FileButton, UnstyledButton, Divider } from '@mantine/core'
+import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Input, Tabs, Menu, FileButton, UnstyledButton, Divider, Pagination } from '@mantine/core'
 import { IconBrandVinted, IconBuildingFactory2, IconCategoryPlus, IconDownload, IconPlus, IconSearch, IconUpload } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
@@ -26,6 +26,7 @@ const SupplierPage = () => {
   const { ref, width } = useElementSize();
   const {suppliers} = useAppSelector((state) => state.supplier.supplier)
   const [loading, setLoading] = useState<boolean>(false)
+  const [activePage, setPage] = useState<number>(1);
   const uploadFile = useGetLinkFileToS3()
   const {mutate: importExcel, status } =useImportExcel()
   const dataTab = [
@@ -126,6 +127,8 @@ const SupplierPage = () => {
                 ))
               }
             </Tabs>
+            <Divider/>
+            <Pagination total={3} value={activePage} onChange={setPage} mt="md" size="xs" disabled={loading}/>
         </Card>
       </Container>
     </Stack>

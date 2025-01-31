@@ -95,8 +95,9 @@ const SupplierDetailPage = () => {
           <Card.Section
             h={220}
             style={{
-              backgroundImage:
-                'url(https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80)',
+              background:
+              'url("/logo/logo-1.svg") no-repeat center center',
+              backgroundColor: '#f5f5f5',
             }}
           />
           <Group justify="space-between" mt="md">
@@ -122,10 +123,10 @@ const SupplierDetailPage = () => {
         </Card>
         <Grid>
           <Grid.Col span={6}>
-            <TotalCategoryPieChart title="Thống kê danh mục hàng" data={data1} />
+            <TotalCategoryPieChart title="Danh Mục" data={data1} />
           </Grid.Col>
           <Grid.Col span={6}>
-            <LineProductChart />
+            <LineProductChart title='Số Lượng Hàng Nhập'/>
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>
