@@ -116,7 +116,7 @@ const BrandDetailPage = () => {
             <TotalCategoryPieChart title="Thống kê danh mục hàng" data={data1} />
           </Grid.Col>
           <Grid.Col span={6}>
-            <LineProductChart />
+            <LineProductChart title="Danh Mục"/>
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>
