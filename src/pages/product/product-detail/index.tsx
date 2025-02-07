@@ -12,6 +12,7 @@ import {
   Container,
   Tabs,
   Divider,
+  Title,
 } from '@mantine/core';
 import { IconPlus, IconSalad } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
@@ -20,6 +21,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
+import { modals } from '@mantine/modals';
+import { ProductType } from '@/services/react-query/product/use-find-all-product';
+import FormUpdateProduct from '@/components/Form/FormUpdateProduct';
+import { update } from 'lodash';
 
 //mock data
 const data1 = [
@@ -75,14 +80,32 @@ const ProductDetailPage = () => {
     </div>
   ));
 
+  const updateProduct = () => {
+    modals.open({
+      title: (
+        <Group>
+          <Avatar variant='transparent'>
+            <IconSalad size={20}/>
+          </Avatar>
+          <Title order={5} >{`Update Sản Phẩm ${currentProduct?.product_code}`}</Title>
+        </Group>
+      ),
+      children: <FormUpdateProduct data={currentProduct}/>,
+      size:"auto",
+    });
+  }
+
   //render
   return (
     <div ref={ref}>
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
         <Group>
+          <Button variant="default" leftSection={<IconPlus size={20} />} onClick={updateProduct}>
+            Update Sản Phẩm 
+          </Button>
           <Button variant="default" leftSection={<IconPlus size={20} />}>
-            Thêm Giá Nhập
+            Update Giá Bán
           </Button>
         </Group>
         <Card withBorder padding="md" radius="md" className={classes.card}>

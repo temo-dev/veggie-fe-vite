@@ -7,8 +7,9 @@ import { useMutation, useQueryClient } from "react-query";
 export interface CreatePackageInput {
     attitude_product_package_code: string;
     package_cubic?: number;
+    package_len: string;
     package_height?: number;
-    package_length: string;
+    package_length?: string;
     package_width?: number;
 }
 

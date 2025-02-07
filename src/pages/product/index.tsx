@@ -1,6 +1,6 @@
 import classes from './index.module.css'
-import { Card, Avatar, Group, Button,Text, Grid, Stack, Container, Title, Tabs, Menu, FileButton, UnstyledButton, Divider, Pagination } from '@mantine/core'
-import { IconBrandVinted, IconCategoryPlus, IconDownload, IconPlus, IconUpload } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button, Grid, Stack, Container, Title, Tabs, FileButton, Divider, Pagination } from '@mantine/core'
+import { IconBrandVinted, IconCategoryPlus, IconPlus, IconUpload } from '@tabler/icons-react';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';

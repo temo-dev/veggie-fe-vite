@@ -32,13 +32,13 @@ const TableProduct = (prop:PropsInterface) => {
   }, [status])
   //logic
   const handleDeleteTag = (el:ProductType) => {
-    let nameImage = el.image_url.split('amazonaws.com/')[1]
+    let nameImage = el?.image_url.split('amazonaws.com/')[1]
     setNameFileS3deleted(nameImage)
     deleteProductById(el.product_id)
   }
   const handleShowImage = (el: ProductType) => {
     modals.open({
-      title: <Title order={6}>{el.product_code.toUpperCase()}</Title>,
+      title: <Title order={6}>{el?.product_code.toUpperCase()}</Title>,
       children: <Image
       radius="md"
       src={el.image_url ? el.image_url : "/public/logo/favicon-32x32.png"}

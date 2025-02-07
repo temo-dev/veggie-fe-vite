@@ -7,11 +7,12 @@ import { useState } from 'react';
 interface DropZoneProps {
   dropzone?: Partial<DropzoneProps>
   handlerDrop: (file:File) => void
+  defaultImage?: string | null
 }
 
 export function DropZoneImage(props: DropZoneProps) {
-    const {dropzone, handlerDrop} = props
-    const [preview, setPreview] = useState<string>('')
+    const {dropzone, handlerDrop, defaultImage} = props
+    const [preview, setPreview] = useState<string>(defaultImage || '')
     const handleDrop = (files: File[]) => {
       let value: any = files[0]
       if(value){

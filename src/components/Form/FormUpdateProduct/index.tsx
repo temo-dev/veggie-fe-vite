@@ -9,19 +9,23 @@ import { DateInput } from '@mantine/dates';
 import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { DropZoneImage } from '@/components/DropZone';
 import { notifications } from '@mantine/notifications';
-import { CreateProductInput, useCreateNewProduct } from '@/services/react-query/product/use-create-product';
 import { useAppSelector } from '@/store';
 import { ProductType } from '@/services/react-query/product/use-find-all-product';
+import { useUpdateProduct } from '@/services/react-query/product/use-update-product';
 
+interface PropsInput {
+    data: ProductType | null
+}
 
-const FormCreateProduct = () => {
-  const {mutate:createNewProduct, status} = useCreateNewProduct()
-  const [loading, setLoading] = useState<boolean>(false)
-  const [fileInput, setFileInput] = useState<File | null>(null)
-  const uploadFile = useGetLinkFileToS3();
-  const {brands} = useAppSelector(state => state.brand.brand)
-  const{subCategories} = useAppSelector(state => state.subCategory.subCategory)
-  const {attPackages} = useAppSelector(state => state.attpackage.attPackage)
+const FormUpdateProduct = (props: PropsInput) => {
+    const {data} = props
+    const {mutate:updateProduct, status} = useUpdateProduct()
+    const [loading, setLoading] = useState<boolean>(false)
+    const [fileInput, setFileInput] = useState<File | null>(null)
+    const uploadFile = useGetLinkFileToS3();
+    const {brands} = useAppSelector(state => state.brand.brand)
+    const{subCategories} = useAppSelector(state => state.subCategory.subCategory)
+    const {attPackages} = useAppSelector(state => state.attpackage.attPackage)
 
   const dataSelectAttPackages = attPackages?.map((el) => {
     return {
@@ -143,51 +147,52 @@ const FormCreateProduct = () => {
   });
   const form = useForm({
       initialValues: {
-        attitude_product_package_id: '',
-        brand_id: '',
-        cubic: 0,
-        description: '',
-        dph: 0,
-        image_url: '',
-        is_fragility: false,
-        is_stackability: false,
-        len:'',
-        height: 0,
-        length: 0,
-        width: 0,
-        maximum_order_quantity: 0,
-        minimum_order_quantity: 0,
-        net_weight: 0,
-        gross_weight: 0,
-        note: '',
-        pre_order: true,
-        product_code: '',
-        product_name_de: '',
-        product_name_eng: '',
-        product_name_th: '',
-        product_name_vn: '',
-        product_name_cz: '',
-        reorder_level: 0,
-        season: '',
-        shelf_life: 0,
-        status: '',
-        sub_category_id: '',
-        temperature_requirement: 0,
-        total_quantity: 0,
+        product_id: data?.product_id || '',
+        attitude_product_package_id: data?.attitude_product_package_id || '',
+        brand_id: data?.brand_id || '',
+        cubic: data?.cubic || 0,
+        description: data?.description || '',
+        dph: data?.dph || 0,
+        image_url: data?.image_url || '',
+        is_fragility: data?.is_fragility || false,
+        is_stackability: data?.is_stackability || false,
+        len:data?.len || '',
+        height: data?.height || 0,
+        length: data?.length || 0,
+        width: data?.width || 0,
+        maximum_order_quantity: data?.maximum_order_quantity || 0,
+        minimum_order_quantity: data?.minimum_order_quantity || 0,
+        net_weight: data?.net_weight || 0,
+        gross_weight: data?.gross_weight || 0,
+        note: data?.note || '',
+        pre_order: data?.pre_order || false,
+        product_code: data?.product_code || '',
+        product_name_de: data?.product_name_de || '',
+        product_name_eng: data?.product_name_eng || '',
+        product_name_th: data?.product_name_th || '',
+        product_name_vn: data?.product_name_vn || '',
+        product_name_cz: data?.product_name_cz || '',
+        reorder_level: data?.reorder_level || 0,
+        season: data?.season || '',
+        shelf_life: data?.shelf_life || 0,
+        status: data?.status || '',
+        sub_category_id: data?.sub_category_id || '',
+        temperature_requirement: data?.temperature_requirement || 0,
+        total_quantity: data?.total_quantity || 0,
       },
       validate: yupResolver(schema),
     });
-  const handleSubmit = async (value:CreateProductInput) => {
+  const handleSubmit = async (value:ProductType) => {
     setLoading(true)
     try {
       if(fileInput){
         await uploadFile.mutateAsync(fileInput)
         .then((res) => {
           let url = res.url.split("?")[0]
-          createNewProduct({...value, image_url:url})
+          updateProduct({...value, image_url:url})
         })
       }else{
-        createNewProduct(value)
+        updateProduct(value)
       }
     } catch (error) {
         notifications.show({
@@ -301,14 +306,14 @@ const FormCreateProduct = () => {
           </Grid.Col>
         </Grid>
         <div className='max-w-4xl'>
-          <DropZoneImage handlerDrop={dropFile}/>
+          <DropZoneImage handlerDrop={dropFile} defaultImage={data?.image_url}/>
         </div>
         <Button loading={loading} disabled={loading} type="submit" fullWidth className='mt-2' leftSection={<IconPlus style={{ width: '90%', height: '90%' }} stroke={2}/>}>
-            Tạo Nhãn Sản Phẩm Mới
+            Update Sản Phẩm
           </Button>
       </form>
     </Box>
   )
 }
 
-export default FormCreateProduct
+export default FormUpdateProduct

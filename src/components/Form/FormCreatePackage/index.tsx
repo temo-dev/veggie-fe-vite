@@ -24,7 +24,7 @@ const FormCreatePackage = () => {
       attitude_product_package_code: yup
         .string()
         .required('Hãy điền mã thùng sản phẩm'),
-      package_length: yup
+      package_len: yup
         .string()
         .required('Hãy điền đơn vị tính'),
       package_cubic: yup
@@ -45,12 +45,18 @@ const FormCreatePackage = () => {
         .transform((_, originalValue) => {
           // Chuyển đổi chuỗi thành số
           return originalValue ? parseFloat(originalValue) : null;
+        }),
+      package_length: yup
+        .number()
+        .transform((_, originalValue) => {
+          // Chuyển đổi chuỗi thành số
+          return originalValue ? parseFloat(originalValue) : null;
         })
     });
   const form = useForm({
       initialValues: {
         attitude_product_package_code:'',
-        package_length: 'cm',
+        package_len: 'cm',
       },
       validate: yupResolver(schema),
     });
@@ -63,10 +69,11 @@ const FormCreatePackage = () => {
       <form onSubmit={form.onSubmit((value) => handleSubmit(value))}>
         <Stack>
           <TextInput label="*Mã Thùng Sản Phẩm" placeholder="do mình tự quy định" classNames={classes} {...form.getInputProps('attitude_product_package_code')} name={'attitude_product_package_code'}/>
-          <TextInput label="*Đơn vị tính" placeholder="cm" classNames={classes} {...form.getInputProps('package_length')} name={'package_length'}/>
+          <TextInput label="*Đơn vị tính" placeholder="cm" classNames={classes} {...form.getInputProps('package_len')} name={'package_len'}/>
           <NumberInput label="*Cubic" placeholder="25" classNames={classes} {...form.getInputProps('package_cubic')} name={'package_cubic'}/>
           <NumberInput label="Chiều Cao" placeholder="25" classNames={classes} {...form.getInputProps('package_height')} name={'package_height'}/>
-          <NumberInput label="Chiều Rộng" placeholder="25" classNames={classes} {...form.getInputProps('package_width')} name={'package_width'}/>
+          <NumberInput label="Chiều Dài" placeholder="25" classNames={classes} {...form.getInputProps('package_width')} name={'package_width'}/>
+          <NumberInput label="Chiều Rộng" placeholder="25" classNames={classes} {...form.getInputProps('package_length')} name={'package_length'}/>
         </Stack>
         <Button loading={loading} disabled={loading} type="submit" fullWidth className='mt-2' leftSection={<IconPlus style={{ width: '90%', height: '90%' }} stroke={2}/>}>
             Tạo Loại Thùng Mới Cho Sản Phẩm
