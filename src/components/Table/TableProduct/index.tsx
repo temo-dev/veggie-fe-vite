@@ -1,13 +1,16 @@
 import { useDeleteProductById } from '@/services/react-query/product/use-delete-product';
 import { ProductType } from '@/services/react-query/product/use-find-all-product';
 import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
-import { ActionIcon, Avatar, Group, Table, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Group, Input, Table, Title } from '@mantine/core'
 import { modals } from '@mantine/modals';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
-import React, { useEffect } from 'react'
+import { IconEdit, IconSearch, IconTrash } from '@tabler/icons-react';
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {Image} from '@mantine/core'
+import { getHotkeyHandler } from '@mantine/hooks';
 import useProduct from '@/utils/hooks/useProduct';
+import { useFindAllProductByCode } from '@/services/react-query/product/use-find-product-by-code';
+import { c } from 'vite/dist/node/types.d-aGj9QkWt';
 
 
 interface PropsInterface{
@@ -19,9 +22,12 @@ const TableProduct = (prop:PropsInterface) => {
   const {data,minWidth} = prop
   const navigate = useNavigate();
   const {mutate:deleteProductById, status} = useDeleteProductById()
-  const [nameFileS3deleted, setNameFileS3deleted] = React.useState<string | null>(null)
+  const [nameFileS3deleted, setNameFileS3deleted] = useState<string | null>(null)
+  const [valueSearch, setValueSearch] = useState<string>('')
   const {mutate: deleteFileS3} = useDeleteFileOnS3()
   const {updateCurrentProduct} = useProduct()
+  const {mutate:findAllProductByCode} = useFindAllProductByCode()
+
   //effect
   useEffect(() => {
     if (status === 'success' && nameFileS3deleted) {
@@ -45,6 +51,16 @@ const TableProduct = (prop:PropsInterface) => {
     />,
       size:"auto",
     });
+  }
+
+  const handleSetValueSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const value = event.target.value;
+    setValueSearch(value)
+  }
+  const handleSearch = () => {
+    findAllProductByCode({code:valueSearch})
+    setValueSearch('')
   }
   //component
   const rows = data?.map((el,key) => (
@@ -78,25 +94,32 @@ const TableProduct = (prop:PropsInterface) => {
     </Table.Tr>
   ));
   return (
-    <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
-      <Table striped withTableBorder withColumnBorders stickyHeader>
-        <Table.Thead className="bg-green-600 h-10 text-white">
-          <Table.Tr>
-            <Table.Th>Hình Ảnh</Table.Th>
-            <Table.Th>Code Sản Phẩm</Table.Th>
-            <Table.Th>Tên Việt Nam</Table.Th>
-            <Table.Th>Tên Tiếng Anh</Table.Th>
-            <Table.Th>Tên Đức</Table.Th>
-            <Table.Th>Tên Thái Lan</Table.Th>
-            <Table.Th>Tên Thương Hiệu</Table.Th>
-            <Table.Th>Nhà cung cấp nhiều nhất</Table.Th>
-            <Table.Th>Tổng sản phẩm</Table.Th>
-            <Table.Th>Hành Động</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </Table.ScrollContainer>
+    <>
+      <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm Kiếm Sản Phẩm' className='my-2' 
+        onChange={handleSetValueSearch} 
+        onKeyDown={getHotkeyHandler([
+          ['Enter',handleSearch]
+        ])}/>
+      <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
+        <Table striped withTableBorder withColumnBorders stickyHeader>
+          <Table.Thead className="bg-green-600 h-10 text-white">
+            <Table.Tr>
+              <Table.Th>Hình Ảnh</Table.Th>
+              <Table.Th>Code Sản Phẩm</Table.Th>
+              <Table.Th>Tên Việt Nam</Table.Th>
+              <Table.Th>Tên Tiếng Anh</Table.Th>
+              <Table.Th>Tên Đức</Table.Th>
+              <Table.Th>Tên Thái Lan</Table.Th>
+              <Table.Th>Tên Thương Hiệu</Table.Th>
+              <Table.Th>Nhà cung cấp nhiều nhất</Table.Th>
+              <Table.Th>Tổng sản phẩm</Table.Th>
+              <Table.Th>Hành Động</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </>
   )
 }
 

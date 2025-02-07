@@ -13,6 +13,7 @@ import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { ImportExcelType, useImportExcel } from '@/services/react-query/import-excel/use-import-exel';
 import { notifications } from '@mantine/notifications';
 import { useFindAllProduct } from '@/services/react-query/product/use-find-all-product';
+import { useFindAllProductByCode } from '@/services/react-query/product/use-find-product-by-code';
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
@@ -36,7 +37,8 @@ const ProductPage = () => {
       name:"Sản Phẩm",
       description:"Danh sách sản phẩm",
       icon: <IconCategoryPlus size={20}/>,
-      table: <TableProduct data={products} minWidth={width}/>
+      table: 
+        <TableProduct data={products} minWidth={width}/>
     },
   ]
   //effect

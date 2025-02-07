@@ -10,5 +10,6 @@ export const API_ENDPOINTS = {
     BRAND:'/v1/brands/',
     SUPPLIER:'/v1/supplier/',
     PRODUCT:'/v1/products/',
+    SEARCH_PRODUCT:'/v1/products/search',
     IMPORT_EXCEL:'/v1/imports/',
   };
