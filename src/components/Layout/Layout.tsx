@@ -18,7 +18,6 @@ import { useFindAllCategories } from "@/services/react-query/category/use-find-a
 import { useFindAllSubCategories } from "@/services/react-query/subCategory/use-find-subCategory";
 import { useFindAllSuppliers } from "@/services/react-query/supplier/use-find-all-supplier";
 import { useFindAllTag } from "@/services/react-query/tag/use-find-all-tag";
-import { useFindAllProduct } from "@/services/react-query/product/use-find-all-product";
 import useProduct from "@/utils/hooks/useProduct";
 
 const layouts:any = {

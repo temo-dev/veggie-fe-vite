@@ -1,6 +1,7 @@
-import classes from './index.module.css'
-import { Card, Avatar, Group, Button, Grid, Stack, Container, Title, Tabs, FileButton, Divider, Pagination } from '@mantine/core'
-import { IconBrandVinted, IconCategoryPlus, IconPlus, IconUpload } from '@tabler/icons-react';
+
+import { Card, Avatar, Group, Button, Grid, Stack, Container, Title, Tabs, FileButton, Divider, Pagination, Input } from '@mantine/core'
+import { IconBrandVinted, IconCategoryPlus, IconPlus, IconSearch, IconUpload } from '@tabler/icons-react';
+import { getHotkeyHandler } from '@mantine/hooks';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
@@ -13,7 +14,6 @@ import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { ImportExcelType, useImportExcel } from '@/services/react-query/import-excel/use-import-exel';
 import { notifications } from '@mantine/notifications';
 import { useFindAllProduct } from '@/services/react-query/product/use-find-all-product';
-import { useFindAllProductByCode } from '@/services/react-query/product/use-find-product-by-code';
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
@@ -21,9 +21,12 @@ const ProductPage = () => {
   const {subCategories} = useAppSelector((state)=>state.subCategory.subCategory)
   const [loading, setLoading] = useState<boolean>(false)
   const [activePage, setPage] = useState<number>(1);
+  const [valueSearch, setValueSearch] = useState<string>('')
+  const [valueConfirm, setValueConfirm] = useState<string>('')
   const uploadFile = useGetLinkFileToS3()
+  const [totalPage, setTotalPage] = useState<number>(0)
   const {mutate: importExcel, status } =useImportExcel()
-  const {status: statusProduct} = useFindAllProduct(10,activePage)
+  const {status: statusProduct} = useFindAllProduct(10,activePage,valueConfirm)
   //mock data
   const dataSubCategories = subCategories.map((subCategory)=>{
     return {
@@ -52,6 +55,12 @@ const ProductPage = () => {
         setLoading(false)
       }
     },[status])
+
+  useEffect(() => {
+    if(products){
+      setTotalPage((products[0]?.total_count ?? 0) / 10)
+    }
+  },[products])
   //logic
   const handleImport = async (file: File | null) => {
     let value: ImportExcelType ={
@@ -91,6 +100,15 @@ const ProductPage = () => {
       size:"auto",
     });
   }
+
+    const handleSetValueSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const value = event.target.value;
+      setValueSearch(value)
+    }
+    const handleSearch = () => {
+      setValueConfirm(valueSearch)
+    }
   //render
   return (
     <div ref={ref}>
@@ -127,6 +145,12 @@ const ProductPage = () => {
                   ))
                 }
               </Tabs.List>
+                <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm Kiếm Sản Phẩm' className='my-2' 
+                        onChange={handleSetValueSearch} 
+                        onKeyDown={getHotkeyHandler([
+                          ['Enter',handleSearch]
+                        ])}
+                  />
                 {
                   dataTab.map((tab)=>(
                     <Tabs.Panel value={tab.name} key={tab.id} className='min-h-80'>
@@ -136,7 +160,7 @@ const ProductPage = () => {
                 }
               </Tabs>
               <Divider/>
-              <Pagination total={3} value={activePage} onChange={setPage} mt="md" size="xs" disabled={loading}/>
+              <Pagination total={totalPage} value={activePage} onChange={setPage} mt="md" size="xs" disabled={loading}/>
           </Card>
         </Container>
       </Stack>

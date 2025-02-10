@@ -95,11 +95,6 @@ const TableProduct = (prop:PropsInterface) => {
   ));
   return (
     <>
-      <Input leftSection={<IconSearch size={20}/>} placeholder='Tìm Kiếm Sản Phẩm' className='my-2' 
-        onChange={handleSetValueSearch} 
-        onKeyDown={getHotkeyHandler([
-          ['Enter',handleSearch]
-        ])}/>
       <Table.ScrollContainer minWidth={minWidth} type='native' h={400}>
         <Table striped withTableBorder withColumnBorders stickyHeader>
           <Table.Thead className="bg-green-600 h-10 text-white">

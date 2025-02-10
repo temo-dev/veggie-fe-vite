@@ -39,17 +39,18 @@ export interface ProductType {
     total_quantity: number,
     attitude_product_package_id?: string,
     brand_id?: string,
+    total_count?: number,
 }
 
-const getAllProducts = async ({ queryKey }: QueryFunctionContext<[string, number, number]>): Promise<ProductType> => {
-    const [_,limit,page] = queryKey;
-    const res = await http.get(`${API_ENDPOINTS.PRODUCT}?limit=${limit}&page=${page}`);
+const getAllProducts = async ({ queryKey }: QueryFunctionContext<[string, number, number, string]>): Promise<ProductType> => {
+    const [_,limit,page,word] = queryKey;
+    const res = await http.get(`${API_ENDPOINTS.PRODUCT}?limit=${limit}&page=${page}&word=${word}`);
     return res.data;
 }
 
-export const useFindAllProduct = (limit: number, page: number) => {
+export const useFindAllProduct = (limit: number, page: number, word: string) => {
     const {updateProducts} = useProduct()
-    return useQuery([API_ENDPOINTS.PRODUCT, limit, page], getAllProducts,{
+    return useQuery([API_ENDPOINTS.PRODUCT, limit, page, word], getAllProducts,{
         keepPreviousData: true,
         onSuccess: (data) => {
             updateProducts(data)
