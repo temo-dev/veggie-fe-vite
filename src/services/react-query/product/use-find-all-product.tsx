@@ -39,6 +39,7 @@ export interface ProductType {
     total_quantity: number,
     attitude_product_package_id?: string,
     brand_id?: string,
+    brand_name?: string,
     total_count?: number,
 }
 
