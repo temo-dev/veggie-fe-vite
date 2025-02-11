@@ -1,5 +1,5 @@
 import type {NavigationTree} from '@/@types/navigation';
-import {IconBrandVinted,IconSettingsDollar,IconDashboard, IconSalad,IconCategory,IconBuildingFactory2} from '@tabler/icons-react';
+import {IconBrandVinted, IconSalad,IconCategory,IconUsersGroup} from '@tabler/icons-react';
 
 const navigationConfig: NavigationTree[] = [
   // {
@@ -11,15 +11,15 @@ const navigationConfig: NavigationTree[] = [
   //   authority: [],
   //   subMenu: []
   // },
-  {
-    key: 'suppliers',
-    path: '/suppliers',
-    title: 'Supplier',
-    translateKey: '',
-    icon: IconBuildingFactory2,
-    authority: [],
-    subMenu: []
-  },
+  // {
+  //   key: 'suppliers',
+  //   path: '/suppliers',
+  //   title: 'Supplier',
+  //   translateKey: '',
+  //   icon: IconBuildingFactory2,
+  //   authority: [],
+  //   subMenu: []
+  // },
   {
     key: 'brands',
     path: '/brands',
@@ -56,6 +56,15 @@ const navigationConfig: NavigationTree[] = [
   //   authority: [],
   //   subMenu: []
   // },
+  {
+    key: 'zones',
+    path: '/zone',
+    title: 'Zone',
+    translateKey: '',
+    icon: IconUsersGroup,
+    authority: [],
+    subMenu: []
+  },
 ];
 
 export default navigationConfig;

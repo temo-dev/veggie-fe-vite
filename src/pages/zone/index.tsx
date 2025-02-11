@@ -1,32 +1,36 @@
 
-import { Card, Avatar, Group, Button, Grid, Stack, Container, Title, Tabs, FileButton, Divider, Pagination, Input } from '@mantine/core'
-import { IconBrandVinted, IconCategoryPlus, IconPlus, IconSearch, IconUpload } from '@tabler/icons-react';
+import { Card, Avatar, Group, Button, Grid, Stack, Container, Title, Tabs, Divider, Pagination, Input, LoadingOverlay } from '@mantine/core'
+import { IconCategoryPlus, IconPlus, IconSearch, IconUpload, IconUsersGroup } from '@tabler/icons-react';
 import { getHotkeyHandler } from '@mantine/hooks';
 import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
 import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import TableProduct from '@/components/Table/TableProduct';
-import FormCreateProduct from '@/components/Form/FormCreateProduct';
 import { useAppSelector } from '@/store';
 import { useEffect, useState } from 'react';
-import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
-import { ImportExcelType, useImportExcel } from '@/services/react-query/import-excel/use-import-exel';
-import { notifications } from '@mantine/notifications';
 import { useFindAllProduct } from '@/services/react-query/product/use-find-all-product';
+import TableZone from '@/components/Table/TableZone';
+import FormCreateZone from '@/components/Form/FormCreateZone';
+import { useFindAllZones } from '@/services/react-query/zone/use-find-all-zone';
+import { use } from 'i18next';
 
-const ProductPage = () => {
+const ZonePage = () => {
   const { ref, width } = useElementSize();
-  const {products} = useAppSelector((state)=>state.product.product)
+  const {zones} = useAppSelector((state)=>state.zone.zone)
   const {subCategories} = useAppSelector((state)=>state.subCategory.subCategory)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [activePage, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true)
   const [valueSearch, setValueSearch] = useState<string>('')
   const [valueConfirm, setValueConfirm] = useState<string>('')
-  const uploadFile = useGetLinkFileToS3()
-  const [totalPage, setTotalPage] = useState<number>(0)
-  const {mutate: importExcel, status } =useImportExcel()
-  const {status: statusProduct} = useFindAllProduct(10,activePage,valueConfirm)
+  const {status: statusZone} = useFindAllZones()
+
+  useEffect(()=>{
+    if(
+        statusZone === 'success' 
+        || statusZone === 'error' 
+      ){
+      setLoading(false)
+    }
+  },[statusZone])
   //mock data
   const dataSubCategories = subCategories.map((subCategory)=>{
     return {
@@ -37,55 +41,14 @@ const ProductPage = () => {
   const dataTab = [
     {
       id:1,
-      name:"Sản Phẩm",
-      description:"Danh sách sản phẩm",
+      name:"Danh Sách Zone",
+      description:"Danh sách zone",
       icon: <IconCategoryPlus size={20}/>,
       table: 
-        <TableProduct data={products} minWidth={width}/>
+        <TableZone data={zones} minWidth={width}/>
     },
   ]
-  //effect
-  useEffect(()=>{
-      if(
-          status === 'success' 
-          || status === 'error' 
-          || statusProduct === 'success' || 
-          statusProduct === 'error'
-        ){
-        setLoading(false)
-      }
-    },[status])
-
-  useEffect(() => {
-    if(products){
-      setTotalPage((products[0]?.total_count ?? 0) / 10)
-    }
-  },[products])
   //logic
-  const handleImport = async (file: File | null) => {
-    let value: ImportExcelType ={
-      to_table:"product",
-      excel_url:""
-    }
-    setLoading(true)
-    try {
-      if(file){
-        await uploadFile.mutateAsync(file)
-        .then((res) => {
-          let url = res.url.split("?")[0]
-          importExcel({...value, excel_url:url})
-        })
-      }
-    } catch (error) {
-      notifications.show({
-          title: 'Import Excel hiệu xảy ra lỗi',
-          message: String(error),
-          color: 'red',
-          autoClose: 5000,
-      })
-      setLoading(false)
-    }
-  }
   const openModal = (el:any) => {
     modals.open({
       title: (
@@ -96,7 +59,7 @@ const ProductPage = () => {
           <Title order={5} >{`TẠO ${el.name.toUpperCase()}`}</Title>
         </Group>
       ),
-      children: <FormCreateProduct/>,
+      children: <FormCreateZone/>,
       size:"auto",
     });
   }
@@ -108,30 +71,23 @@ const ProductPage = () => {
     }
     const handleSearch = () => {
       setValueConfirm(valueSearch)
-      setPage(1)
     }
   //render
   return (
     <div ref={ref}>
+      <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
       <Stack>
         <Group>
-          <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Sản Phẩm",icon:<IconBrandVinted size={20}/>})}>
-            Thêm Sản Phẩm
+          <Button variant="default" leftSection={<IconPlus size={20} />} onClick={()=>openModal({name:"Zone Khách Hàng",icon:<IconUsersGroup size={20}/>})}>
+            Thêm Zone
           </Button>
-          <FileButton onChange={handleImport} accept=".xlsx, .xls" multiple={false}>
-            {(props) => (
-              <Button {...props} leftSection={<IconUpload size={20} />} variant='default' loading={loading}>
-                Import Excel
-              </Button>
-            )}
-          </FileButton>
         </Group>
         <Grid>
           <Grid.Col span={6}>
-            <TotalCategoryPieChart title="Danh mục hàng hóa" data={dataSubCategories}/>
+            <TotalCategoryPieChart title="Zone Khách" data={dataSubCategories}/>
           </Grid.Col>
           <Grid.Col span={6}>
-            <LineProductChart title='Giá Hàng Hóa Nhập'/>
+            <LineProductChart title='Mực Độ Gia Tăng Khách Hàng'/>
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>
@@ -161,7 +117,6 @@ const ProductPage = () => {
                 }
               </Tabs>
               <Divider/>
-              <Pagination total={totalPage} value={activePage} onChange={setPage} mt="md" size="xs" disabled={loading}/>
           </Card>
         </Container>
       </Stack>
@@ -169,4 +124,4 @@ const ProductPage = () => {
   )
 }
 
-export default ProductPage
+export default ZonePage

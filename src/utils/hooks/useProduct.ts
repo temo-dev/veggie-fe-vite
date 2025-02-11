@@ -1,5 +1,4 @@
-import { useFindAllProduct, ProductType } from "@/services/react-query/product/use-find-all-product";
-import { setAllProducts, useAppDispatch,setCurrentProduct } from "@/store";
+import { setAllProducts, useAppDispatch, setCurrentProduct } from "@/store";
 
 function useProduct(){
     const dispatch = useAppDispatch()

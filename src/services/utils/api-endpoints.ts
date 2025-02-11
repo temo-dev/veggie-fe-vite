@@ -12,4 +12,5 @@ export const API_ENDPOINTS = {
     PRODUCT:'/v1/products/',
     SEARCH_PRODUCT:'/v1/products/search',
     IMPORT_EXCEL:'/v1/imports/',
+    ZONE_CUSTOMER:'/v1/zone-price/',
   };

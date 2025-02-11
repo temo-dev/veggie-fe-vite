@@ -12,6 +12,7 @@ export * from './slices/locale/localeSlice'
 export * from './slices/brand/brandSlice'
 export * from './slices/supplier/supplierSlice'
 export * from './slices/product/productSlice'
+export * from './slices/zone/zoneSlice'
 export * from './rootReducer'
 export * from './hook'
 export default store

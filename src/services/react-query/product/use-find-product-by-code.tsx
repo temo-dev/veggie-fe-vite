@@ -12,14 +12,15 @@ interface InputProps {
 
 const getAllProductsByCode = async (props:InputProps): Promise<ProductType> => {
     const {code} = props;
-    const res = await http.get(`${API_ENDPOINTS.SEARCH_PRODUCT}?code=${code}`);
-    return res.data;
+    const response = await http.get(`${API_ENDPOINTS.SEARCH_PRODUCT}?code=${code}`);
+    return response.data;
 }
 
 export const useFindAllProductByCode = () => {
     const {updateProducts} = useProduct()
     return useMutation(API_ENDPOINTS.SEARCH_PRODUCT, getAllProductsByCode,{
-        onSuccess: (data) => {
+        onSuccess: (response:any) => {
+            const {data} = response
             updateProducts(data)
         },
         onError: (error) => {

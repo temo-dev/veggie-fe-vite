@@ -59,4 +59,16 @@ export const protectedRoutes = [
     component: lazy(() => import('@/pages/supplier/supplier-detail')),
     authority: []
   },
+  {
+    key: 'zone-detail',
+    path: '/zone/zone-detail',
+    component: lazy(() => import('@/pages/zone/zone-detail')),
+    authority: []
+  },
+  {
+    key: 'zone',
+    path: '/zone',
+    component: lazy(() => import('@/pages/zone')),
+    authority: []
+  },
 ]

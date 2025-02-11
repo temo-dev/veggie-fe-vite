@@ -6,8 +6,10 @@ import { useMutation, useQueryClient } from "react-query";
 import { ProductType } from "./use-find-all-product";
 
 const updateProduct = async (input: ProductType) => {
-    const res = await http.put(API_ENDPOINTS.PRODUCT, input);
-    return res.data;
+    const {
+        data
+    } = await http.put(API_ENDPOINTS.PRODUCT, input);
+    return data.data;
 }
 
 export const useUpdateProduct = () => {
