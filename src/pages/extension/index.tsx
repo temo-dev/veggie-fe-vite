@@ -101,8 +101,8 @@ const ExtensionsPage = () => {
       },
       {
         id:5,
-        name:"package sản phẩm",
-        description:"package sản phẩm",
+        name:"đơn vị tính",
+        description:"đơn vị tính",
         icon: <IconPackage style={iconStyle}/>,
         table: <TablePackage data={attPackages}/>
       },

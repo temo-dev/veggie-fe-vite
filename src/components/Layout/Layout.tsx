@@ -39,23 +39,21 @@ export function Layout() {
   //call api
   const {data:currencies, isSuccess:isFindAllCurrencies} = useFindAllCurrencies()
   const {data:tags, isSuccess:isFindAllTags} = useFindAllTag()
-  const {data:packages, isSuccess:isFindAllPackages} = useFindAllPackages()
   const {data:cateroies, isSuccess:isFindAllCategories}= useFindAllCategories()
   const {data:sucCategories, isSuccess:isFindAllSubCategories}= useFindAllSubCategories()
   const {data:brands, isSuccess:isFindAllBrands} = useFindAllBrands()
   const {data:suppliers,isSuccess:isFindAllSuppliers} = useFindAllSuppliers()
   //update store
   useEffect(() => {
-    if (isFindAllCurrencies && isFindAllTags && isFindAllPackages && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
+    if (isFindAllCurrencies && isFindAllTags && isFindAllCategories && isFindAllSubCategories && isFindAllBrands && isFindAllSuppliers){
       updateCurrencies(currencies)
       updateTags(tags)
-      updateAttPackages(packages)
       updateCategories(cateroies)
       updateSubCategories(sucCategories)
       updateBrands(brands)
       updateSuppliers(suppliers)
     }
-  },[isFindAllCurrencies,isFindAllTags,isFindAllPackages,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
+  },[isFindAllCurrencies,isFindAllTags,isFindAllCategories,isFindAllSubCategories,isFindAllBrands,isFindAllSuppliers])
 
   useLocale()
   const AppLayout = useMemo(() => {

@@ -25,37 +25,19 @@ const FormUpdateProduct = (props: PropsInput) => {
     const uploadFile = useGetLinkFileToS3();
     const {brands} = useAppSelector(state => state.brand.brand)
     const{subCategories} = useAppSelector(state => state.subCategory.subCategory)
-    const {attPackages} = useAppSelector(state => state.attpackage.attPackage)
-
-  const dataSelectAttPackages = attPackages?.map((el) => {
-    return {
-      value: el.attitude_product_package_id,
-      label: el.attitude_product_package_code
-    }
-  })
-
   const dataSelectSubCategories = subCategories?.map((el) => {
     return {
       value: el.sub_category_id,
       label: el.sub_category_name_vn
     }
   })
+
   const dataSelectBrands = brands?.map((el) => {
     return {
       value: el.brand_id,
       label: el.brand_name
     }
   })
-  const dataSelectLen =[
-    {
-      value: 'cm',
-      label: 'cm'
-    },
-    {
-      value: 'inch',
-      label: 'inch'
-    }
-  ]
 
   const dataSelectSeason = [
     {
@@ -117,9 +99,6 @@ const FormUpdateProduct = (props: PropsInput) => {
       season: yup
         .string()
         .required('Hãy chọn mùa cho sản phẩm'),
-      len: yup
-        .string()
-        .required('Hãy chọn đơn bị đo'),
       cubic: yup
         .number()
         .transform((_, originalValue) => {
@@ -148,7 +127,6 @@ const FormUpdateProduct = (props: PropsInput) => {
   const form = useForm({
       initialValues: {
         product_id: data?.product_id || '',
-        attitude_product_package_id: data?.attitude_product_package_id || '',
         brand_id: data?.brand_id || '',
         cubic: data?.cubic || 0,
         description: data?.description || '',
@@ -156,7 +134,6 @@ const FormUpdateProduct = (props: PropsInput) => {
         image_url: data?.image_url || '',
         is_fragility: data?.is_fragility || false,
         is_stackability: data?.is_stackability || false,
-        len:data?.len || '',
         height: data?.height || 0,
         length: data?.length || 0,
         width: data?.width || 0,
@@ -250,13 +227,6 @@ const FormUpdateProduct = (props: PropsInput) => {
               <Title order={5}>Chỉ Số Sản Phẩm</Title>
               <NumberInput label="*Trọng Lượng" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('net_weight')} name={'net_weight'}/>
               <NumberInput label="*Trọng Lượng Cả Bao Bì" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('gross_weight')} name={'gross_weight'}/>
-              <Select
-                label={<div className='mx-3'>
-                  *Chọn đơn vị đo
-                </div>}
-                data={dataSelectLen}
-                {...form.getInputProps('len')} name={'len'}
-              />
               <NumberInput label="*Cubic" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('cubic')} name={'cubic'}/>
               <NumberInput label="Chiều Dài" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('length')} name={'length'}/>
               <NumberInput label="Chiều Cao" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('height')} name={'height'}/>
@@ -280,13 +250,6 @@ const FormUpdateProduct = (props: PropsInput) => {
             <Stack>
               <Divider/>
               <Title order={5}>Thông Tin Bảo Quản</Title>
-              <Select
-                label={<div className='mx-3'>
-                  Loại Thùng
-                </div>}
-                data={dataSelectAttPackages}
-                {...form.getInputProps('attitude_product_package_id')} name={'attitude_product_package_id'}
-              />
               <NumberInput label="Nhiệt Độ Bảo Quản" classNames={classes} {...form.getInputProps('temperature_requirement')} name={'temperature_requirement'}/>
               <NumberInput label="*Vòng đời sản phẩm" classNames={classes} {...form.getInputProps('shelf_life')} name={'shelf_life'}/>
               <Switch

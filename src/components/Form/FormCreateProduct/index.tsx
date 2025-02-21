@@ -1,17 +1,15 @@
 import { Box, Button, Divider, Grid, NumberInput, Select, Stack, Switch, TextInput, Title } from '@mantine/core'
 import * as yup from 'yup';
-import { useForm,yupResolver } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
 import classes from './index.module.css'
 import { IconPlus } from '@tabler/icons-react'
 import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals';
-import { DateInput } from '@mantine/dates';
 import { useGetLinkFileToS3 } from '@/services/s3-aws/get_link_file_s3';
 import { DropZoneImage } from '@/components/DropZone';
 import { notifications } from '@mantine/notifications';
 import { CreateProductInput, useCreateNewProduct } from '@/services/react-query/product/use-create-product';
 import { useAppSelector } from '@/store';
-import { ProductType } from '@/services/react-query/product/use-find-all-product';
 
 
 const FormCreateProduct = () => {
@@ -42,17 +40,6 @@ const FormCreateProduct = () => {
       label: el.brand_name
     }
   })
-  const dataSelectLen =[
-    {
-      value: 'cm',
-      label: 'cm'
-    },
-    {
-      value: 'inch',
-      label: 'inch'
-    }
-  ]
-
   const dataSelectSeason = [
     {
       value: 'summer',
@@ -113,9 +100,6 @@ const FormCreateProduct = () => {
       season: yup
         .string()
         .required('Hãy chọn mùa cho sản phẩm'),
-      len: yup
-        .string()
-        .required('Hãy chọn đơn bị đo'),
       cubic: yup
         .number()
         .transform((_, originalValue) => {
@@ -143,7 +127,6 @@ const FormCreateProduct = () => {
   });
   const form = useForm({
       initialValues: {
-        attitude_product_package_id: '',
         brand_id: '',
         cubic: 0,
         description: '',
@@ -151,7 +134,6 @@ const FormCreateProduct = () => {
         image_url: '',
         is_fragility: false,
         is_stackability: false,
-        len:'',
         height: 0,
         length: 0,
         width: 0,
@@ -245,13 +227,6 @@ const FormCreateProduct = () => {
               <Title order={5}>Chỉ Số Sản Phẩm</Title>
               <NumberInput label="*Trọng Lượng" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('net_weight')} name={'net_weight'}/>
               <NumberInput label="*Trọng Lượng Cả Bao Bì" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('gross_weight')} name={'gross_weight'}/>
-              <Select
-                label={<div className='mx-3'>
-                  *Chọn đơn vị đo
-                </div>}
-                data={dataSelectLen}
-                {...form.getInputProps('len')} name={'len'}
-              />
               <NumberInput label="*Cubic" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('cubic')} name={'cubic'}/>
               <NumberInput label="Chiều Dài" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('length')} name={'length'}/>
               <NumberInput label="Chiều Cao" clampBehavior="strict" min={0} classNames={classes} {...form.getInputProps('height')} name={'height'}/>
@@ -275,13 +250,6 @@ const FormCreateProduct = () => {
             <Stack>
               <Divider/>
               <Title order={5}>Thông Tin Bảo Quản</Title>
-              <Select
-                label={<div className='mx-3'>
-                  Loại Thùng
-                </div>}
-                data={dataSelectAttPackages}
-                {...form.getInputProps('attitude_product_package_id')} name={'attitude_product_package_id'}
-              />
               <NumberInput label="Nhiệt Độ Bảo Quản" classNames={classes} {...form.getInputProps('temperature_requirement')} name={'temperature_requirement'}/>
               <NumberInput label="*Vòng đời sản phẩm" classNames={classes} {...form.getInputProps('shelf_life')} name={'shelf_life'}/>
               <Switch

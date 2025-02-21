@@ -5,7 +5,6 @@ import { notifications } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "react-query";
 
 export interface CreateProductInput {
-    attitude_product_package_id?: string;
     brand_id: string;
     cubic: number;
     description: string;
@@ -16,7 +15,6 @@ export interface CreateProductInput {
     is_fragility: boolean;
     is_published?: boolean;
     is_stackability: boolean;
-    len:string
     length: number;
     maximum_order_quantity: number;
     minimum_order_quantity: number;
