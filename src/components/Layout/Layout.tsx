@@ -5,6 +5,7 @@ import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import {LayoutTypes} from "@/@types/layout";
 import {useAppSelector} from "@/store";
 import useProduct from "@/utils/hooks/useProduct";
+import { useFindProduct } from "@/services/react-query/product/use-find-all-product";
 
 const layouts:any = {
   [LayoutTypes.CollapsedSideBar]: lazy(() => import('./LayoutTypes/CollapsedSideBar')),
@@ -16,8 +17,15 @@ export function Layout() {
   //hooks
   const {updateProducts} = useProduct()
   //call api
-
+const {data:products, status:isFetched} = useFindProduct(10,1,"",null)
   //update store
+
+  useEffect(() => {
+    if (isFetched == "success"){
+      updateProducts(products)
+    }
+  }, [isFetched])
+  
 
   useLocale()
   const AppLayout = useMemo(() => {

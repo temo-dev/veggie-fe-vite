@@ -22,8 +22,6 @@ import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
 import { modals } from '@mantine/modals';
-import { ProductType } from '@/services/react-query/product/use-find-all-product';
-import FormUpdateProduct from '@/components/Form/FormUpdateProduct';
 import { update } from 'lodash';
 
 //mock data
@@ -80,20 +78,6 @@ const ProductDetailPage = () => {
     </div>
   ));
 
-  const updateProduct = () => {
-    modals.open({
-      title: (
-        <Group>
-          <Avatar variant='transparent'>
-            <IconSalad size={20}/>
-          </Avatar>
-          <Title order={5} >{`Update Sản Phẩm ${currentProduct?.product_code}`}</Title>
-        </Group>
-      ),
-      children: <FormUpdateProduct data={currentProduct}/>,
-      size:"auto",
-    });
-  }
 
   //render
   return (
@@ -101,9 +85,6 @@ const ProductDetailPage = () => {
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
         <Group>
-          <Button variant="default" leftSection={<IconPlus size={20} />} onClick={updateProduct}>
-            Update Sản Phẩm 
-          </Button>
           <Button variant="default" leftSection={<IconPlus size={20} />}>
             Update Giá Bán
           </Button>
@@ -120,7 +101,7 @@ const ProductDetailPage = () => {
           <Group justify="space-between" mt="md">
             <Group>
               <div>
-                <Avatar
+                {/* <Avatar
                   src={currentProduct?.image_url}
                   size={120}
                   radius={120}
@@ -130,7 +111,7 @@ const ProductDetailPage = () => {
                 />
                 <Text ta="center" fz="lg" fw={700} mt="sm">
                   {currentProduct?.product_code}
-                </Text>
+                </Text> */}
               </div>
               <Group mt="md" justify="center" gap={30}>
                 {items}
@@ -147,7 +128,7 @@ const ProductDetailPage = () => {
           </Grid.Col>
         </Grid>
         <Container fluid size="responsive" w={width}>
-          <Tabs defaultValue={`${dataTab[0].name}`} className="mt-4">
+          {/* <Tabs defaultValue={`${dataTab[0].name}`} className="mt-4">
             <Tabs.List>
               {dataTab.map((tab) => (
                 <Tabs.Tab
@@ -165,7 +146,7 @@ const ProductDetailPage = () => {
                 {tab.table}
               </Tabs.Panel>
             ))}
-          </Tabs>
+          </Tabs> */}
         </Container>
       </Stack>
     </div>

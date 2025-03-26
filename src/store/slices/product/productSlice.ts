@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SLICE_BASE_NAME } from "./constants";
-import { ProductType } from "@/services/react-query/product/use-find-all-product";
+import { ProductBaseType } from "@/services/react-query/product/use-find-all-product";
 
 
 export interface ProductState {
-    products: ProductType[],
-    currentProduct: ProductType | null
+    products: ProductBaseType[],
+    currentProduct: ProductBaseType | null
+    totalCurrentProduct: number
 }
 
 const initialState:ProductState = {
     products:[],
-    currentProduct: null
+    currentProduct: null,
+    totalCurrentProduct: 0,
 }
 
 const productSlice = createSlice({
@@ -18,8 +20,9 @@ const productSlice = createSlice({
     initialState,
     reducers: {
         setAllProducts(state, action){
-            const {data} = action.payload
+            const {data,total} = action.payload
             state.products = data
+            state.totalCurrentProduct = total
         },
         setCurrentProduct(state, action){
             state.currentProduct = action.payload
