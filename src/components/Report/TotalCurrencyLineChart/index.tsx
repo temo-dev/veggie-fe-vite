@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { Card } from '@mantine/core';
-import { useExchangeCurrencyQuery } from '@/services/react-query/currency/use-exchange-currency';
 
 const TotalCurrencyLineChart: React.FC = () => {
   const chartRef = useRef<HTMLDivElement>(null);

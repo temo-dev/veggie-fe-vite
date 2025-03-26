@@ -96,5 +96,4 @@ export default function CollapsedSideBar() {
       </div>
     </>
   )
-
 }

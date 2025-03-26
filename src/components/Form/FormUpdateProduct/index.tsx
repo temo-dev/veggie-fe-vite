@@ -23,21 +23,13 @@ const FormUpdateProduct = (props: PropsInput) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [fileInput, setFileInput] = useState<File | null>(null)
     const uploadFile = useGetLinkFileToS3();
-    const {brands} = useAppSelector(state => state.brand.brand)
-    const{subCategories} = useAppSelector(state => state.subCategory.subCategory)
-  const dataSelectSubCategories = subCategories?.map((el) => {
-    return {
-      value: el.sub_category_id,
-      label: el.sub_category_name_vn
-    }
-  })
+  // const dataSelectSubCategories = subCategories?.map((el) => {
+  //   return {
+  //     value: el.sub_category_id,
+  //     label: el.sub_category_name_vn
+  //   }
+  // })
 
-  const dataSelectBrands = brands?.map((el) => {
-    return {
-      value: el.brand_id,
-      label: el.brand_name
-    }
-  })
 
   const dataSelectSeason = [
     {
@@ -198,20 +190,6 @@ const FormUpdateProduct = (props: PropsInput) => {
               <TextInput label="*Tên Tiếng Anh" classNames={classes} {...form.getInputProps('product_name_eng')} name={'product_name_eng'}/>
               <TextInput label="*Tên Tiếng Đức" classNames={classes} {...form.getInputProps('product_name_de')} name={'product_name_de'}/>
               <TextInput label="*Tên Tiếng Séc" classNames={classes} {...form.getInputProps('product_name_cz')} name={'product_name_cz'}/>
-              <Select
-                label={<div className='mx-3'>
-                  *Nhóm thương hiệu
-                </div>}
-                data={dataSelectBrands}
-                {...form.getInputProps('brand_id')} name={'brand_id'}
-              />
-              <Select
-                label={<div className='mx-3'>
-                  *Chọn danh mục
-                </div>}
-                data={dataSelectSubCategories}
-                {...form.getInputProps('sub_category_id')} name={'sub_category_id'}
-              />
               <Select
                 label={<div className='mx-3'>
                   *Chọn mùa cho sản phẩm

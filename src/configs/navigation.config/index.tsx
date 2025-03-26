@@ -20,15 +20,15 @@ const navigationConfig: NavigationTree[] = [
   //   authority: [],
   //   subMenu: []
   // },
-  {
-    key: 'brands',
-    path: '/brands',
-    title: 'Brand',
-    translateKey: '',
-    icon: IconBrandVinted,
-    authority: [],
-    subMenu: []
-  },
+  // {
+  //   key: 'brands',
+  //   path: '/brands',
+  //   title: 'Brand',
+  //   translateKey: '',
+  //   icon: IconBrandVinted,
+  //   authority: [],
+  //   subMenu: []
+  // },
   {
     key: 'products',
     path: '/products',
@@ -38,15 +38,15 @@ const navigationConfig: NavigationTree[] = [
     authority: [],
     subMenu: []
   },
-  {
-    key: 'extensions',
-    path: '/extensions',
-    title: 'Extension',
-    translateKey: '',
-    icon: IconCategory,
-    authority: [],
-    subMenu: []
-  },
+  // {
+  //   key: 'extensions',
+  //   path: '/extensions',
+  //   title: 'Extension',
+  //   translateKey: '',
+  //   icon: IconCategory,
+  //   authority: [],
+  //   subMenu: []
+  // },
   // {
   //   key: 'purchase-prices',
   //   path: '/purchase-prices',
@@ -56,15 +56,15 @@ const navigationConfig: NavigationTree[] = [
   //   authority: [],
   //   subMenu: []
   // },
-  {
-    key: 'zones',
-    path: '/zone',
-    title: 'Zone',
-    translateKey: '',
-    icon: IconUsersGroup,
-    authority: [],
-    subMenu: []
-  },
+  // {
+  //   key: 'zones',
+  //   path: '/zone',
+  //   title: 'Zone',
+  //   translateKey: '',
+  //   icon: IconUsersGroup,
+  //   authority: [],
+  //   subMenu: []
+  // },
 ];
 
 export default navigationConfig;
