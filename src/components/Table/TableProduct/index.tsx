@@ -1,8 +1,6 @@
 import { ProductBaseType } from '@/services/react-query/product/use-find-all-product';
-import { useDeleteFileOnS3 } from '@/services/s3-aws/delete_file_on_s3';
 import { Avatar, Table, Title, Text, Badge, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Image } from '@mantine/core';
 import useProduct from '@/utils/hooks/useProduct';
@@ -15,17 +13,7 @@ interface PropsInterface {
 const TableProduct = (prop: PropsInterface) => {
   const { data, minWidth } = prop;
   const navigate = useNavigate();
-  const [nameFileS3deleted, setNameFileS3deleted] = useState<string | null>(null);
-  const { mutate: deleteFileS3 } = useDeleteFileOnS3();
   const { updateCurrentProduct } = useProduct();
-  //effect
-  useEffect(() => {
-    if (status === 'success' && nameFileS3deleted) {
-      deleteFileS3(nameFileS3deleted);
-    } else if (status === 'error') {
-      setNameFileS3deleted(null);
-    }
-  }, [status]);
   //logic
   const handleShowImage = (el: ProductBaseType) => {
     modals.open({

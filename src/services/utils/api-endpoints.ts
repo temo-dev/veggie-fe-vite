@@ -7,4 +7,5 @@ export const API_ENDPOINTS = {
     PRODUCT_SOLD:'/v1/product/out-stock',
     PRODUCT_OUT_EXP:'/v1/product/out-exp',
     PRODUCT_NON_EXP:'/v1/product/non-exp',
+    PRODUCT_SEARCH_NAME:'/v1/product/search-by-name',
   };

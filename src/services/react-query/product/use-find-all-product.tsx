@@ -76,7 +76,7 @@ export const useFindProduct = (limit: number, page: number, word: string, valid:
                 break;
         }
     }else{
-        url = API_ENDPOINTS.PRODUCT 
+        url = API_ENDPOINTS.PRODUCT_SEARCH_NAME 
     }
     return useQuery([url, limit, page, word], getAllProducts,{
         keepPreviousData: true,
