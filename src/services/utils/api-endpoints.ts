@@ -8,4 +8,5 @@ export const API_ENDPOINTS = {
     PRODUCT_OUT_EXP:'/v1/product/out-exp',
     PRODUCT_NON_EXP:'/v1/product/non-exp',
     PRODUCT_SEARCH_NAME:'/v1/product/search-by-name',
+    REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product'
   };

@@ -26,9 +26,9 @@ const productSlice = createSlice({
         },
         setCurrentProduct(state, action){
             state.currentProduct = action.payload
-        }
+        },
     }
 })
 
-export const { setAllProducts, setCurrentProduct } = productSlice.actions
+export const { setAllProducts } = productSlice.actions
 export default productSlice.reducer

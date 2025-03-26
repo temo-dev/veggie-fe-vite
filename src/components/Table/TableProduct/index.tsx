@@ -3,7 +3,6 @@ import { Avatar, Table, Title, Text, Badge, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { Link, useNavigate } from 'react-router-dom';
 import { Image } from '@mantine/core';
-import useProduct from '@/utils/hooks/useProduct';
 
 interface PropsInterface {
   data: ProductBaseType[] | [];
@@ -13,7 +12,6 @@ interface PropsInterface {
 const TableProduct = (prop: PropsInterface) => {
   const { data, minWidth } = prop;
   const navigate = useNavigate();
-  const { updateCurrentProduct } = useProduct();
   //logic
   const handleShowImage = (el: ProductBaseType) => {
     modals.open({
@@ -46,7 +44,6 @@ const TableProduct = (prop: PropsInterface) => {
               onClick={(event) => {
                 event.preventDefault();
                 navigate('/products/product-detail');
-                updateCurrentProduct(el);
               }}
             >
               {el.product_abbr}

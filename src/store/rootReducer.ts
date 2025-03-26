@@ -4,6 +4,7 @@ import base, {BaseState} from './slices/base'
 import locale, {LocaleState} from './slices/locale/localeSlice'
 import theme, { ThemeState } from './slices/theme/themeSlice'
 import product,{ ProductAllState } from './slices/product'
+import report, { ReportAllState } from './slices/report'
 
 export type RootState = {
   auth: AuthState
@@ -11,6 +12,7 @@ export type RootState = {
   locale: LocaleState
   theme: ThemeState
   product: ProductAllState
+  report: ReportAllState
   /* eslint-disable @typescript-eslint/no-explicit-any */
 }
 
@@ -24,6 +26,7 @@ const staticReducers = {
   locale,
   theme,
   product,
+  report,
 }
 
 const rootReducer =

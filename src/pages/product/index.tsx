@@ -23,6 +23,7 @@ import { useFindProduct } from '@/services/react-query/product/use-find-all-prod
 const ProductPage = () => {
   const { ref, width } = useElementSize();
   const { products, totalCurrentProduct } = useAppSelector((state) => state.product.product);
+  const { reportTotalProduct } = useAppSelector((state) => state.report.report);
   const [loading, setLoading] = useState<boolean>(false);
   const [activePage, setPage] = useState<number>(1);
   const [valueSearch, setValueSearch] = useState<string>('');
@@ -31,12 +32,12 @@ const ProductPage = () => {
   const [validTab, setValidTab] = useState<string | null>(null);
   const { status: statusProduct } = useFindProduct(10, activePage, valueConfirm, validTab);
   //mock data
-  // const dataSubCategories = subCategories.map((subCategory)=>{
-  //   return {
-  //     value: subCategory.product_count,
-  //     name: subCategory.sub_category_name_vn.toUpperCase()
-  //   }
-  // })
+  const dataReport = reportTotalProduct.map((report) => {
+    return {
+      value: Number(report.value), // Ensure value is a number
+      name: report.name.toUpperCase(),
+    };
+  });
 
   //effect
   useEffect(() => {
@@ -108,7 +109,7 @@ const ProductPage = () => {
       <Stack>
         <Grid>
           <Grid.Col span={6}>
-            {/* <TotalCategoryPieChart title="Danh mục hàng hóa" data={dataSubCategories}/> */}
+            <TotalCategoryPieChart title="Kho Veggie" data={dataReport}/>
           </Grid.Col>
           <Grid.Col span={6}>
             <LineProductChart title="Giá Hàng Hóa Nhập" />

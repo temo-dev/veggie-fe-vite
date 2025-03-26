@@ -1,4 +1,4 @@
-import { setAllProducts, useAppDispatch, setCurrentProduct } from "@/store";
+import { setAllProducts, useAppDispatch } from "@/store";
 
 function useProduct(){
     const dispatch = useAppDispatch()
@@ -7,14 +7,9 @@ function useProduct(){
     const updateProducts = (product:any) => {
         dispatch(setAllProducts(product))
     }
-    //update current product
-    const updateCurrentProduct = (product: any) => {
-        dispatch(setCurrentProduct(product))
-    }
     //return functions
     return {
-        updateProducts,
-        updateCurrentProduct
+        updateProducts
     }
 }
 
