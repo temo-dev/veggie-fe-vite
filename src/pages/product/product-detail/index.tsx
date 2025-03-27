@@ -21,8 +21,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
-import { modals } from '@mantine/modals';
-import { update } from 'lodash';
 
 //mock data
 const data1 = [
@@ -121,7 +119,7 @@ const ProductDetailPage = () => {
         </Card>
         <Grid>
           <Grid.Col span={6}>
-            <TotalCategoryPieChart title="Nhà Cung Cấp" data={data1} />
+            <TotalCategoryPieChart />
           </Grid.Col>
           <Grid.Col span={6}>
             <LineProductChart title='Theo dõi giá nhập'/>

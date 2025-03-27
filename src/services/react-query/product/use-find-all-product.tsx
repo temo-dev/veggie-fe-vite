@@ -45,15 +45,16 @@ export interface ProductBaseType {
     price:PriceType
 }
 
-const getAllProducts = async ({ queryKey }: QueryFunctionContext<[string, number, number, string]>): Promise<ProductBaseType | any> => {
-    const [url,limit,page, word] = queryKey;
-    const res = await http.get(`${url}?limit=${limit}&page=${page}&abbr=${word}`);
+const getAllProducts = async ({ queryKey }: QueryFunctionContext<[string, number, number, string, string]>): Promise<ProductBaseType | any> => {
+    const [url,limit,page, word,condition] = queryKey;
+    const res = await http.get(`${url}?limit=${limit}&page=${page}&abbr=${word}&cond=${condition}`);
     return res.data;
 }
 
-export const useFindProduct = (limit: number, page: number, word: string, valid: string | null) => {
+export const useFindProduct = (limit: number, page: number, word: string, valid: string | null, filter: string) => {
     const {updateProducts} = useProduct()
     let url :string
+    let condition: string = '';
     if ( word.length === 0 ) {
         switch (valid) {
             case 'all':
@@ -67,6 +68,7 @@ export const useFindProduct = (limit: number, page: number, word: string, valid:
                 break;
             case 'expired':
                 url = API_ENDPOINTS.PRODUCT_OUT_EXP
+                condition = filter
                 break;
             case 'specialist':
                 url = API_ENDPOINTS.PRODUCT_NON_EXP
@@ -78,7 +80,7 @@ export const useFindProduct = (limit: number, page: number, word: string, valid:
     }else{
         url = API_ENDPOINTS.PRODUCT_SEARCH_NAME 
     }
-    return useQuery([url, limit, page, word], getAllProducts,{
+    return useQuery([url, limit, page, word, condition], getAllProducts,{
         keepPreviousData: true,
         onSuccess: (data) => {
             updateProducts(data)

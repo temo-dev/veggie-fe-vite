@@ -1,6 +1,5 @@
 import {combineReducers, AnyAction, Reducer} from 'redux'
 import auth, {AuthState} from './slices/auth'
-import base, {BaseState} from './slices/base'
 import locale, {LocaleState} from './slices/locale/localeSlice'
 import theme, { ThemeState } from './slices/theme/themeSlice'
 import product,{ ProductAllState } from './slices/product'
@@ -8,7 +7,6 @@ import report, { ReportAllState } from './slices/report'
 
 export type RootState = {
   auth: AuthState
-  base: BaseState
   locale: LocaleState
   theme: ThemeState
   product: ProductAllState
@@ -22,7 +20,6 @@ export interface AsyncReducers {
 
 const staticReducers = {
   auth,
-  base,
   locale,
   theme,
   product,
