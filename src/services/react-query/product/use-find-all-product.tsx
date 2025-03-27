@@ -87,7 +87,7 @@ export const useFindProduct = (limit: number, page: number, word: string, valid:
         },
         onError: (error) => {
             notifications.show({
-                title: 'Lấy sản phẩm xảy ra lỗi',
+                title: 'sản phẩm xảy ra lỗi',
                 message: String(error),
                 color: 'red',
                 autoClose: 5000,
