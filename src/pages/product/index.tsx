@@ -150,13 +150,6 @@ const ProductPage = () => {
   return (
     <div ref={ref}>
       <Stack>
-        <Grid>
-          <Grid.Col span={4}>
-            <TotalCategoryPieChart />
-          </Grid.Col>
-          <Grid.Col span={4}>{/* <LineProductChart title="Giá Hàng Hóa Nhập" /> */}</Grid.Col>
-          <Grid.Col span={4}>{/* <LineProductChart title="Giá Hàng Hóa Nhập" /> */}</Grid.Col>
-        </Grid>
         <Container fluid size="responsive" w={width} pos="relative">
           <LoadingOverlay
             visible={loading}

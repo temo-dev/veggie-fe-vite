@@ -91,13 +91,6 @@ const TableProduct = (prop: PropsInterface) => {
   //component
   const rows = data?.map((el, key) => {
     const elBox = el.units.filter((unit) => unit.unit_name == 'box');
-    // const dateOnly = (d: Date) => d.toISOString().split('T')[0];
-    // const now = dateOnly(new Date());
-    // const expiredAt = dateOnly(new Date(`${el?.batch.expiration_date}Z`));
-    // const inputAt = dateOnly(new Date(`${el?.batch.input_date}Z`));
-    // if (now > expiredAt){
-    //   console.log("ok",now)
-    // }
     return (
       <Table.Tr key={key}>
         <Table.Td>{el.brand?.toUpperCase()}</Table.Td>
@@ -153,7 +146,7 @@ const TableProduct = (prop: PropsInterface) => {
   });
   return (
     <>
-      <Table.ScrollContainer minWidth={minWidth} type="native" h={400}>
+      <Table.ScrollContainer minWidth={minWidth} type="native" h={800}>
         <Table striped withTableBorder withColumnBorders stickyHeader>
           <Table.Thead>
             <Table.Tr className="bg-green-600 text-white text-nowrap">

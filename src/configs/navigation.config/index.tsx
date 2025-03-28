@@ -1,16 +1,16 @@
 import type {NavigationTree} from '@/@types/navigation';
-import {IconBrandVinted, IconSalad,IconCategory,IconUsersGroup} from '@tabler/icons-react';
+import {IconBrandVinted, IconSalad,IconCategory,IconUsersGroup, IconDashboard} from '@tabler/icons-react';
 
 const navigationConfig: NavigationTree[] = [
-  // {
-  //   key: 'dashboard',
-  //   path: '/dashboard',
-  //   title: 'Dashboard',
-  //   translateKey: '',
-  //   icon: IconDashboard,
-  //   authority: [],
-  //   subMenu: []
-  // },
+  {
+    key: 'dashboard',
+    path: '/dashboard',
+    title: 'Dashboard',
+    translateKey: '',
+    icon: IconDashboard,
+    authority: [],
+    subMenu: []
+  },
   // {
   //   key: 'suppliers',
   //   path: '/suppliers',
