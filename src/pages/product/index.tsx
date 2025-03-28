@@ -11,6 +11,7 @@ import {
   Loader,
   LoadingOverlay,
   Select,
+  Box,
 } from '@mantine/core';
 import {
   IconBasketX,
@@ -18,6 +19,7 @@ import {
   IconCalendarFilled,
   IconHomeCheck,
   IconHomeSearch,
+  IconListCheck,
   IconSearch,
   IconShoppingCartExclamation,
   IconTruck,
@@ -40,7 +42,8 @@ const ProductPage = () => {
   const [valueTab, setValueTab] = useState<string | null>('all');
   const [validTab, setValidTab] = useState<string | null>('all');
   const [filter, setFilter] = useState<string>('');
-  const { status } = useFindProduct(10, activePage, valueConfirm, validTab, filter);
+  const [limit, setLimit] = useState<string>('10');
+  const { status } = useFindProduct(limit, activePage, valueConfirm, validTab, filter);
   //effect
   useEffect(() => {
     setLoading(false);
@@ -71,6 +74,11 @@ const ProductPage = () => {
     setFilter(cond);
     setLoading(true);
   };
+
+  const handleChangeLimit =  (cond: string) => {
+    setLimit(cond)
+    setLoading(true);
+  }
   //tab
   const dataTab = [
     {
@@ -155,12 +163,12 @@ const ProductPage = () => {
           <Group>
             <Select
               data={[
-                { value: '1', label: '1 Tháng Tới' },
-                { value: '2', label: '2 Tháng Tới' },
-                { value: '3', label: '3 Tháng Tới' },
-                { value: '4', label: '4 Tháng Tới' },
-                { value: '5', label: '5 Tháng Tới' },
-                { value: '6', label: '6 Tháng Tới' },
+                { value: '1', label: '1 Tháng Qua' },
+                { value: '2', label: '2 Tháng Qua' },
+                { value: '3', label: '3 Tháng Qua' },
+                { value: '4', label: '4 Tháng Qua' },
+                { value: '5', label: '5 Tháng Qua' },
+                { value: '6', label: '6 Tháng Qua' },
               ]}
               value={filter}
               className="my-2"
@@ -201,17 +209,34 @@ const ProductPage = () => {
           <Card shadow="xs" radius="md">
             <Tabs defaultValue={valueTab} onChange={handleChangeTab} value={valueTab}>
               <Tabs.List>
-                <Group justify="space-between" gap="xl">
-                  {dataTab.map((tab) => (
-                    <Tabs.Tab
-                      value={tab.name}
-                      key={tab.id}
-                      leftSection={tab.icon}
-                      className="font-bold"
-                    >
-                      {tab.description.toUpperCase()}
-                    </Tabs.Tab>
-                  ))}
+                <Group justify="space" gap="xl">
+                  <Group justify="start" gap="xl">
+                    {dataTab.map((tab) => (
+                      <Tabs.Tab
+                        value={tab.name}
+                        key={tab.id}
+                        leftSection={tab.icon}
+                        className="font-bold"
+                      >
+                        {tab.description.toUpperCase()}
+                      </Tabs.Tab>
+                    ))}
+                  </Group>
+                  <Box>
+                    <Select
+                      data={[
+                        { value: '10', label: '10' },
+                        { value: '20', label: '20' },
+                        { value: '30', label: '30' },
+                      ]}
+                      value={limit}
+                      className="my-2"
+                      placeholder="10"
+                      onChange={(_value, option) => handleChangeLimit(option.value)}
+                      leftSection={<IconListCheck size={20} color="green" />}
+                      w={100}
+                    />
+                  </Box>
                 </Group>
               </Tabs.List>
               {dataTab.map((tab) => (
@@ -222,7 +247,7 @@ const ProductPage = () => {
             </Tabs>
             <Divider />
             <Pagination
-              total={totalCurrentProduct / 10}
+              total={totalCurrentProduct / parseInt(limit)}
               value={activePage}
               onChange={handleChangePage}
               mt="md"

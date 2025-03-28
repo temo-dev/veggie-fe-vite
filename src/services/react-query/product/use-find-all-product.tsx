@@ -46,7 +46,7 @@ export interface ProductBaseType {
 
 const getAllProducts = async ({
   queryKey,
-}: QueryFunctionContext<[string, number, number, string, string]>): Promise<
+}: QueryFunctionContext<[string, string, number, string, string]>): Promise<
   ProductBaseType | any
 > => {
   const [url, limit, page, word, condition] = queryKey;
@@ -55,7 +55,7 @@ const getAllProducts = async ({
 };
 
 export const useFindProduct = (
-  limit: number,
+  limit: string,
   page: number,
   word: string,
   valid: string | null,
