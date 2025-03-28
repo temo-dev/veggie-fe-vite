@@ -20,15 +20,15 @@ import {
   IconHomeSearch,
   IconSearch,
   IconShoppingCartExclamation,
+  IconTruck,
 } from '@tabler/icons-react';
 import { getHotkeyHandler } from '@mantine/hooks';
-import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
-import LineProductChart from '@/components/Report/LineProductChart';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
 import { useEffect, useState } from 'react';
 import { useFindProduct } from '@/services/react-query/product/use-find-all-product';
+import CardReportTotal from '@/container/Card/CardReportTotal';
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
@@ -68,9 +68,9 @@ const ProductPage = () => {
     setLoading(true);
   };
   const handleSetMonth = (cond: string) => {
-    setFilter(cond)
+    setFilter(cond);
     setLoading(true);
-  }
+  };
   //tab
   const dataTab = [
     {
@@ -129,7 +129,7 @@ const ProductPage = () => {
               ]}
               value={filter}
               className="my-2"
-              placeholder='Hôm Nay'
+              placeholder="Hôm Nay"
               onChange={(_value, option) => handleSetMonth(option.value)}
               leftSection={<IconCalendarFilled size={20} color="orange" />}
             />
@@ -145,11 +145,40 @@ const ProductPage = () => {
       icon: <IconShoppingCartExclamation size={20} />,
       table: <TableProduct data={products} minWidth={width} />,
     },
+    {
+      id: 6,
+      name: 'new',
+      description: 'Lô Mới',
+      icon: <IconTruck size={20} color={'green'} />,
+      table: (
+        <>
+          <Group>
+            <Select
+              data={[
+                { value: '1', label: '1 Tháng Tới' },
+                { value: '2', label: '2 Tháng Tới' },
+                { value: '3', label: '3 Tháng Tới' },
+                { value: '4', label: '4 Tháng Tới' },
+                { value: '5', label: '5 Tháng Tới' },
+                { value: '6', label: '6 Tháng Tới' },
+              ]}
+              value={filter}
+              className="my-2"
+              placeholder="1 Tháng"
+              onChange={(_value, option) => handleSetMonth(option.value)}
+              leftSection={<IconCalendarFilled size={20} color="orange" />}
+            />
+          </Group>
+          <TableProduct data={products} minWidth={width} />
+        </>
+      ),
+    },
   ];
   //render
   return (
     <div ref={ref}>
       <Stack>
+        <CardReportTotal />
         <Container fluid size="responsive" w={width} pos="relative">
           <LoadingOverlay
             visible={loading}

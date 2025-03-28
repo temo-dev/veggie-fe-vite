@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
     PRODUCT:'/v1/product',
     PRODUCT_SOLD:'/v1/product/out-stock',
     PRODUCT_OUT_EXP:'/v1/product/out-exp',
+    PRODUCT_NEW:'/v1/product/new',
     PRODUCT_NON_EXP:'/v1/product/non-exp',
     PRODUCT_SEARCH_NAME:'/v1/product/search-by-name',
     REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product'

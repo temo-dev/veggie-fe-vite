@@ -4,31 +4,34 @@ import { ReportPieChartType } from '@/services/react-query/report/use-get-total-
 
 export type ReportState = {
   reportTotalProduct: ReportPieChartType[];
-  totalProduct:number
+  totalProduct: number;
+  reportNumberProduct: ReportPieChartType[];
 };
 
 export const initialState: ReportState = {
-  reportTotalProduct:[],
-  totalProduct:0
+  reportTotalProduct: [],
+  totalProduct: 0,
+  reportNumberProduct: [],
 };
 
 export const reportSlice = createSlice({
   name: `${SLICE_BASE_NAME}/report`,
   initialState,
   reducers: {
-    setReportTotalProduct(state, action){
-      const {data} = action.payload
+    setReportTotalProduct(state, action) {
+      const { data } = action.payload;
+      state.reportNumberProduct = data;
       let array: ReportPieChartType[];
-      array = data.filter((report:ReportPieChartType) => {
-        if (report.name == "all"){
-          state.totalProduct = report.value
+      array = data.filter((report: ReportPieChartType) => {
+        if (report.name == 'all') {
+          state.totalProduct = report.value;
         }
-        if (report.name == "available" || report.name == "sold"){
-          return report
+        if (report.name == 'available' || report.name == 'sold') {
+          return report;
         }
-      })
-      state.reportTotalProduct = array
-    }
+      });
+      state.reportTotalProduct = array;
+    },
   },
 });
 

@@ -83,9 +83,6 @@ const ProductDetailPage = () => {
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
         <Group>
-          <Button variant="default" leftSection={<IconPlus size={20} />}>
-            Update Giá Bán
-          </Button>
         </Group>
         <Card withBorder padding="md" radius="md" className={classes.card}>
           <Card.Section
