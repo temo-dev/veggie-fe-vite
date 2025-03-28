@@ -12,6 +12,8 @@ import {
   LoadingOverlay,
   Select,
   Box,
+  Text,
+  InputWrapper,
 } from '@mantine/core';
 import {
   IconBasketX,
@@ -75,10 +77,10 @@ const ProductPage = () => {
     setLoading(true);
   };
 
-  const handleChangeLimit =  (cond: string) => {
-    setLimit(cond)
+  const handleChangeLimit = (cond: string) => {
+    setLimit(cond);
     setLoading(true);
-  }
+  };
   //tab
   const dataTab = [
     {
@@ -89,15 +91,23 @@ const ProductPage = () => {
       table: (
         <>
           <Group>
-            <Input
-              leftSection={<IconSearch size={20} color="green" />}
-              placeholder="Tìm Kiếm Sản Phẩm"
-              className="my-2"
-              onChange={handleSetValueSearch}
-              onKeyDown={getHotkeyHandler([['Enter', handleSearch]])}
-              defaultValue={valueConfirm}
-              w={300}
-            />
+            <InputWrapper
+              label={
+                <Text size="xs" fs="italic">
+                  {'Tìm Kiếm Theo Tên, Mã Sản Phẩm'}
+                </Text>
+              }
+            >
+              <Input
+                leftSection={<IconSearch size={20} color="green" />}
+                placeholder="Tìm Kiếm Sản Phẩm"
+                className="my-2"
+                onChange={handleSetValueSearch}
+                onKeyDown={getHotkeyHandler([['Enter', handleSearch]])}
+                defaultValue={valueConfirm}
+                w={300}
+              />
+            </InputWrapper>
           </Group>
           <TableProduct data={products} minWidth={width} />
         </>
@@ -140,6 +150,11 @@ const ProductPage = () => {
               placeholder="Hôm Nay"
               onChange={(_value, option) => handleSetMonth(option.value)}
               leftSection={<IconCalendarFilled size={20} color="orange" />}
+              label={
+                <Text size="xs" fs="italic">
+                  {'Từ Tháng'}
+                </Text>
+              }
             />
           </Group>
           <TableProduct data={products} minWidth={width} />
@@ -148,13 +163,6 @@ const ProductPage = () => {
     },
     {
       id: 5,
-      name: 'specialist',
-      description: 'Lô Không Có Hạn',
-      icon: <IconShoppingCartExclamation size={20} />,
-      table: <TableProduct data={products} minWidth={width} />,
-    },
-    {
-      id: 6,
       name: 'new',
       description: 'Lô Mới',
       icon: <IconTruck size={20} color={'green'} />,
@@ -172,14 +180,26 @@ const ProductPage = () => {
               ]}
               value={filter}
               className="my-2"
-              placeholder="1 Tháng"
+              placeholder="1 Tháng Qua"
               onChange={(_value, option) => handleSetMonth(option.value)}
               leftSection={<IconCalendarFilled size={20} color="orange" />}
+              label={
+                <Text size="xs" fs="italic">
+                  {'Từ Tháng'}
+                </Text>
+              }
             />
           </Group>
           <TableProduct data={products} minWidth={width} />
         </>
       ),
+    },
+    {
+      id: 6,
+      name: 'specialist',
+      description: 'Lô Không Có Hạn',
+      icon: <IconShoppingCartExclamation size={20} />,
+      table: <TableProduct data={products} minWidth={width} />,
     },
   ];
   //render
@@ -225,16 +245,21 @@ const ProductPage = () => {
                   <Box>
                     <Select
                       data={[
-                        { value: '10', label: '10' },
-                        { value: '20', label: '20' },
-                        { value: '30', label: '30' },
+                        { value: '10', label: '10 Sản Phẩm' },
+                        { value: '20', label: '20 Sản Phẩm' },
+                        { value: '30', label: '30 Sản Phẩm' },
                       ]}
                       value={limit}
                       className="my-2"
                       placeholder="10"
                       onChange={(_value, option) => handleChangeLimit(option.value)}
                       leftSection={<IconListCheck size={20} color="green" />}
-                      w={100}
+                      w={150}
+                      label={
+                        <Text size="xs" fs="italic">
+                          {'Giới Hạn Sản Phẩm'}
+                        </Text>
+                      }
                     />
                   </Box>
                 </Group>

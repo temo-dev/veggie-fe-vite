@@ -6,13 +6,11 @@ const DashBoardPage = () => {
   return (
     <div>
       <Stack>
-      <CardReport/>
         <Grid>
           <Grid.Col span={4}>
             <TotalCategoryPieChart />
           </Grid.Col>
-          <Grid.Col span={4}>{/* <LineProductChart title="Giá Hàng Hóa Nhập" /> */}</Grid.Col>
-          <Grid.Col span={4}>{/* <LineProductChart title="Giá Hàng Hóa Nhập" /> */}</Grid.Col>
+          <Grid.Col span={8}><CardReport /></Grid.Col>
         </Grid>
       </Stack>
     </div>

@@ -94,6 +94,7 @@ const TableProduct = (prop: PropsInterface) => {
     return (
       <Table.Tr key={key}>
         <Table.Td>{el.brand?.toUpperCase()}</Table.Td>
+        <Table.Td>{el.origin?.toUpperCase()}</Table.Td>
         <Table.Td>
           <Avatar
             src={el.image_url ? el.image_url : '/logo/favicon-32x32.png'}
@@ -105,15 +106,16 @@ const TableProduct = (prop: PropsInterface) => {
         </Table.Td>
         <Table.Td>
           {
-            <Link
-              to={'/products/product-detail'}
-              onClick={(event) => {
-                event.preventDefault();
-                navigate('/products/product-detail');
-              }}
-            >
-              {el.product_abbr}
-            </Link>
+            // <Link
+            //   to={'/products/product-detail'}
+            //   onClick={(event) => {
+            //     event.preventDefault();
+            //     navigate('/products/product-detail');
+            //   }}
+            // >
+            //   {el.product_abbr}
+            // </Link>
+            el.product_abbr
           }
         </Table.Td>
         <Table.Td>
@@ -146,11 +148,12 @@ const TableProduct = (prop: PropsInterface) => {
   });
   return (
     <>
-      <Table.ScrollContainer minWidth={minWidth} type="native" h={600}>
+      <Table.ScrollContainer minWidth={minWidth} type="native" h={500}>
         <Table striped withTableBorder withColumnBorders stickyHeader>
           <Table.Thead>
             <Table.Tr className="bg-green-600 text-white text-nowrap">
               <Table.Th>Tên Thương Hiệu</Table.Th>
+              <Table.Th>Xuất Xứ</Table.Th>
               <Table.Th>Hình Ảnh</Table.Th>
               <Table.Th>Code Sản Phẩm</Table.Th>
               <Table.Th>Hàng Tồn</Table.Th>
