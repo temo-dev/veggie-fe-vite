@@ -1,6 +1,5 @@
 import {
   Card,
-  Grid,
   Stack,
   Container,
   Tabs,
@@ -33,9 +32,11 @@ import { useAppSelector } from '@/store';
 import { useEffect, useState } from 'react';
 import { useFindProduct } from '@/services/react-query/product/use-find-all-product';
 import CardReportTotal from '@/container/Card/CardReportTotal';
+import { useFindExChange } from '@/services/currency/use-get-ex-change-today';
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
+  const _ = useFindExChange()
   const { products, totalCurrentProduct } = useAppSelector((state) => state.product.product);
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);

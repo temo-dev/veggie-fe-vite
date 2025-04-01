@@ -18,6 +18,12 @@ interface BatchType {
   available: number;
 }
 
+
+interface PriceDetailType {
+  name_zone:string,
+  price_detail: PriceType
+}
+
 interface PriceType {
   price_net: number;
   price_gross: number;
@@ -42,6 +48,14 @@ export interface ProductBaseType {
   stock: number;
   batch: BatchType;
   price: PriceType;
+  weight_net: number;
+  weight_gross:number;
+}
+
+export interface ProductBaseDetailType{
+  product_base : ProductBaseType,
+  list_batch: BatchType[],
+  list_price: PriceDetailType[]
 }
 
 const getAllProducts = async ({

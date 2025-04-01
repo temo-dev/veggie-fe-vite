@@ -15,6 +15,7 @@ import { modals } from '@mantine/modals';
 import { Link, useNavigate } from 'react-router-dom';
 import { Image } from '@mantine/core';
 import { IconBellZFilled } from '@tabler/icons-react';
+import useProduct from '@/utils/hooks/useProduct';
 
 interface PropsInterface {
   data: ProductBaseType[] | [];
@@ -76,6 +77,7 @@ const ExpiredText = (prop: PropExpired) => {
 
 const TableProduct = (prop: PropsInterface) => {
   const { data, minWidth } = prop;
+  const {updateCurrentProductCode} = useProduct()
   const navigate = useNavigate();
   //logic
   const handleShowImage = (el: ProductBaseType) => {
@@ -106,16 +108,16 @@ const TableProduct = (prop: PropsInterface) => {
         </Table.Td>
         <Table.Td>
           {
-            // <Link
-            //   to={'/products/product-detail'}
-            //   onClick={(event) => {
-            //     event.preventDefault();
-            //     navigate('/products/product-detail');
-            //   }}
-            // >
-            //   {el.product_abbr}
-            // </Link>
-            el.product_abbr
+            <Link
+              to={'/products/product-detail'}
+              onClick={(event) => {
+                event.preventDefault();
+                updateCurrentProductCode(el?.product_abbr)
+                navigate('/products/product-detail');
+              }}
+            >
+              {el.product_abbr}
+            </Link>
           }
         </Table.Td>
         <Table.Td>

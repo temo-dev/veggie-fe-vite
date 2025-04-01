@@ -9,5 +9,6 @@ export const API_ENDPOINTS = {
     PRODUCT_NEW:'/v1/product/new',
     PRODUCT_NON_EXP:'/v1/product/non-exp',
     PRODUCT_SEARCH_NAME:'/v1/product/search-by-name',
-    REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product'
+    PRODUCT_DETAIL:'/v1/product/product-detail',
+    REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product',
   };

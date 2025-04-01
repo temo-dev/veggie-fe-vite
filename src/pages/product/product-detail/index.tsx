@@ -3,24 +3,25 @@ import {
   Card,
   Avatar,
   Group,
-  Button,
   Text,
   Grid,
   Stack,
-  Anchor,
   Breadcrumbs,
   Container,
   Tabs,
-  Divider,
-  Title,
+  Loader,
+  LoadingOverlay,
 } from '@mantine/core';
-import { IconPlus, IconSalad } from '@tabler/icons-react';
-import TotalCategoryPieChart from '@/components/Report/TotalCategoryPieChart';
-import LineProductChart from '@/components/Report/LineProductChart';
+import { IconBrandShopee, IconSalad } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useElementSize } from '@mantine/hooks';
-import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
+import { ProductBaseDetailType } from '@/services/react-query/product/use-find-all-product';
+import TableProductBatchDetail from '@/components/Table/TableProductBatchDetail';
+import { useFindProductDetail } from '@/services/react-query/product/use-find-product-detail';
+import { useEffect, useState } from 'react';
+import TableEshop from '@/components/Table/TableEshop';
+import ZonePrice from '@/components/ZonePrice';
 
 //mock data
 const data1 = [
@@ -33,20 +34,65 @@ const data1 = [
 
 const ProductDetailPage = () => {
   const { ref, width } = useElementSize();
+  const { currentProductCode } = useAppSelector((state) => state.product.product);
+  const [productDetail, setProductDetail] = useState<ProductBaseDetailType | null>(null);
+  const _ = useFindProductDetail(currentProductCode);
+  const [valueTab, setValueTab] = useState<string | null>('all');
   const navigate = useNavigate();
-  const {currentProduct} = useAppSelector((state) => state.product.product);
+  const { status, isLoading, data: response } = useFindProductDetail(currentProductCode);
+  const elBox = productDetail?.product_base?.units.filter(
+    (unit: any) => unit.unit_name == 'box'
+  )[0];
+  //effect
+  useEffect(() => {
+    if (status == 'success') {
+      setProductDetail(response?.data);
+    }
+  }, [status]);
   //mock data
-  const stats = [
-    { value: '2', label: 'Nhà Cung Cấp' },
-    { value: '3', label: 'Khách Hàng' },
+  const stats: any[] = [
+    {
+      value: <Text fw={700}>{`${(productDetail?.product_base?.stock ?? 0) / (elBox?.quantity ?? 1)} ${elBox?.unit_name.toLocaleLowerCase() ?? ''}`}</Text>,
+      label: 'Số Lượng',
+    },
+    {
+      value: <ZonePrice listPrice={productDetail?.list_price}/>,
+      label: 'Giá Bán Ra',
+    },
+    {
+      value: <Text>{`${productDetail?.product_base?.brand}`}</Text>,
+      label: 'Nhãn Hàng',
+    },
+    {
+      value: <Text>{`${productDetail?.product_base?.origin}`}</Text>,
+      label: 'Xuất Xứ',
+    },
   ];
   const dataTab = [
     {
       id: 1,
-      name: 'Danh Sách Sản Phẩm',
-      description: 'Danh sách sản phẩm',
+      name: 'batch',
+      description: 'Lô Hàng Hiện Tại',
       icon: <IconSalad />,
-      table: <TableProduct data={[]} minWidth={width} />,
+      table: (
+        <TableProductBatchDetail
+          listBatch={productDetail?.list_batch}
+          productBase={productDetail?.product_base}
+          minWidth={width}
+        />
+      ),
+    },
+    {
+      id: 2,
+      name: 'eshop',
+      description: 'Thông Tin Trên Eshop',
+      icon: <IconBrandShopee />,
+      table: (
+        <TableEshop
+          productBase={productDetail?.product_base}
+          minWidth={width}
+        />
+      ),
     },
   ];
   //children components
@@ -75,29 +121,42 @@ const ProductDetailPage = () => {
       </Text>
     </div>
   ));
-
-
+  //function
+  const handleChangeTab = (value: string | null) => {
+    setValueTab(value);
+  };
   //render
   return (
     <div ref={ref}>
+      <LoadingOverlay
+        visible={isLoading}
+        zIndex={1000}
+        overlayProps={{ radius: 'md', blur: 2 }}
+        loaderProps={{
+          children: (
+            <Stack gap="md">
+              <img alt={'Veggie Logo'} src={'/logo/logo-text-1.svg'} />
+              <Loader style={{ alignSelf: 'center' }} color="green" type="bars" className="mt-5" />
+            </Stack>
+          ),
+        }}
+      />
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
-        <Group>
-        </Group>
+        <Group></Group>
         <Card withBorder padding="md" radius="md" className={classes.card}>
           <Card.Section
             h={220}
             style={{
-              background:
-                'url("/logo/logo-1.svg") no-repeat center center',
+              background: 'url("/logo/logo-1.svg") no-repeat center center',
               backgroundColor: '#f5f5f5',
             }}
           />
           <Group justify="space-between" mt="md">
             <Group>
               <div>
-                {/* <Avatar
-                  src={currentProduct?.image_url}
+                <Avatar
+                  src={productDetail?.product_base?.image_url}
                   size={120}
                   radius={120}
                   mx="auto"
@@ -105,8 +164,8 @@ const ProductDetailPage = () => {
                   className={classes.avatar}
                 />
                 <Text ta="center" fz="lg" fw={700} mt="sm">
-                  {currentProduct?.product_code}
-                </Text> */}
+                  {productDetail?.product_base?.product_abbr}
+                </Text>
               </div>
               <Group mt="md" justify="center" gap={30}>
                 {items}
@@ -114,16 +173,9 @@ const ProductDetailPage = () => {
             </Group>
           </Group>
         </Card>
-        <Grid>
-          <Grid.Col span={6}>
-            <TotalCategoryPieChart />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <LineProductChart title='Theo dõi giá nhập'/>
-          </Grid.Col>
-        </Grid>
+        <Grid></Grid>
         <Container fluid size="responsive" w={width}>
-          {/* <Tabs defaultValue={`${dataTab[0].name}`} className="mt-4">
+          <Tabs defaultValue={`${dataTab[0].name}`} onChange={handleChangeTab} className="mt-4">
             <Tabs.List>
               {dataTab.map((tab) => (
                 <Tabs.Tab
@@ -132,7 +184,7 @@ const ProductDetailPage = () => {
                   leftSection={tab.icon}
                   className="font-bold"
                 >
-                  {tab.name.toUpperCase()}
+                  {tab.description.toUpperCase()}
                 </Tabs.Tab>
               ))}
             </Tabs.List>
@@ -141,7 +193,7 @@ const ProductDetailPage = () => {
                 {tab.table}
               </Tabs.Panel>
             ))}
-          </Tabs> */}
+          </Tabs>
         </Container>
       </Stack>
     </div>

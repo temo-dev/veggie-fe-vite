@@ -8,7 +8,6 @@ import navigationConfig from "@/configs/navigation.config";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Views from "@/components/Layout/Views";
 import useAuth from "@/utils/hooks/useAuth";
-import CollapsedSideBarUserPopOver from "@/components/UserPopOver/CollapsedSideBarUserPopOver";
 import AuthorityCheck from '@/route/AuthorityCheck';
 import {useAppSelector} from "@/store";
 
@@ -17,7 +16,7 @@ function CollapsedSideBarBottomContent() {
   return (
     <div className={classes.linkWrapper}>
       <div className={classes.link}>
-        <CollapsedSideBarUserPopOver/>
+        {/* <CollapsedSideBarUserPopOver/> */}
       </div>
       <div className={classes.link} onClick={() => {
         signOut()
