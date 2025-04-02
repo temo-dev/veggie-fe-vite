@@ -21,8 +21,6 @@ const EChart: React.FC<EChartProps> = ({ options, style = { height: '400px', wid
       window.addEventListener('resize', handleResize);
 
       chartInstance.on('legendselectchanged', (params) => {
-        console.log(params);
-        console.log(data);
       })
 
       // Cleanup

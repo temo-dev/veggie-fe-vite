@@ -24,20 +24,13 @@ import TableEshop from '@/components/Table/TableEshop';
 import ZonePrice from '@/components/ZonePrice';
 
 //mock data
-const data1 = [
-  { value: 200, name: 'Dry Foods' },
-  { value: 50, name: 'VEG Products' },
-  { value: 100, name: 'Snack Foods' },
-  { value: 100, name: 'EU Products' },
-  { value: 111, name: 'Czech Farms' },
-];
 
 const ProductDetailPage = () => {
   const { ref, width } = useElementSize();
   const { currentProductCode } = useAppSelector((state) => state.product.product);
   const [productDetail, setProductDetail] = useState<ProductBaseDetailType | null>(null);
   const _ = useFindProductDetail(currentProductCode);
-  const [valueTab, setValueTab] = useState<string | null>('all');
+  const [valueTab, setValueTab] = useState<string | null>('batch');
   const navigate = useNavigate();
   const { status, isLoading, data: response } = useFindProductDetail(currentProductCode);
   const elBox = productDetail?.product_base?.units.filter(
@@ -143,7 +136,6 @@ const ProductDetailPage = () => {
       />
       <Stack>
         <Breadcrumbs>{items2}</Breadcrumbs>
-        <Group></Group>
         <Card withBorder padding="md" radius="md" className={classes.card}>
           <Card.Section
             h={220}
@@ -175,7 +167,7 @@ const ProductDetailPage = () => {
         </Card>
         <Grid></Grid>
         <Container fluid size="responsive" w={width}>
-          <Tabs defaultValue={`${dataTab[0].name}`} onChange={handleChangeTab} className="mt-4">
+          <Tabs defaultValue={valueTab} onChange={handleChangeTab} className="mt-4">
             <Tabs.List>
               {dataTab.map((tab) => (
                 <Tabs.Tab

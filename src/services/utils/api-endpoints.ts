@@ -11,4 +11,6 @@ export const API_ENDPOINTS = {
     PRODUCT_SEARCH_NAME:'/v1/product/search-by-name',
     PRODUCT_DETAIL:'/v1/product/product-detail',
     REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product',
+    EXCHANGE:'/v1/exchange',
+    EXCHANGE_DATE:'/v1/exchange/date'
   };

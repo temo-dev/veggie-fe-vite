@@ -1,5 +1,5 @@
 
-import { setAllProducts, useAppDispatch,setCurrentProductCode,setCurrentProduct } from "@/store";
+import { setAllProducts, useAppDispatch,setCurrentProductCode,setCurrentProduct, setExchange } from "@/store";
 
 function useProduct(){
     const dispatch = useAppDispatch()
@@ -14,11 +14,15 @@ function useProduct(){
     const updateCurrentProduct = (product:any) =>{
         dispatch(setCurrentProduct(product))
     }
+    const updateExchange = (exchange:any) =>{
+        dispatch(setExchange(exchange))
+    }
     //return functions
     return {
         updateProducts,
         updateCurrentProductCode,
-        updateCurrentProduct
+        updateCurrentProduct,
+        updateExchange
     }
 }
 
