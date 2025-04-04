@@ -151,7 +151,7 @@ const TableProduct = (prop: PropsInterface) => {
   });
   return (
     <>
-      <Table.ScrollContainer minWidth={minWidth} type="native" h={500}>
+      <Table.ScrollContainer minWidth={minWidth} type="native">
         <Table striped withTableBorder withColumnBorders stickyHeader>
           <Table.Thead>
             <Table.Tr className="bg-green-600 text-white text-nowrap">

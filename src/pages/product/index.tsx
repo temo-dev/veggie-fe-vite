@@ -13,11 +13,14 @@ import {
   Box,
   Text,
   InputWrapper,
+  Button,
+  Collapse,
 } from '@mantine/core';
 import {
   IconBasketX,
   IconBellZFilled,
   IconCalendarFilled,
+  IconChartCovariate,
   IconHomeCheck,
   IconHomeSearch,
   IconListCheck,
@@ -25,7 +28,7 @@ import {
   IconShoppingCartExclamation,
   IconTruck,
 } from '@tabler/icons-react';
-import { getHotkeyHandler } from '@mantine/hooks';
+import { getHotkeyHandler, useDisclosure } from '@mantine/hooks';
 import { useElementSize } from '@mantine/hooks';
 import TableProduct from '@/components/Table/TableProduct';
 import { useAppSelector } from '@/store';
@@ -35,6 +38,7 @@ import CardReportTotal from '@/container/Card/CardReportTotal';
 
 const ProductPage = () => {
   const { ref, width } = useElementSize();
+  const [opened, { toggle }] = useDisclosure(false);
   const { products, totalCurrentProduct } = useAppSelector((state) => state.product.product);
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);
@@ -205,7 +209,14 @@ const ProductPage = () => {
   return (
     <div ref={ref}>
       <Stack>
-        <CardReportTotal />
+        <Card w={width} mx="auto">
+          <Group mb={5}>
+            <Button onClick={toggle} leftSection={<IconChartCovariate size={20} color="white"/>}>Thống kê</Button>
+          </Group>
+          <Collapse in={opened}>
+            <CardReportTotal />
+          </Collapse>
+        </Card>
         <Container fluid size="responsive" w={width} pos="relative">
           <LoadingOverlay
             visible={loading}
