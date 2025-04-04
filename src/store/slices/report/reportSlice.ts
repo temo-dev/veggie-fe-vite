@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SLICE_BASE_NAME } from './constants';
 import { ReportPieChartType } from '@/services/react-query/report/use-get-total-product';
+import { s } from 'vite/dist/node/types.d-aGj9QkWt';
 
 export type ReportState = {
   reportTotalProduct: ReportPieChartType[];
@@ -22,14 +23,14 @@ export const reportSlice = createSlice({
       const { data } = action.payload;
       state.reportNumberProduct = data;
       let array: ReportPieChartType[];
+      let total = 0;
       array = data.filter((report: ReportPieChartType) => {
-        if (report.name == 'all') {
-          state.totalProduct = report.value;
-        }
-        if (report.name == 'available' || report.name == 'sold') {
+        if (report.name == 'available' || report.name == 'sold' || report.name == 'block') {
+          total += report.value;
           return report;
         }
       });
+      state.totalProduct = total;
       state.reportTotalProduct = array;
     },
   },

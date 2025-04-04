@@ -25,54 +25,61 @@ const icons = {
   sold: IconBasketX,
   expired: IconBellZFilled,
   specialist: IconShoppingCartExclamation,
-  new:IconTruck
+  new: IconTruck,
 };
 
 const CardReport = () => {
   const { reportNumberProduct, totalProduct } = useAppSelector((state) => state.report.report);
-  const data = reportNumberProduct.map((item) => {
-    const valueProgress = (item.value / totalProduct) * 100;
-    let valueColor = 'green';
-    let icon = 'available';
-    let label = 'Mã Có Sẵn';
-    switch (item.name) {
-      case 'all':
-        valueColor = 'teal';
-        icon = 'code';
-        label = 'Mã Sản Phẩm';
-        break;
-      case 'sold':
-        valueColor = 'red';
-        icon = 'sold';
-        label = 'Mã Hết Hàng';
-        break;
-      case 'expired':
-        valueColor = 'orange';
-        icon = 'expired';
-        label = 'Lô Hết Hạn 3 Tháng tới';
-        break;
-      case 'new':
-        valueColor = 'green';
-        icon = 'new';
-        label = 'Lô Mới Nhập';
-        break;
-      case 'specialist':
-        valueColor = 'black';
-        icon = 'specialist';
-        label = 'Lô Chưa Có Hạn';
-        break;
-      default:
-        break;
-    }
-    let stat = {
-      label: label,
-      stats: `${item.value}`,
-      progress: valueProgress,
-      color: valueColor,
-      icon: icon,
-    };
-    return stat;
-  });
+  const data = reportNumberProduct
+    .map((item) => {
+      const valueProgress = (item.value / totalProduct) * 100;
+      let valueColor = 'green';
+      let icon = 'available';
+      let label = 'Mã Có Sẵn';
+      switch (item.name) {
+        case 'all':
+          valueColor = 'teal';
+          icon = 'code';
+          label = 'Mã Sản Phẩm';
+          break;
+        case 'sold':
+          valueColor = 'red';
+          icon = 'sold';
+          label = 'Mã Hết Hàng';
+          break;
+        case 'expired':
+          valueColor = 'orange';
+          icon = 'expired';
+          label = 'Lô Hết Hạn 3 Tháng tới';
+          break;
+        case 'new':
+          valueColor = 'green';
+          icon = 'new';
+          label = 'Lô Mới Nhập';
+          break;
+        case 'specialist':
+          valueColor = 'black';
+          icon = 'specialist';
+          label = 'Lô Chưa Có Hạn';
+          break;
+        case 'block':
+          valueColor = 'black';
+          icon = 'block';
+          label = 'Mã Đang Bị Khóa';
+          break;
+        default:
+          break;
+      }
+      let stat = {
+        label: label,
+        stats: `${item.value}`,
+        progress: valueProgress,
+        color: valueColor,
+        icon: icon,
+      };
+      return stat;
+    })
+    .filter((item) => item.icon !== 'block');
   const stats = data.map((stat: any) => {
     const Icon = icons[stat?.icon as keyof typeof icons];
     return (
@@ -95,7 +102,6 @@ const CardReport = () => {
               </Center>
             }
           />
-
           <div>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
               {stat.label}
@@ -108,9 +114,7 @@ const CardReport = () => {
       </Paper>
     );
   });
-  return (
-    <SimpleGrid cols={3}>{stats}</SimpleGrid>
-  );
+  return <SimpleGrid cols={3}>{stats}</SimpleGrid>;
 };
 
 export default CardReport;

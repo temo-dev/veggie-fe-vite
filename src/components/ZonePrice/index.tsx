@@ -53,7 +53,7 @@ const ExplainZonePrice = (props: PropInput) => {
 const ZonePrice = (props: PropInput) => {
   const { listPrice } = props;
   return (
-    <div className="mt-3">
+    <div>
       <Tooltip label={<ExplainZonePrice listPrice={listPrice} />} offset={30} position="right">
         <Badge color={'green'} fullWidth>
           Zone Giá

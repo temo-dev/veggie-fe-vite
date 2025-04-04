@@ -143,6 +143,7 @@ const TableProduct = (prop: PropsInterface) => {
             </Badge>
           </Tooltip>
         </Table.Td>
+        <Table.Td>{el.product_name}</Table.Td>
         <Table.Td>{el.product_name_vn}</Table.Td>
         <Table.Td>{el.product_name_en}</Table.Td>
       </Table.Tr>
@@ -159,6 +160,7 @@ const TableProduct = (prop: PropsInterface) => {
               <Table.Th>Hình Ảnh</Table.Th>
               <Table.Th>Code Sản Phẩm</Table.Th>
               <Table.Th>Hàng Tồn</Table.Th>
+              <Table.Th>Tên Trên K2</Table.Th>
               <Table.Th>Tên Việt Nam</Table.Th>
               <Table.Th>Tên Tiếng Anh</Table.Th>
             </Table.Tr>

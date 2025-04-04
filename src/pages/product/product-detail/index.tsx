@@ -45,11 +45,15 @@ const ProductDetailPage = () => {
   //mock data
   const stats: any[] = [
     {
-      value: <Text fw={700}>{`${(productDetail?.product_base?.stock ?? 0) / (elBox?.quantity ?? 1)} ${elBox?.unit_name.toLocaleLowerCase() ?? ''}`}</Text>,
+      value: (
+        <Text
+          fw={700}
+        >{`${(productDetail?.product_base?.stock ?? 0) / (elBox?.quantity ?? 1)} ${elBox?.unit_name.toLocaleLowerCase() ?? ''}`}</Text>
+      ),
       label: 'Số Lượng',
     },
     {
-      value: <ZonePrice listPrice={productDetail?.list_price}/>,
+      value: <ZonePrice listPrice={productDetail?.list_price} />,
       label: 'Giá Bán Ra',
     },
     {
@@ -59,6 +63,14 @@ const ProductDetailPage = () => {
     {
       value: <Text>{`${productDetail?.product_base?.origin}`}</Text>,
       label: 'Xuất Xứ',
+    },
+    {
+      value: (
+        <Text
+          fw={700}
+        >{`${productDetail?.product_base?.product_name}`}</Text>
+      ),
+      label: 'Tên Trên K2',
     },
   ];
   const dataTab = [
@@ -80,12 +92,7 @@ const ProductDetailPage = () => {
       name: 'eshop',
       description: 'Thông Tin Trên Eshop',
       icon: <IconBrandShopee />,
-      table: (
-        <TableEshop
-          productBase={productDetail?.product_base}
-          minWidth={width}
-        />
-      ),
+      table: <TableEshop productBase={productDetail?.product_base} minWidth={width} />,
     },
   ];
   //children components
@@ -105,14 +112,14 @@ const ProductDetailPage = () => {
     </Link>
   ));
   const items = stats.map((stat) => (
-    <div key={stat.label}>
-      <Text ta="center" fz="lg" fw={700}>
-        {stat.value}
-      </Text>
+    <Stack key={stat.label} align="center" gap={2} className="drop-shadow-lg">
       <Text ta="center" fz="sm" c="dimmed" lh={1} fw={700}>
         {stat.label}
       </Text>
-    </div>
+      <Text ta="center" fz="lg" fw={700}>
+        {stat.value}
+      </Text>
+    </Stack>
   ));
   //function
   const handleChangeTab = (value: string | null) => {

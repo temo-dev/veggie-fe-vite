@@ -7,7 +7,6 @@ function useReport(){
     const updateProreportTotalProductducts = (report:any) => {
         dispatch(setReportTotalProduct(report))
     }
-    
     //return functions
     return {
         updateProreportTotalProductducts,
