@@ -12,5 +12,11 @@ export const API_ENDPOINTS = {
     PRODUCT_DETAIL:'/v1/product/product-detail',
     REPORT_TOTAL_PRODUCT: '/v1/report/report-quanity-product',
     EXCHANGE:'/v1/exchange',
-    EXCHANGE_DATE:'/v1/exchange/date'
+    EXCHANGE_DATE:'/v1/exchange/date',
+    //ver-java
+    SUPPLIER:'/v1/supplier/all-supplier',
+    CREATE_SHIPPING_PRICE:'/v1/shipping-price-pallet/create',
+    CREATE_CIF_PRICE:'/v1/price-cif/create-cif',
+    PRODUCT_ALL:'/v1/product/all-product',
+    PRODUCT_ALL_CIF:'/v1/price-cif/all-cif',
   };

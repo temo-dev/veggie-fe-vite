@@ -1,16 +1,25 @@
 import type {NavigationTree} from '@/@types/navigation';
-import {IconBrandVinted, IconSalad,IconCategory,IconUsersGroup, IconDashboard} from '@tabler/icons-react';
+import {IconBrandVinted, IconSalad,IconCategory,IconUsersGroup, IconDashboard, IconPlaneTilt} from '@tabler/icons-react';
 
 const navigationConfig: NavigationTree[] = [
-  {
-    key: 'dashboard',
-    path: '/dashboard',
-    title: 'Dashboard',
+    {
+    key: 'cif',
+    path: '/cif',
+    title: 'Cif',
     translateKey: '',
-    icon: IconDashboard,
+    icon: IconPlaneTilt,
     authority: [],
     subMenu: []
   },
+  // {
+  //   key: 'dashboard',
+  //   path: '/dashboard',
+  //   title: 'Dashboard',
+  //   translateKey: '',
+  //   icon: IconDashboard,
+  //   authority: [],
+  //   subMenu: []
+  // },
   // {
   //   key: 'suppliers',
   //   path: '/suppliers',
@@ -29,15 +38,15 @@ const navigationConfig: NavigationTree[] = [
   //   authority: [],
   //   subMenu: []
   // },
-  {
-    key: 'products',
-    path: '/products',
-    title: 'Products',
-    translateKey: '',
-    icon: IconSalad,
-    authority: [],
-    subMenu: []
-  },
+  // {
+  //   key: 'products',
+  //   path: '/products',
+  //   title: 'Products',
+  //   translateKey: '',
+  //   icon: IconSalad,
+  //   authority: [],
+  //   subMenu: []
+  // },
   // {
   //   key: 'extensions',
   //   path: '/extensions',

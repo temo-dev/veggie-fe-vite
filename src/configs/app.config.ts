@@ -12,7 +12,7 @@ export type AppConfig = {
 const appConfig: AppConfig = {
   layoutType: LayoutTypes.CollapsedSideBar,
   apiPrefix: import.meta.env.VITE_PUBLIC_REST_API_ENDPOINT,
-  authenticatedEntryPath: '/dashboard',
+  authenticatedEntryPath: '/cif',
   unAuthenticatedEntryPath: '/sign-in',
   enableMock: false,
   locale: 'en',

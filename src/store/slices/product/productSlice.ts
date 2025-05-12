@@ -8,7 +8,8 @@ export interface ProductState {
     currentProductCode: string,
     currentProduct:ProductBaseDetailType | null
     totalCurrentProduct: number,
-    exchange:any | null
+    exchange:any | null,
+    productCifs: any
 }
 
 const initialState:ProductState = {
@@ -16,7 +17,8 @@ const initialState:ProductState = {
     currentProductCode: '',
     totalCurrentProduct: 0,
     currentProduct:null,
-    exchange:null
+    exchange:null,
+    productCifs:null
 }
 
 const productSlice = createSlice({
@@ -27,6 +29,9 @@ const productSlice = createSlice({
             const {data,total} = action.payload
             state.products = data
             state.totalCurrentProduct = total
+        },
+        setProductCif(state, action){
+            state.productCifs = action.payload
         },
         setCurrentProductCode(state, action){
             state.currentProductCode = action.payload
@@ -42,5 +47,5 @@ const productSlice = createSlice({
     }
 })
 
-export const { setAllProducts,setCurrentProductCode,setCurrentProduct,setExchange } = productSlice.actions
+export const { setAllProducts,setCurrentProductCode,setCurrentProduct,setExchange,setProductCif } = productSlice.actions
 export default productSlice.reducer

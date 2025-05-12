@@ -23,4 +23,10 @@ export const protectedRoutes = [
     component: lazy(() => import('@/pages/dashboard')),
     authority: []
   },
+  {
+    key: 'cif',
+    path: '/cif',
+    component: lazy(() => import('@/pages/cif')),
+    authority: []
+  },
 ]

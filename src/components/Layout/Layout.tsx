@@ -17,10 +17,11 @@ export function Layout() {
 
   useLocale();
   const AppLayout = useMemo(() => {
-    if (authenticated) {
-      return layouts[layoutType];
-    }
-    return lazy(() => import('./AuthLayout'));
+    // if (authenticated) {
+    //   return layouts[layoutType];
+    // }
+    // return lazy(() => import('./AuthLayout'));
+    return layouts[layoutType];
   }, [authenticated]);
 
   return (
