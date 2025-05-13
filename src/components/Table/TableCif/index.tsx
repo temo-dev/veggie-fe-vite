@@ -68,6 +68,7 @@ const TableCif = (prop: PropsInterface) => {
         item?.shipping_pallet_price,
         item?.shipping_pallet_currency
       );
+      const delivery = newDeliveryPrice / item?.box_pallet;
       const newPriceCifBox = newPricePc * boxBase + newDeliveryPrice / item?.box_pallet;
       return {
         ...item,
@@ -75,6 +76,7 @@ const TableCif = (prop: PropsInterface) => {
         price_pc_box: newPricePc * boxBase,
         cif_price: newPriceCifBox / boxBase,
         cif_price_box: newPriceCifBox,
+        delivery_price: delivery,
       };
     });
     const [opened, setOpened] = useState(false);
@@ -100,7 +102,17 @@ const TableCif = (prop: PropsInterface) => {
               </Stack>
             </Group>
           </Table.Td>
-          <Table.Td>{newCifPrice?.[0]?.supplier_name}</Table.Td>
+          <Table.Td>
+            <Group>
+              {newCifPrice?.length > 1 && (
+                <ActionIcon variant="light" onClick={() => setOpened((o) => !o)}>
+                  {opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+                </ActionIcon>
+              )}
+              <Text fw={700}>{newCifPrice?.[0]?.supplier_name}</Text>
+            </Group>
+          </Table.Td>
+          <Table.Td>{formatNumber(newCifPrice?.[0]?.delivery_price)}</Table.Td>
           <Table.Td>{formatNumber(newCifPrice?.[0]?.price_pc)}</Table.Td>
           <Table.Td>{formatNumber(newCifPrice?.[0]?.price_pc_box)}</Table.Td>
           <Table.Td>{formatNumber(newCifPrice?.[0]?.cif_price)}</Table.Td>
@@ -109,11 +121,6 @@ const TableCif = (prop: PropsInterface) => {
           <Table.Td>
             <Group>
               <ActionButtons />
-              {newCifPrice?.length > 1 && (
-                <ActionIcon variant="light" onClick={() => setOpened((o) => !o)}>
-                  {opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-                </ActionIcon>
-              )}
             </Group>
           </Table.Td>
         </Table.Tr>
@@ -126,6 +133,7 @@ const TableCif = (prop: PropsInterface) => {
                   {newCifPrice?.slice(1).map((cifItem: any, idx: number) => (
                     <Table.Tr key={`${price_base?.product_k2_id}-${idx}`}>
                       <Table.Td>{cifItem?.supplier_name}</Table.Td>
+                      <Table.Td>{formatNumber(cifItem?.delivery_price)}</Table.Td>
                       <Table.Td>{formatNumber(cifItem?.price_pc)}</Table.Td>
                       <Table.Td>{formatNumber(cifItem?.price_pc_box)}</Table.Td>
                       <Table.Td>{formatNumber(cifItem?.cif_price)}</Table.Td>
@@ -159,7 +167,8 @@ const TableCif = (prop: PropsInterface) => {
               <Table.Th w={100} style={{ textAlign: 'center', border: '1px solid #fff' }}>
                 Mã Hàng
               </Table.Th>
-              <Table.Th w={100}>Nhà Cung Cấp</Table.Th>
+              <Table.Th w={150}>Nhà Cung Cấp</Table.Th>
+              <Table.Th w={50}>Giá Vận Chuyển</Table.Th>
               <Table.Th w={50}>Giá Nhập</Table.Th>
               <Table.Th w={50}>Giá Thùng</Table.Th>
               <Table.Th w={50}>Giá CIF</Table.Th>
