@@ -10,7 +10,7 @@ const getExChangeToday = async ({
   any
 > => {
   const [_, valid] = queryKey;
-  const res = await http.put(`${API_ENDPOINTS.EXCHANGE}/${valid}`);
+  const res = await http.get(`${API_ENDPOINTS.EXCHANGE}?base=${valid}`);
   return res.data;
   };
 

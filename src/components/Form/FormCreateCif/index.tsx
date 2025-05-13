@@ -27,7 +27,7 @@ const FormCreateCif = () => {
   const { data, status } = useFindProducts(searchProduct);
   const { data: responseSupplier } = useFindSuppliers();
   //query
-  const {mutate: sendCifPrice} = useCreateCifPrice();
+  const { mutate: sendCifPrice } = useCreateCifPrice();
 
   useEffect(() => {
     if (status === 'success') {
@@ -72,7 +72,7 @@ const FormCreateCif = () => {
       product_k2_id: [],
       price_pc: 0,
       box_pallet: 0,
-      shipping_currency: 'Kč',
+      shipping_currency: 'czk',
     },
     validate: yupResolver(schema),
   });
@@ -87,7 +87,7 @@ const FormCreateCif = () => {
   }) {
     const supplierId = values.supplier_k2_id.map((item) => Number(item));
     const productId = values.product_k2_id.map((item) => Number(item));
-    sendCifPrice({...values, supplier_k2_id: supplierId, product_k2_id: productId});
+    sendCifPrice({ ...values, supplier_k2_id: supplierId, product_k2_id: productId });
   }
   //render
   return (
@@ -129,9 +129,11 @@ const FormCreateCif = () => {
         <InputWrapper label="Mệnh Giá Đồng Tiền" required>
           <Select
             data={[
-              { value: 'USD', label: 'USD' },
-              { value: 'Kč', label: 'CZK' },
-              { value: 'EUR', label: 'EUR' },
+              { value: 'czk', label: 'CZK' },
+              { value: 'usd', label: 'USD' },
+              { value: 'eur', label: 'EUR' },
+              { value: 'thb', label: 'THB' },
+              { value: 'krw', label: 'KRW' },
             ]}
             className="my-2"
             {...form.getInputProps('shipping_currency')}

@@ -27,7 +27,8 @@ const ExchangeChart = () => {
           { value: 'czk', label: 'CZK' },
           { value: 'usd', label: 'USD' },
           { value: 'eur', label: 'EUR' },
-          { value: 'thb', label: 'THB' },
+          { value: 'th', label: 'THB' },
+          { value: 'kr', label: 'KRW' },
         ]}
         value={valueCurrency}
         className="my-2"

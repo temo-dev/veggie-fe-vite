@@ -1,6 +1,7 @@
 import FormCreateCif from '@/components/Form/FormCreateCif';
 import FormCreateShippingPrice from '@/components/Form/FormCreateShippingPrice';
 import TableCif from '@/components/Table/TableCif';
+import { useFindExChange } from '@/services/currency/use-get-ex-change-today';
 import { useFindProductsCif } from '@/services/react-query/cif/use-find-product-cif';
 import { useAppSelector } from '@/store';
 import {
@@ -17,7 +18,7 @@ import {
   Container,
   Stack,
   Loader,
-  Image
+  Image,
 } from '@mantine/core';
 import { getHotkeyHandler, useElementSize } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
@@ -29,9 +30,11 @@ const CifPage = () => {
   const [activePage, setPage] = useState<number>(1);
   const [nameProduct, setNameProduct] = useState<string>('');
   const [valueSearch, setValueSearch] = useState<string>('');
+  const [baseCurrency, setBaseCurrency] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { status } = useFindProductsCif(nameProduct, activePage - 1);
-  const { productCifs } = useAppSelector((state) => state.product.product);
+  const _ = useFindExChange(baseCurrency);
+  const { productCifs, exchange } = useAppSelector((state) => state.product.product);
   //effect
   useEffect(() => {
     if (status === 'success' || status === 'error') {
@@ -98,7 +101,7 @@ const CifPage = () => {
           overlayProps={{ radius: 'md', blur: 2 }}
           loaderProps={{
             children: (
-              <Stack gap="md" justify='center' align='center'>
+              <Stack gap="md" justify="center" align="center">
                 <Image alt={'Veggie Logo'} src={'/logo/logo-text-1.svg'} />
                 <Loader
                   style={{ alignSelf: 'center' }}
@@ -139,12 +142,15 @@ const CifPage = () => {
           >
             <Select
               data={[
-                { value: '0', label: 'USD' },
-                { value: '1', label: 'CZK' },
+                { value: 'czk', label: 'CZK' },
+                { value: 'usd', label: 'USD' },
+                { value: 'eur', label: 'EUR' },
+                { value: 'thb', label: 'THB' },
+                { value: 'krw', label: 'KRW' },
               ]}
-              value={'1'}
+              defaultValue={'czk'}
               className="my-2"
-              //   onChange={(_value, option) => handleSetMonth(option.value)}
+              onChange={(_value, option) => setBaseCurrency(option.value)}
               leftSection={<IconCash size={20} color="green" />}
             />
           </InputWrapper>
@@ -159,7 +165,7 @@ const CifPage = () => {
             disabled={isLoading}
           />
         </Group>
-        <TableCif minWidth={width} minHeight={height} dataSearch={productCifs?.data} />
+        <TableCif minWidth={width} minHeight={height} dataSearch={productCifs?.data} exchange={exchange}/>
         <Divider />
       </Container>
     </div>

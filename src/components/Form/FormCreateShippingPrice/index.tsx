@@ -16,7 +16,7 @@ import * as yup from 'yup';
 import { useCreateShippingPrice } from '@/services/react-query/supplier/use-create-shipping-price';
 const FormCreateShippingPrice = () => {
   //data
-  const {mutate: sendRequest} = useCreateShippingPrice()
+  const { mutate: sendRequest } = useCreateShippingPrice();
   const { data: responseSupplier } = useFindSuppliers();
   const dataSelectSupplier: ComboboxData | undefined = responseSupplier?.suppliers?.map(
     (item: any) => ({
@@ -40,7 +40,7 @@ const FormCreateShippingPrice = () => {
     initialValues: {
       supplier_k2_id: [],
       supplier_pallet_price: 0,
-      supplier_pallet_currency: 'Kč',
+      supplier_pallet_currency: 'czk',
     },
     validate: yupResolver(schema),
   });
@@ -53,7 +53,8 @@ const FormCreateShippingPrice = () => {
     sendRequest({
       supplier_k2_id: values.supplier_k2_id,
       supplier_pallet_price: values.supplier_pallet_price,
-      supplier_pallet_currency: values.supplier_pallet_currency,})
+      supplier_pallet_currency: values.supplier_pallet_currency,
+    });
   }
   //render
   return (
@@ -78,9 +79,11 @@ const FormCreateShippingPrice = () => {
         <InputWrapper label="Mệnh Giá Đồng Tiền" required>
           <Select
             data={[
-              { value: 'USD', label: 'USD' },
-              { value: 'Kč', label: 'CZK' },
-              { value: 'EUR', label: 'EUR' },
+              { value: 'czk', label: 'CZK' },
+              { value: 'usd', label: 'USD' },
+              { value: 'eur', label: 'EUR' },
+              { value: 'thb', label: 'THB' },
+              { value: 'krw', label: 'KRW' },
             ]}
             className="my-2"
             {...form.getInputProps('supplier_pallet_currency')}
