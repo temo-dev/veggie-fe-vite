@@ -1,17 +1,28 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useFindProductsCif } from '@/services/react-query/cif/use-find-product-cif';
 import { convertTime } from '@/utils/convertTime';
-import { ActionIcon, Collapse, Group, Image, Stack, Table, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Collapse,
+  Container,
+  Divider,
+  Grid,
+  Group,
+  Image,
+  LoadingOverlay,
+  ScrollArea,
+  Stack,
+  Text,
+} from '@mantine/core';
 import {
   IconChevronDown,
   IconChevronUp,
   IconCircuitResistor,
   IconShoppingBagPlus,
 } from '@tabler/icons-react';
-import React, { useState } from 'react';
+import { useScrollIntoView, useWindowScroll } from '@mantine/hooks';
 
 interface PropsInterface {
-  minWidth: number;
-  minHeight: number;
-  dataSearch: any[];
   exchange: any;
 }
 
@@ -28,16 +39,44 @@ const ActionButtons = () => (
 
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
-const TableCif = (prop: PropsInterface) => {
-  const { minWidth, minHeight, dataSearch, exchange } = prop;
+const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
+  const PAGE_SIZE = 20; // items per fetch
+  const [offset, setOffset] = useState(0);
+  const [items, setItems] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [openedRows, setOpenedRows] = useState<Record<string, boolean>>({});
+  const { data: result, status, isFetching } = useFindProductsCif('', offset);
 
-  const rows = dataSearch?.map((item: any) => {
+  // on data load, append
+  useEffect(() => {
+    if (status === 'success' && result?.data) {
+      const newData = result?.data;
+      setItems((prev) => [...prev, ...newData]);
+      // if fewer than page size, no more
+      setHasMore(false);
+    }
+  }, [result, status]);
+
+  // load more handler
+  const fetchMore = () => {
+    setOffset((prev) => prev + 1);
+    setHasMore(true);
+  };
+
+  // toggle details row
+  const toggleRow = (id: string) => {
+    setOpenedRows((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  // render rows from accumulated items
+  const rows = items.map((item: any) => {
     const { price_base, price_cif } = item;
-    const boxBase = price_base?.units.find((unit: any) => unit?.unit_name === 'box')?.quantity ?? 0;
-    //số thùng còn lại
+    const id = price_base?.product_k2_id;
+    const opened = openedRows[id] || false;
+    const boxBase = price_base?.units.find((u: any) => u.unit_name === 'box')?.quantity ?? 0;
     const boxQuantity = price_base?.stock / boxBase;
-    // Sắp xếp price_cif theo cif_price tăng dần
-    const sortedPriceCif = price_cif?.slice().sort((a: any, b: any) => a.cif_price - b.cif_price);
+    const sortedPriceCif = price_cif.slice().sort((a: any, b: any) => a.cif_price - b.cif_price);
+
     const switchExchange = (value: number, currency: string) => {
       let price = 0;
       switch (currency) {
@@ -62,125 +101,152 @@ const TableCif = (prop: PropsInterface) => {
       }
       return price;
     };
-    const newCifPrice = sortedPriceCif?.map((item: any) => {
-      const newPricePc = switchExchange(item?.price_pc, item?.shipping_currency);
-      const newDeliveryPrice = switchExchange(
-        item?.shipping_pallet_price,
-        item?.shipping_pallet_currency
-      );
-      const delivery = newDeliveryPrice / item?.box_pallet;
-      const newPriceCifBox = newPricePc * boxBase + newDeliveryPrice / item?.box_pallet;
+    const newCifPrice = sortedPriceCif.map((c: any) => {
+      const pricePc = switchExchange(c.price_pc, c.shipping_currency);
+      const deliveryPrice =
+        switchExchange(c.shipping_pallet_price, c.shipping_pallet_currency) / c.box_pallet;
+      const totalBox = pricePc * boxBase + deliveryPrice;
       return {
-        ...item,
-        price_pc: newPricePc,
-        price_pc_box: newPricePc * boxBase,
-        cif_price: newPriceCifBox / boxBase,
-        cif_price_box: newPriceCifBox,
-        delivery_price: delivery,
+        ...c,
+        price_pc: pricePc,
+        price_pc_box: pricePc * boxBase,
+        cif_price: totalBox / boxBase,
+        cif_price_box: totalBox,
+        delivery_price: deliveryPrice,
       };
     });
-    const [opened, setOpened] = useState(false);
-
     return (
-      <React.Fragment key={price_base?.product_k2_id}>
-        <Table.Tr className="bg-gray-100 font-semibold">
-          <Table.Td rowSpan={opened ? 2 : 1} style={{ textAlign: 'center' }}>
-            <Group justify="center">
-              <Image
-                src={price_base?.image_url || '/logo/logo-text-1.svg'}
-                w={50}
-                h={50}
-                radius="md"
-                fit="contain"
-              />
-              <Stack justify="center">
-                <Text fw={700}>{`${price_base?.product_abbr} `}</Text>
-                <Text
-                  td={boxQuantity <= 0.9 ? 'line-through' : ''}
-                  c={boxQuantity <= 0.9 ? 'red' : ''}
-                >{`${boxQuantity.toFixed(1)} thùng ${boxBase}`}</Text>
-              </Stack>
-            </Group>
-          </Table.Td>
-          <Table.Td>
-            <Group>
-              {newCifPrice?.length > 1 && (
-                <ActionIcon variant="light" onClick={() => setOpened((o) => !o)}>
-                  {opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-                </ActionIcon>
-              )}
-              <Text fw={700}>{newCifPrice?.[0]?.supplier_name}</Text>
-            </Group>
-          </Table.Td>
-          <Table.Td>{formatNumber(newCifPrice?.[0]?.delivery_price)}</Table.Td>
-          <Table.Td>{formatNumber(newCifPrice?.[0]?.price_pc)}</Table.Td>
-          <Table.Td>{formatNumber(newCifPrice?.[0]?.price_pc_box)}</Table.Td>
-          <Table.Td>{formatNumber(newCifPrice?.[0]?.cif_price)}</Table.Td>
-          <Table.Td>{formatNumber(newCifPrice?.[0]?.cif_price_box)}</Table.Td>
-          <Table.Td>{convertTime(newCifPrice?.[0]?.effective_from)}</Table.Td>
-          <Table.Td>
-            <Group>
-              <ActionButtons />
-            </Group>
-          </Table.Td>
-        </Table.Tr>
-
-        <Table.Tr>
-          <Table.Td colSpan={8} style={{ padding: 0, border: 'none' }}>
-            <Collapse in={opened} w={minWidth}>
-              <Table striped>
-                <Table.Tbody>
-                  {newCifPrice?.slice(1).map((cifItem: any, idx: number) => (
-                    <Table.Tr key={`${price_base?.product_k2_id}-${idx}`}>
-                      <Table.Td>{cifItem?.supplier_name}</Table.Td>
-                      <Table.Td>{formatNumber(cifItem?.delivery_price)}</Table.Td>
-                      <Table.Td>{formatNumber(cifItem?.price_pc)}</Table.Td>
-                      <Table.Td>{formatNumber(cifItem?.price_pc_box)}</Table.Td>
-                      <Table.Td>{formatNumber(cifItem?.cif_price)}</Table.Td>
-                      <Table.Td>{formatNumber(cifItem?.cif_price_box)}</Table.Td>
-                      <Table.Td>{convertTime(cifItem?.effective_from)}</Table.Td>
-                      <Table.Td>
-                        <ActionButtons />
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            </Collapse>
-          </Table.Td>
-        </Table.Tr>
+      <React.Fragment key={id}>
+        <Stack pb={5}>
+          <Grid p={5} mb={2} mt={2}>
+            <Grid.Col span={2}>
+              <Group>
+                <Image
+                  src={price_base?.image_url || '/logo/logo-text-1.svg'}
+                  w={50}
+                  h={50}
+                  radius="md"
+                  fit="contain"
+                />
+                <Stack justify="center">
+                  <Text fw={700}>{price_base?.product_abbr}</Text>
+                  <Text
+                    td={boxQuantity <= 0.9 ? 'line-through' : undefined}
+                    c={boxQuantity <= 0.9 ? 'red' : undefined}
+                  >{`${boxQuantity.toFixed(1)} thùng ${boxBase}`}</Text>
+                </Stack>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Text fw={700}>{newCifPrice[0]?.supplier_name}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{formatNumber(newCifPrice[0]?.delivery_price)}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{formatNumber(newCifPrice[0]?.price_pc)}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{formatNumber(newCifPrice[0]?.price_pc_box)}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{formatNumber(newCifPrice[0]?.cif_price)}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{formatNumber(newCifPrice[0]?.cif_price_box)}</Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fw={700}>{convertTime(newCifPrice[0]?.effective_from)}</Text>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Group>
+                <ActionButtons />
+                {newCifPrice.length > 1 && (
+                  <ActionIcon variant="light" onClick={() => toggleRow(id)}>
+                    {opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+                  </ActionIcon>
+                )}
+              </Group>
+            </Grid.Col>
+          </Grid>
+          <Collapse in={opened}>
+            {newCifPrice.slice(1).map((c: any, key: number) => (
+              <Grid key={key}>
+                <Grid.Col span={2} />
+                <Grid.Col span={2}>
+                  <Text fw={500}>{c.supplier_name}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{formatNumber(c.delivery_price)}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{formatNumber(c.price_pc)}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{formatNumber(c.price_pc_box)}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{formatNumber(c.cif_price)}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{formatNumber(c.cif_price_box)}</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>
+                  <Text fw={500}>{convertTime(c.effective_from)}</Text>
+                </Grid.Col>
+                <Grid.Col span={2}>
+                  <ActionButtons />
+                </Grid.Col>
+              </Grid>
+            ))}
+          </Collapse>
+        </Stack>
+        <Divider />
       </React.Fragment>
     );
   });
 
   return (
-    <>
-      <Table.ScrollContainer
-        minWidth={minWidth}
-        type="native"
-        h={minHeight - 60}
-        className="shadow-xl"
-      >
-        <Table striped stickyHeader tabularNums>
-          <Table.Thead>
-            <Table.Tr className="bg-green-600 text-white text-nowrap">
-              <Table.Th w={100} style={{ textAlign: 'center', border: '1px solid #fff' }}>
-                Mã Hàng
-              </Table.Th>
-              <Table.Th w={150}>Nhà Cung Cấp</Table.Th>
-              <Table.Th w={50}>Giá Vận Chuyển</Table.Th>
-              <Table.Th w={50}>Giá Nhập</Table.Th>
-              <Table.Th w={50}>Giá Thùng</Table.Th>
-              <Table.Th w={50}>Giá CIF</Table.Th>
-              <Table.Th w={50}>Giá CIF Box</Table.Th>
-              <Table.Th w={50}>Ngày Áp Dụng</Table.Th>
-              <Table.Th w={100}>Thao Tác</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-    </>
+    <div style={{ width: '100%', height: 800 }}>
+      <ScrollArea onBottomReached={fetchMore} h={800} style={{ width: '100%', height: '100%' }}>
+        <LoadingOverlay
+          visible={hasMore}
+          zIndex={1000}
+          overlayProps={{ radius: 'md', blur: 2 }}
+          loaderProps={{ color: 'green', type: 'bars' }}
+        />
+        <Grid bg="green.8" c="white" p={5} mb={2}>
+          <Grid.Col span={2}>
+            <Text fw={700}>Mã Hàng</Text>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Text fw={700}>Nhà Cung Cấp</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Giá Vận Chuyển</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Giá Nhập</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Giá Thùng</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Giá CIF</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Giá CIF Box</Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700}>Ngày Áp Dụng</Text>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Text fw={700}>Thao Tác</Text>
+          </Grid.Col>
+        </Grid>
+        {rows}
+      </ScrollArea>
+    </div>
   );
 };
 
