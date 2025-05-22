@@ -206,55 +206,50 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
+      <Grid bg="green.8" c="white" p={5} mb={2} className="sticky top-0">
+        <Grid.Col span={2}>
+          <Text fw={700}>Mã Hàng</Text>
+        </Grid.Col>
+        <Grid.Col span={2}>
+          <Text fw={700}>Nhà Cung Cấp</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Giá Vận Chuyển</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Giá Nhập</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Giá Thùng</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Giá CIF</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Giá CIF Box</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+          <Text fw={700}>Ngày Áp Dụng</Text>
+        </Grid.Col>
+        <Grid.Col span={2}>
+          <Text fw={700}>Thao Tác</Text>
+        </Grid.Col>
+      </Grid>
       <ScrollArea
         onBottomReached={() => {
           if (!isFetching && hasMore) fetchMore();
         }}
-        h={900}
+        h={700}
         style={{ width: '100%', height: '100%' }}
       >
-        <LoadingOverlay
-          visible={status === 'loading' || isFetching}
-          zIndex={1000}
-          overlayProps={{ radius: 'md', blur: 2 }}
-          loaderProps={{ color: 'green', type: 'bars' }}
-        />
-        <Grid bg="green.8" c="white" p={5} mb={2} className='sticky top-0' >
-          <Grid.Col span={2}>
-            <Text fw={700}>Mã Hàng</Text>
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <Text fw={700}>Nhà Cung Cấp</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Giá Vận Chuyển</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Giá Nhập</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Giá Thùng</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Giá CIF</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Giá CIF Box</Text>
-          </Grid.Col>
-          <Grid.Col span={1}>
-            <Text fw={700}>Ngày Áp Dụng</Text>
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <Text fw={700}>Thao Tác</Text>
-          </Grid.Col>
-        </Grid>
         <Stack>
+          <LoadingOverlay
+            visible={status === 'loading' || isFetching}
+            zIndex={1000}
+            overlayProps={{ radius: 'md', blur: 2 }}
+            loaderProps={{ color: 'green', type: 'bars' }}
+          />
           {rows}
-          {isFetching && (
-            <Text ta="center" c="gray">
-              Đang tải thêm...
-            </Text>
-          )}
         </Stack>
       </ScrollArea>
     </div>
