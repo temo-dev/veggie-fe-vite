@@ -40,7 +40,7 @@ const ActionButtons = () => (
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
 const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
-  const PAGE_SIZE = 20; // items per fetch
+  const PAGE_SIZE = 10; // items per fetch
   const [offset, setOffset] = useState(0);
   const [items, setItems] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -53,14 +53,13 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
       const newData = result?.data;
       setItems((prev) => [...prev, ...newData]);
       // if fewer than page size, no more
-      setHasMore(false);
+      setHasMore(newData.length === PAGE_SIZE);
     }
   }, [result, status]);
 
   // load more handler
   const fetchMore = () => {
     setOffset((prev) => prev + 1);
-    setHasMore(true);
   };
 
   // toggle details row
@@ -76,7 +75,6 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
     const boxBase = price_base?.units.find((u: any) => u.unit_name === 'box')?.quantity ?? 0;
     const boxQuantity = price_base?.stock / boxBase;
     const sortedPriceCif = price_cif.slice().sort((a: any, b: any) => a.cif_price - b.cif_price);
-
     const switchExchange = (value: number, currency: string) => {
       let price = 0;
       switch (currency) {
@@ -118,7 +116,7 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
     return (
       <React.Fragment key={id}>
         <Stack pb={5}>
-          <Grid p={5} mb={2} mt={2}>
+          <Grid p={5} mb={2} mt={2} style={{ minHeight: 80 }}>
             <Grid.Col span={2}>
               <Group>
                 <Image
@@ -207,15 +205,21 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
   });
 
   return (
-    <div style={{ width: '100%', height: 800 }}>
-      <ScrollArea onBottomReached={fetchMore} h={800} style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%' }}>
+      <ScrollArea
+        onBottomReached={() => {
+          if (!isFetching && hasMore) fetchMore();
+        }}
+        h={900}
+        style={{ width: '100%', height: '100%' }}
+      >
         <LoadingOverlay
-          visible={hasMore}
+          visible={status === 'loading' || isFetching}
           zIndex={1000}
           overlayProps={{ radius: 'md', blur: 2 }}
           loaderProps={{ color: 'green', type: 'bars' }}
         />
-        <Grid bg="green.8" c="white" p={5} mb={2}>
+        <Grid bg="green.8" c="white" p={5} mb={2} className='sticky top-0' >
           <Grid.Col span={2}>
             <Text fw={700}>Mã Hàng</Text>
           </Grid.Col>
@@ -244,7 +248,14 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
             <Text fw={700}>Thao Tác</Text>
           </Grid.Col>
         </Grid>
-        {rows}
+        <Stack>
+          {rows}
+          {isFetching && (
+            <Text ta="center" c="gray">
+              Đang tải thêm...
+            </Text>
+          )}
+        </Stack>
       </ScrollArea>
     </div>
   );
