@@ -2,29 +2,23 @@ import FormCreateCif from '@/components/Form/FormCreateCif';
 import FormCreateShippingPrice from '@/components/Form/FormCreateShippingPrice';
 import TableCif from '@/components/Table/TableCif';
 import { useFindExChange } from '@/services/currency/use-get-ex-change-today';
-import { useFindProductsCif } from '@/services/react-query/cif/use-find-product-cif';
 import { useAppSelector } from '@/store';
 import {
   Divider,
   Group,
   InputWrapper,
-  Pagination,
   Text,
   Input,
   Button,
   Select,
   Title,
-  LoadingOverlay,
   Container,
   Stack,
-  Loader,
-  Image,
 } from '@mantine/core';
-import { getHotkeyHandler, useElementSize } from '@mantine/hooks';
+import { getHotkeyHandler } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { IconBasketDollar, IconCarCrane, IconCash, IconSearch } from '@tabler/icons-react';
-import { concat } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const CifPage = () => {
   const [nameProduct, setNameProduct] = useState<string>('');
@@ -121,7 +115,7 @@ const CifPage = () => {
             />
           </InputWrapper>
         </Group>
-        <TableCif exchange={exchange}/>
+        <TableCif exchange={exchange} keyword={nameProduct}/>
       </Stack>
     </Container>
   );

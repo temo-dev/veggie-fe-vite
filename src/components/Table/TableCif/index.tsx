@@ -20,10 +20,10 @@ import {
   IconCircuitResistor,
   IconShoppingBagPlus,
 } from '@tabler/icons-react';
-import { useScrollIntoView, useWindowScroll } from '@mantine/hooks';
 
 interface PropsInterface {
   exchange: any;
+  keyword: string | '';
 }
 
 const ActionButtons = () => (
@@ -39,13 +39,14 @@ const ActionButtons = () => (
 
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
-const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
+const TableCif: React.FC<PropsInterface> = ({ exchange,keyword }) => {
   const PAGE_SIZE = 10; // items per fetch
   const [offset, setOffset] = useState(0);
+  const [dataWord, setDataWord] = useState('');
   const [items, setItems] = useState<any[]>([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const [openedRows, setOpenedRows] = useState<Record<string, boolean>>({});
-  const { data: result, status, isFetching } = useFindProductsCif('', offset);
+  const { data: result, status, isFetching } = useFindProductsCif(dataWord, offset);
 
   // on data load, append
   useEffect(() => {
@@ -53,13 +54,28 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
       const newData = result?.data;
       setItems((prev) => [...prev, ...newData]);
       // if fewer than page size, no more
-      setHasMore(newData.length === PAGE_SIZE);
+      if (newData.length === PAGE_SIZE) {
+        setHasMore(false);
+      }
     }
   }, [result, status]);
 
+  useEffect(() => {
+    setDataWord(keyword);
+    setOffset(0)
+    setItems([]);
+  }, [keyword])
+  
+
+  useEffect(() => {
+    if(hasMore){
+      setOffset((prev) => prev + 1);
+    }
+  },[hasMore])
+
   // load more handler
   const fetchMore = () => {
-    setOffset((prev) => prev + 1);
+    setHasMore(true);
   };
 
   // toggle details row
@@ -237,9 +253,9 @@ const TableCif: React.FC<PropsInterface> = ({ exchange }) => {
       </Grid>
       <ScrollArea
         onBottomReached={() => {
-          if (!isFetching && hasMore) fetchMore();
+          if (!isFetching && !hasMore) fetchMore();
         }}
-        h={700}
+        h={800}
         style={{ width: '100%', height: '100%' }}
       >
         <Stack>
