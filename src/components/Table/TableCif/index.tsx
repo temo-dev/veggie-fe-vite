@@ -24,6 +24,7 @@ import {
 interface PropsInterface {
   exchange: any;
   keyword: string | '';
+  height: number;
 }
 
 const ActionButtons = () => (
@@ -39,7 +40,7 @@ const ActionButtons = () => (
 
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
-const TableCif: React.FC<PropsInterface> = ({ exchange,keyword }) => {
+const TableCif: React.FC<PropsInterface> = ({ exchange,keyword,height }) => {
   const PAGE_SIZE = 10; // items per fetch
   const [offset, setOffset] = useState(0);
   const [dataWord, setDataWord] = useState('');
@@ -224,38 +225,38 @@ const TableCif: React.FC<PropsInterface> = ({ exchange,keyword }) => {
     <div style={{ width: '100%', height: '100%' }}>
       <Grid bg="green.8" c="white" p={5} mb={2} className="sticky top-0">
         <Grid.Col span={2}>
-          <Text fw={700}>Mã Hàng</Text>
+          <Text fw={700} size='xs'>Mã Hàng</Text>
         </Grid.Col>
         <Grid.Col span={2}>
-          <Text fw={700}>Nhà Cung Cấp</Text>
+          <Text fw={700} size='xs'>Nhà Cung Cấp</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Giá Vận Chuyển</Text>
+          <Text fw={700} size='xs'>Giá Vận Chuyển</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Giá Nhập</Text>
+          <Text fw={700} size='xs'>Giá Nhập</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Giá Thùng</Text>
+          <Text fw={700} size='xs'>Giá Thùng</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Giá CIF</Text>
+          <Text fw={700} size='xs'>Giá CIF</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Giá CIF Box</Text>
+          <Text fw={700} size='xs'>Giá CIF Box</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Text fw={700}>Ngày Áp Dụng</Text>
+          <Text fw={700} size='xs'>Ngày Áp Dụng</Text>
         </Grid.Col>
         <Grid.Col span={2}>
-          <Text fw={700}>Thao Tác</Text>
+          <Text fw={700} size='xs'>Thao Tác</Text>
         </Grid.Col>
       </Grid>
       <ScrollArea
         onBottomReached={() => {
           if (!isFetching && !hasMore) fetchMore();
         }}
-        h={800}
+        h={height-250}
         style={{ width: '100%', height: '100%' }}
       >
         <Stack>

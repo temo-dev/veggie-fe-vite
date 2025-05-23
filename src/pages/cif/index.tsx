@@ -15,12 +15,13 @@ import {
   Container,
   Stack,
 } from '@mantine/core';
-import { getHotkeyHandler } from '@mantine/hooks';
+import { getHotkeyHandler, useViewportSize } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { IconBasketDollar, IconCarCrane, IconCash, IconSearch } from '@tabler/icons-react';
 import { useState } from 'react';
 
 const CifPage = () => {
+  const {height} = useViewportSize();
   const [nameProduct, setNameProduct] = useState<string>('');
   const [valueSearch, setValueSearch] = useState<string>('');
   const [baseCurrency, setBaseCurrency] = useState<string>('');
@@ -115,7 +116,7 @@ const CifPage = () => {
             />
           </InputWrapper>
         </Group>
-        <TableCif exchange={exchange} keyword={nameProduct}/>
+        <TableCif exchange={exchange} keyword={nameProduct} height={height}/>
       </Stack>
     </Container>
   );
