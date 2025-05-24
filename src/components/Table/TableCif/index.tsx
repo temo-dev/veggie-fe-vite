@@ -112,6 +112,9 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
             case 'krw':
               price = value / exchange?.value_kr;
               break;
+            case 'SEK':
+            price = value / exchange?.value_sek;
+            break;
             default:
               price = value / exchange?.value_czk;
               break;

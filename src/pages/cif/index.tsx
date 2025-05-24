@@ -108,6 +108,7 @@ const CifPage = () => {
                 { value: 'eur', label: 'EUR' },
                 { value: 'thb', label: 'THB' },
                 { value: 'krw', label: 'KRW' },
+                { value: 'sek', label: 'SEK' },
               ]}
               defaultValue={'czk'}
               className="my-2"

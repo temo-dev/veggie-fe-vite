@@ -84,6 +84,7 @@ const FormCreateShippingPrice = () => {
               { value: 'eur', label: 'EUR' },
               { value: 'thb', label: 'THB' },
               { value: 'krw', label: 'KRW' },
+              { value: 'sek', label: 'SEK' },
             ]}
             className="my-2"
             {...form.getInputProps('supplier_pallet_currency')}
