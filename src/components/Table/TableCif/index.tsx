@@ -13,6 +13,7 @@ import {
   ScrollArea,
   Stack,
   Text,
+  Title,
 } from '@mantine/core';
 import {
   IconChevronDown,
@@ -20,6 +21,9 @@ import {
   IconCircuitResistor,
   IconShoppingBagPlus,
 } from '@tabler/icons-react';
+import { modals } from '@mantine/modals';
+import FormOrderPurchase from '@/components/Form/FormOrderPurchase';
+import LineChartHistoryCifPrice from '@/components/Report/LineChartHistoryCifPrice';
 
 interface PropsInterface {
   exchange: any;
@@ -27,16 +31,41 @@ interface PropsInterface {
   height: number;
 }
 
-const ActionButtons = () => (
-  <Group>
-    <ActionIcon variant="filled">
-      <IconShoppingBagPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
-    </ActionIcon>
-    <ActionIcon variant="filled">
-      <IconCircuitResistor style={{ width: '70%', height: '70%' }} stroke={1.5} />
-    </ActionIcon>
-  </Group>
-);
+interface PropsInterfaceActionButtons {
+  productK2Id: number;
+}
+
+const ActionButtons = (props: PropsInterfaceActionButtons) => {
+  const { productK2Id } = props;
+  return (
+    <Group>
+      <ActionIcon
+        variant="filled"
+        onClick={() =>
+          modals.open({
+            title: <Title order={6}>{`Đặt Hàng`}</Title>,
+            children: <FormOrderPurchase />,
+            size: 'auto',
+          })
+        }
+      >
+        <IconShoppingBagPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
+      </ActionIcon>
+      <ActionIcon
+        variant="filled"
+        onClick={() =>
+          modals.open({
+            title: <Title order={6}>{`Theo dõi giá`}</Title>,
+            children: <LineChartHistoryCifPrice productId={productK2Id} />,
+            size: 'xl',
+          })
+        }
+      >
+        <IconCircuitResistor style={{ width: '70%', height: '70%' }} stroke={1.5} />
+      </ActionIcon>
+    </Group>
+  );
+};
 
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
@@ -96,7 +125,7 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
       const switchExchange = (value: number, currency: string) => {
         let price = 0;
         if (value !== null) {
-          switch (currency) {
+          switch (currency.toLowerCase()) {
             case 'czk':
               price = value / exchange?.value_czk;
               break;
@@ -112,9 +141,9 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
             case 'krw':
               price = value / exchange?.value_kr;
               break;
-            case 'SEK':
-            price = value / exchange?.value_sek;
-            break;
+            case 'sek':
+              price = value / exchange?.value_sek;
+              break;
             default:
               price = value / exchange?.value_czk;
               break;
@@ -125,16 +154,18 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
       const newCifPrice = sortedPriceCif.map((c: any) => {
         const pricePc = switchExchange(c.price_pc, c.shipping_currency);
         const deliveryPrice =
-          switchExchange(c.shipping_pallet_price, c.shipping_pallet_currency) / c.box_pallet;
+          c.price_pc ? switchExchange(c.shipping_pallet_price, c.shipping_pallet_currency) / c.box_pallet : 0;
         const totalBox = pricePc * boxBase + deliveryPrice;
         return {
           ...c,
           price_pc: pricePc,
           price_pc_box: pricePc * boxBase,
-          cif_price: pricePc
+          cif_price: c.price_pc
             ? totalBox / boxBase
             : switchExchange(c.cif_price, c.shipping_currency),
-          cif_price_box: pricePc ? totalBox : switchExchange(c.cif_price_box, c.shipping_currency),
+          cif_price_box: c.price_box
+            ? totalBox
+            : switchExchange(c.cif_price_box, c.shipping_currency),
           delivery_price: deliveryPrice,
         };
       });
@@ -186,7 +217,22 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
               </Grid.Col>
               <Grid.Col span={1}>
                 <Group>
-                  <ActionButtons />
+                  <Group>
+                    {price_cif.length > 0 && (
+                      <ActionIcon
+                        variant="filled"
+                        onClick={() =>
+                          modals.open({
+                            title: <Title order={6}>{`Theo Dõi Giá CIF Theo ${exchange?.base_currency.toUpperCase()}`}</Title>,
+                            children: <LineChartHistoryCifPrice productId={id} />,
+                            size: 'xl',
+                          })
+                        }
+                      >
+                        <IconCircuitResistor style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                      </ActionIcon>
+                    )}
+                  </Group>
                   {newCifPrice.length > 1 && (
                     <ActionIcon variant="light" onClick={() => toggleRow(id)}>
                       {opened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
@@ -223,9 +269,7 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
                   <Grid.Col span={1}>
                     <Text fw={500}>{convertTime(c.effective_from)}</Text>
                   </Grid.Col>
-                  <Grid.Col span={1}>
-                    <ActionButtons />
-                  </Grid.Col>
+                  <Grid.Col span={1}></Grid.Col>
                 </Grid>
               ))}
             </Collapse>

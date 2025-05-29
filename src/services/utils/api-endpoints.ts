@@ -19,4 +19,5 @@ export const API_ENDPOINTS = {
     CREATE_CIF_PRICE:'/v1/price-cif/create-cif',
     PRODUCT_ALL:'/v1/product/all-product',
     PRODUCT_ALL_CIF:'/v1/price-cif/all-cif',
+    REPORT_HISTORY_CIF_PRICE: '/v1/price-cif/history-cif',
   };
