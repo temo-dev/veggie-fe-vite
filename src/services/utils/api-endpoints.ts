@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
     SUPPLIER:'/v1/supplier/all-supplier',
     CREATE_SHIPPING_PRICE:'/v1/shipping-price-pallet/create',
     CREATE_CIF_PRICE:'/v1/price-cif/create-cif',
+    CREATE_PURCHASE_ORDER:'/v1/purchase/order',
     PRODUCT_ALL:'/v1/product/all-product',
     PRODUCT_ALL_CIF:'/v1/price-cif/all-cif',
     REPORT_HISTORY_CIF_PRICE: '/v1/price-cif/history-cif',

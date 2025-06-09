@@ -10,12 +10,14 @@ import {
   Group,
   Image,
   LoadingOverlay,
+  Pagination,
   ScrollArea,
   Stack,
   Text,
   Title,
 } from '@mantine/core';
 import {
+  IconBasketPlus,
   IconChevronDown,
   IconChevronUp,
   IconCircuitResistor,
@@ -24,92 +26,27 @@ import {
 import { modals } from '@mantine/modals';
 import FormOrderPurchase from '@/components/Form/FormOrderPurchase';
 import LineChartHistoryCifPrice from '@/components/Report/LineChartHistoryCifPrice';
+import { usePurchaseState } from '@/utils/hooks/usePurchase';
 
 interface PropsInterface {
   exchange: any;
-  keyword: string | '';
-  height: number;
+  items: any;
 }
-
-interface PropsInterfaceActionButtons {
-  productK2Id: number;
-}
-
-const ActionButtons = (props: PropsInterfaceActionButtons) => {
-  const { productK2Id } = props;
-  return (
-    <Group>
-      <ActionIcon
-        variant="filled"
-        onClick={() =>
-          modals.open({
-            title: <Title order={6}>{`Đặt Hàng`}</Title>,
-            children: <FormOrderPurchase />,
-            size: 'auto',
-          })
-        }
-      >
-        <IconShoppingBagPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
-      </ActionIcon>
-      <ActionIcon
-        variant="filled"
-        onClick={() =>
-          modals.open({
-            title: <Title order={6}>{`Theo dõi giá`}</Title>,
-            children: <LineChartHistoryCifPrice productId={productK2Id} />,
-            size: 'xl',
-          })
-        }
-      >
-        <IconCircuitResistor style={{ width: '70%', height: '70%' }} stroke={1.5} />
-      </ActionIcon>
-    </Group>
-  );
-};
 
 const formatNumber = (num: number) => (typeof num === 'number' ? num.toFixed(2) : '-');
 
-const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
-  const PAGE_SIZE = 10; // items per fetch
-  const [offset, setOffset] = useState(0);
-  const [dataWord, setDataWord] = useState('');
-  const [items, setItems] = useState<any[]>([]);
-  const [hasMore, setHasMore] = useState(false);
+const TableCif: React.FC<PropsInterface> = ({ exchange, items }) => {
   const [openedRows, setOpenedRows] = useState<Record<string, boolean>>({});
-  const { data: result, status, isFetching } = useFindProductsCif(dataWord, offset);
-
-  // on data load, append
-  useEffect(() => {
-    if (status === 'success' && result?.data) {
-      const newData = result?.data;
-      setItems((prev) => [...prev, ...newData]);
-      // if fewer than page size, no more
-      if (newData.length === PAGE_SIZE) {
-        setHasMore(false);
-      }
-    }
-  }, [result, status]);
-
-  useEffect(() => {
-    setDataWord(keyword);
-    setOffset(0);
-    setItems([]);
-  }, [keyword]);
-
-  useEffect(() => {
-    if (hasMore) {
-      setOffset((prev) => prev + 1);
-    }
-  }, [hasMore]);
-
-  // load more handler
-  const fetchMore = () => {
-    setHasMore(true);
-  };
+  const { addPurchase } = usePurchaseState();
 
   // toggle details row
   const toggleRow = (id: string) => {
     setOpenedRows((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  //purchase product
+  const handleAddPurchase = (product: any) => {
+    addPurchase(product);
   };
 
   // render rows from accumulated items
@@ -153,8 +90,9 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
       };
       const newCifPrice = sortedPriceCif.map((c: any) => {
         const pricePc = switchExchange(c.price_pc, c.shipping_currency);
-        const deliveryPrice =
-          c.price_pc ? switchExchange(c.shipping_pallet_price, c.shipping_pallet_currency) / c.box_pallet : 0;
+        const deliveryPrice = c.price_pc
+          ? switchExchange(c.shipping_pallet_price, c.shipping_pallet_currency) / c.box_pallet
+          : 0;
         const totalBox = pricePc * boxBase + deliveryPrice;
         return {
           ...c,
@@ -219,18 +157,30 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
                 <Group>
                   <Group>
                     {price_cif.length > 0 && (
-                      <ActionIcon
-                        variant="filled"
-                        onClick={() =>
-                          modals.open({
-                            title: <Title order={6}>{`Theo Dõi Giá CIF Theo ${exchange?.base_currency.toUpperCase()}`}</Title>,
-                            children: <LineChartHistoryCifPrice productId={id} />,
-                            size: 'xl',
-                          })
-                        }
-                      >
-                        <IconCircuitResistor style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                      </ActionIcon>
+                      <>
+                        <ActionIcon variant="filled" onClick={() => handleAddPurchase(item)}>
+                          <IconBasketPlus size={16} />
+                        </ActionIcon>
+                        <ActionIcon
+                          variant="filled"
+                          onClick={() =>
+                            modals.open({
+                              title: (
+                                <Title
+                                  order={6}
+                                >{`Theo Dõi Giá CIF Theo ${exchange?.base_currency.toUpperCase()}`}</Title>
+                              ),
+                              children: <LineChartHistoryCifPrice productId={id} />,
+                              size: 'xl',
+                            })
+                          }
+                        >
+                          <IconCircuitResistor
+                            style={{ width: '70%', height: '70%' }}
+                            stroke={1.5}
+                          />
+                        </ActionIcon>
+                      </>
                     )}
                   </Group>
                   {newCifPrice.length > 1 && (
@@ -280,77 +230,63 @@ const TableCif: React.FC<PropsInterface> = ({ exchange, keyword, height }) => {
     });
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <Grid bg="green.8" c="white" p={5} mb={2} className="sticky top-0">
-        <Grid.Col span={2}>
-          <Text fw={700} size="xs">
-            Mã Hàng
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={2}>
-          <Text fw={700} size="xs">
-            Nhà Cung Cấp
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Giá Vận Chuyển
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Giá Nhập
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Giá Thùng
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Giá CIF
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Giá CIF Box
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Box Pallet
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Ngày Áp Dụng
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={1}>
-          <Text fw={700} size="xs">
-            Thao Tác
-          </Text>
-        </Grid.Col>
-      </Grid>
-      <ScrollArea
-        onBottomReached={() => {
-          if (!isFetching && !hasMore) fetchMore();
-        }}
-        h={height - 250}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <Stack>
-          <LoadingOverlay
-            visible={status === 'loading' || isFetching}
-            zIndex={1000}
-            overlayProps={{ radius: 'md', blur: 2 }}
-            loaderProps={{ color: 'green', type: 'bars' }}
-          />
-          {rows}
-        </Stack>
-      </ScrollArea>
-    </div>
+    <Stack style={{ width: '100%', height: '100%' }}>
+      <Stack className="sticky -top-10 bg-white">
+        <Grid bg="green.8" c="white" p={5} mb={2}>
+          <Grid.Col span={2}>
+            <Text fw={700} size="xs">
+              Mã Hàng
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Text fw={700} size="xs">
+              Nhà Cung Cấp
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Giá Vận Chuyển
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Giá Nhập
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Giá Thùng
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Giá CIF
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Giá CIF Box
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Box Pallet
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Ngày Áp Dụng
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={1}>
+            <Text fw={700} size="xs">
+              Thao Tác
+            </Text>
+          </Grid.Col>
+        </Grid>
+      </Stack>
+      <Stack>{rows}</Stack>
+    </Stack>
   );
 };
 

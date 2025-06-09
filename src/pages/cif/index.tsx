@@ -1,7 +1,9 @@
 import FormCreateCif from '@/components/Form/FormCreateCif';
 import FormCreateShippingPrice from '@/components/Form/FormCreateShippingPrice';
+import FormOrderPurchase from '@/components/Form/FormOrderPurchase';
 import TableCif from '@/components/Table/TableCif';
 import { useFindExChange } from '@/services/currency/use-get-ex-change-today';
+import { useFindProductsCif } from '@/services/react-query/cif/use-find-product-cif';
 import { useAppSelector } from '@/store';
 import {
   Divider,
@@ -14,19 +16,46 @@ import {
   Title,
   Container,
   Stack,
+  Pagination,
+  LoadingOverlay,
+  Indicator,
 } from '@mantine/core';
-import { getHotkeyHandler, useViewportSize } from '@mantine/hooks';
+import { getHotkeyHandler } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import { IconBasketDollar, IconCarCrane, IconCash, IconSearch } from '@tabler/icons-react';
-import { useState } from 'react';
+import {
+  IconBasketDollar,
+  IconCarCrane,
+  IconCash,
+  IconSearch,
+  IconShoppingCart,
+} from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 
 const CifPage = () => {
-  const {height} = useViewportSize();
   const [nameProduct, setNameProduct] = useState<string>('');
   const [valueSearch, setValueSearch] = useState<string>('');
+  const [activePage, setPage] = useState<number>(1);
   const [baseCurrency, setBaseCurrency] = useState<string>('');
+  const [items, setItems] = useState<any[]>([]);
   const _ = useFindExChange(baseCurrency);
-  const { exchange } = useAppSelector((state) => state.product.product);
+  const { exchange, purchaseProducts } = useAppSelector((state) => state.product.product);
+  const { data: result, status, isFetching } = useFindProductsCif(nameProduct, activePage);
+
+  const handleChangePage = (value: number) => {
+    setPage(value);
+  };
+  useEffect(() => {
+    setNameProduct(nameProduct);
+    setItems([]);
+  }, [nameProduct]);
+
+  // on data load, append
+  useEffect(() => {
+    if (status === 'success' && result?.data) {
+      setItems(result?.data);
+    }
+  }, [result, status]);
+
   const handleCreateCif = () => {
     modals.open({
       title: <Title order={6}>Cập Nhật Giá Cif</Title>,
@@ -39,6 +68,14 @@ const CifPage = () => {
       title: <Title order={6}>Cập Nhật Phí Vận Chuyển</Title>,
       children: <FormCreateShippingPrice />,
       size: 'lg',
+    });
+  };
+
+  const handleCreatePurchaseOrder = () => {
+    modals.open({
+      title: <Title order={6}>Đặt Hàng</Title>,
+      children: <FormOrderPurchase />,
+      size: 'xl',
     });
   };
 
@@ -56,7 +93,7 @@ const CifPage = () => {
 
   //render
   return (
-    <Container fluid className='w-full'>
+    <Container fluid className="w-full">
       <Group className="mb-2">
         <Button
           leftSection={<IconBasketDollar size={20} color="white" />}
@@ -74,6 +111,22 @@ const CifPage = () => {
         >
           {'Cập Nhật Phí Vận Chuyển'}
         </Button>
+        <Indicator
+          disabled={purchaseProducts.length > 0 ? false : true}
+          label={`${purchaseProducts.length}`}
+          processing
+          size={20}
+          color="red"
+        >
+          <Button
+            leftSection={<IconShoppingCart size={20} color="white" />}
+            variant="outline"
+            color="green"
+            onClick={handleCreatePurchaseOrder}
+          >
+            {'Đặt Hàng'}
+          </Button>
+        </Indicator>
       </Group>
       <Divider />
       <Stack>
@@ -117,7 +170,21 @@ const CifPage = () => {
             />
           </InputWrapper>
         </Group>
-        <TableCif exchange={exchange} keyword={nameProduct} height={height}/>
+        <Divider />
+        <Pagination
+          total={(result?.total / parseInt(result?.limit) - 1) | 1}
+          value={activePage}
+          onChange={handleChangePage}
+          mt="xs"
+          size="xs"
+        />
+        <LoadingOverlay
+          visible={status === 'loading'}
+          zIndex={1000}
+          overlayProps={{ radius: 'md', blur: 2 }}
+          loaderProps={{ color: 'green', type: 'bars' }}
+        />
+        <TableCif exchange={exchange} items={items} />
       </Stack>
     </Container>
   );

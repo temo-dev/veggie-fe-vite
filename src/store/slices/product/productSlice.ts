@@ -9,7 +9,8 @@ export interface ProductState {
     currentProduct:ProductBaseDetailType | null
     totalCurrentProduct: number,
     exchange:any | null,
-    productCifs: any
+    productCifs: any,
+    purchaseProducts:any[]
 }
 
 const initialState:ProductState = {
@@ -18,7 +19,8 @@ const initialState:ProductState = {
     totalCurrentProduct: 0,
     currentProduct:null,
     exchange:null,
-    productCifs:null
+    productCifs:null,
+    purchaseProducts:[]
 }
 
 const productSlice = createSlice({
@@ -43,9 +45,19 @@ const productSlice = createSlice({
         setExchange(state,action){
             const {data} = action.payload
             state.exchange = data
+        },
+        setAddPurchaseProduct(state,action){
+            state.purchaseProducts = state.purchaseProducts.concat(action.payload)
         }
     }
 })
 
-export const { setAllProducts,setCurrentProductCode,setCurrentProduct,setExchange,setProductCif } = productSlice.actions
+export const { 
+    setAllProducts,
+    setCurrentProductCode,
+    setCurrentProduct,
+    setExchange,
+    setProductCif,
+    setAddPurchaseProduct 
+} = productSlice.actions
 export default productSlice.reducer

@@ -7,7 +7,7 @@ const getProductsCif = async ({
   queryKey,
 }: QueryFunctionContext<[string, string,number]>) => {
   const [url, name,page] = queryKey;
-  const { data } = await http.get(`${url}?page=${page}&limit=10&name=${name}`);
+  const { data } = await http.get(`${url}?page=${page}&limit=20&name=${name}`);
   return data.data;
 };
 
