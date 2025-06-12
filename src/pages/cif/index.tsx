@@ -35,6 +35,7 @@ const CifPage = () => {
   const [nameProduct, setNameProduct] = useState<string>('');
   const [valueSearch, setValueSearch] = useState<string>('');
   const [activePage, setPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
   const [baseCurrency, setBaseCurrency] = useState<string>('');
   const [items, setItems] = useState<any[]>([]);
   const _ = useFindExChange(baseCurrency);
@@ -53,6 +54,8 @@ const CifPage = () => {
   useEffect(() => {
     if (status === 'success' && result?.data) {
       setItems(result?.data);
+      const calPage = (result?.total / result?.limit)?.toFixed(0)
+      setTotalPage(Number(calPage));
     }
   }, [result, status]);
 
@@ -88,7 +91,7 @@ const CifPage = () => {
   const handleSearch = () => {
     if (valueSearch) {
       setNameProduct(valueSearch);
-      setPage(1)
+      setPage(1);
     }
   };
 
@@ -173,7 +176,7 @@ const CifPage = () => {
         </Group>
         <Divider />
         <Pagination
-          total={(result?.total / parseInt(result?.limit) - 1) | 1}
+          total={totalPage}
           value={activePage}
           onChange={handleChangePage}
           mt="xs"
