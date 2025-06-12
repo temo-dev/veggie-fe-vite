@@ -33,7 +33,7 @@ const FormCreateShippingPrice = () => {
     supplier_pallet_price: yup
       .number()
       .required('Giá vận chuyển không được để trống')
-      .min(1, 'Giá vận chuyển không được nhỏ hơn 0'),
+      .min(0, 'Giá vận chuyển không được nhỏ hơn 0'),
     supplier_pallet_currency: yup.string().required('Mệnh giá đồng tiền không được để trống'),
   });
   const form = useForm({

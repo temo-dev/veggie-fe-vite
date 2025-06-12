@@ -39,7 +39,7 @@ const CifPage = () => {
   const [items, setItems] = useState<any[]>([]);
   const _ = useFindExChange(baseCurrency);
   const { exchange, purchaseProducts } = useAppSelector((state) => state.product.product);
-  const { data: result, status, isFetching } = useFindProductsCif(nameProduct, activePage);
+  const { data: result, status, isFetching } = useFindProductsCif(nameProduct, activePage - 1);
 
   const handleChangePage = (value: number) => {
     setPage(value);
@@ -88,6 +88,7 @@ const CifPage = () => {
   const handleSearch = () => {
     if (valueSearch) {
       setNameProduct(valueSearch);
+      setPage(1)
     }
   };
 
